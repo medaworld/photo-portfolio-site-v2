@@ -1,34 +1,56 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Photo Portfolio V2
+
+## Introduction
+
+Welcome to my photo portfolio project! This repository contains the source code for my personal photography portfolio, showcasing my work in various fields of photography, including landscapes, portraits, street photography, and more. This is an updated version of the first photo portfolio I built: https://github.com/medaworld/photo-portfolio-site-v1
+
+## Features
+
+- **Responsive Design**: The portfolio is designed to be viewed on devices of all sizes.
+- **Optimized Images**: Photos are optimized for web without losing quality.
+- **Category Filtering**: Browse my work by different categories.
+- **Contact Form**: Get in touch with me directly through the website.
+
+## Technologies Used
+
+- Next.js
+- Styled-components
+- Firebase
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+- Node.js
+- Yarn or npm
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Installation
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+1. Clone the repository:
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+   \```bash
+   git clone https://github.com/medaworld/photo-portfolio-site-v2
+   cd photo-portfolio
+   \```
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+2. Install dependencies:
 
-## Learn More
+   \```bash
+   npm install
 
-To learn more about Next.js, take a look at the following resources:
+   # or
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   yarn
+   \```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+3. Start the development server:
 
-## Deploy on Vercel
+   \```bash
+   npm run dev
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   # or
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+   yarn dev
+   \```
+
+4. Open [http://localhost:3000](http://localhost:3000) in your browser to view the portfolio.
