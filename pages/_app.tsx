@@ -3,6 +3,7 @@ import GlobalStyle from '../components/styles/GlobalStyle';
 import { theme } from '../themes/theme';
 import isPropValid from '@emotion/is-prop-valid';
 import Head from 'next/head';
+import Layout from '../components/Layout/Layout';
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -19,7 +20,9 @@ function MyApp({ Component, pageProps }) {
       <StyleSheetManager shouldForwardProp={isPropValid}>
         <ThemeProvider theme={theme}>
           <GlobalStyle />
-          <Component {...pageProps} />
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
         </ThemeProvider>
       </StyleSheetManager>
     </>
