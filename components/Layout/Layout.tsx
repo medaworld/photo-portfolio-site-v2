@@ -3,7 +3,8 @@ import Footer from '../Footer/Footer';
 import Navbar from '../Navbar/Navbar';
 
 const LayoutMain = styled.main`
-  height: 100vh;
+  width: 100%;
+  height: 100%;
 `;
 
 const Layout = ({ children, showMain }) => {

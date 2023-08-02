@@ -16,7 +16,6 @@ export const NavbarContainer = styled.nav<{
   height: 55px;
   display: flex;
   opacity: ${({ showMain }) => (showMain ? '1' : '0')};
-  transition: ${({ showMain }) => (showMain ? 'opacity 0.5s ease 1s' : 'none')};
   justify-content: space-between;
   padding: 1rem 1rem;
   z-index: 5;
@@ -113,7 +112,7 @@ export const HamburgerBar = styled.span<{ isOpen: boolean }>`
   width: 25px;
   height: 3px;
   margin: 5px 0;
-  background-color: ${(props) => props.theme.light};
+  background-color: ${(props) => props.theme.dark};
   transition: all 0.3s ease-in-out;
 
   ${({ isOpen }) => isOpen && 'transform: translateY(8px) rotate(-45deg);'}

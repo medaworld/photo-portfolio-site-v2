@@ -5,7 +5,6 @@ import isPropValid from '@emotion/is-prop-valid';
 import Head from 'next/head';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { ShowMainProvider } from '../components/contexts/ShowMainContext';
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -20,12 +19,10 @@ function MyApp({ Component, pageProps }) {
         ></meta>
       </Head>
       <StyleSheetManager shouldForwardProp={isPropValid}>
-        <ShowMainProvider>
-          <ThemeProvider theme={theme}>
-            <GlobalStyle />
-            <Component {...pageProps} />
-          </ThemeProvider>
-        </ShowMainProvider>
+        <ThemeProvider theme={theme}>
+          <GlobalStyle />
+          <Component {...pageProps} />
+        </ThemeProvider>
       </StyleSheetManager>
     </>
   );

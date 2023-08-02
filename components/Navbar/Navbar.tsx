@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLinkList } from '../../utils/dummyData';
 import {
   HamburgerBar,
@@ -20,6 +20,17 @@ const Navbar = ({ showMain }) => {
   const toggleMenu = () => {
     setMenuOpen(!isMenuOpen);
   };
+
+  useEffect(() => {
+    const navbar = document.querySelector('nav');
+    if (showMain) {
+      navbar.style.transition = 'opacity 0.5s ease 1s';
+      navbar.style.opacity = '1';
+    } else {
+      navbar.style.transition = 'none';
+      navbar.style.opacity = '0';
+    }
+  }, [showMain]);
 
   return (
     <NavbarContainer isOpen={isMenuOpen} showMain={showMain}>

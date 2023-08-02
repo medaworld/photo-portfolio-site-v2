@@ -10,9 +10,6 @@ const GlobalStyle = createGlobalStyle`
     color: ${(props) => props.theme.darker};
   }
 
-  .no-scroll {
-    overflow: hidden;
-  }
 
   h1,
   h2,
