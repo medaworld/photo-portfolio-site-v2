@@ -8,12 +8,13 @@ import {
   NavbarContainer,
   SocialWrapper,
   Links,
-  SocialLink,
 } from './NavbarStyles';
-import { FaInstagram } from 'react-icons/fa';
-import Logo from '../common/Logo';
 
-const Navbar = () => {
+import Logo from '../common/Logo';
+import SocialMediaIcon from '../common/SocialMediaIcon';
+import Link from 'next/link';
+
+const Navbar = ({ showMain }) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -21,14 +22,14 @@ const Navbar = () => {
   };
 
   return (
-    <NavbarContainer isOpen={isMenuOpen}>
+    <NavbarContainer isOpen={isMenuOpen} showMain={showMain}>
       <Logo src="/images/logo.png" alt="MEDA Logo" />
       <Links>
         <NavLinks isOpen={isMenuOpen}>
           {NavLinkList.map((navLink, key) => {
             return (
               <NavLink key={key}>
-                <a>{navLink.title}</a>
+                <Link href={navLink.path}>{navLink.title}</Link>
               </NavLink>
             );
           })}
@@ -39,12 +40,11 @@ const Navbar = () => {
           <HamburgerBar isOpen={isMenuOpen} />
         </HamburgerMenu>
         <SocialWrapper isOpen={isMenuOpen}>
-          <SocialLink
-            href="https://www.instagram.com/meda.world"
-            target="_blank"
-          >
-            <FaInstagram size={20} />
-          </SocialLink>
+          <SocialMediaIcon
+            href={'https://www.instagram.com/meda.world'}
+            size={20}
+            platform={'instagram'}
+          />
         </SocialWrapper>
       </Links>
     </NavbarContainer>

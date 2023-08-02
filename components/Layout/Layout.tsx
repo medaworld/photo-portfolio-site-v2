@@ -3,13 +3,13 @@ import Footer from '../Footer/Footer';
 import Navbar from '../Navbar/Navbar';
 
 const LayoutMain = styled.main`
-  padding: 55px 0;
+  height: 100vh;
 `;
 
-const Layout = ({ children }) => {
+const Layout = ({ children, showMain }) => {
   return (
     <>
-      <Navbar />
+      <Navbar showMain={showMain} />
       <LayoutMain id={'top'}>{children}</LayoutMain>
       <Footer />
     </>

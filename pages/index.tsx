@@ -1,33 +1,79 @@
 import { styled } from 'styled-components';
-import ResponsiveImage from '../components/common/ResponsiveImage';
-import MaskImage from '../components/common/MaskImage';
+import { useEffect, useState } from 'react';
+import { useShowMain } from '../components/contexts/ShowMainContext';
+import Layout from '../components/Layout/Layout';
+import { slideshowImages } from '../utils/dummyData';
+import Slideshow from '../components/Slideshow/Slideshow';
 
-const Container = styled.div`
-  width: 100%;
-`;
-
-const ImageWrapper = styled.div`
-  width: 50%;
+const MainContentContainer = styled.div<{ showMain: boolean }>`
+  background-color: white;
+  margin-top: ${({ showMain }) => (showMain ? '0' : '100vh')};
+  height: 100vh;
+  padding: 1rem;
+  padding-top: 55px;
+  z-index: 3;
+  transition: margin-top 1s ease;
 `;
 
 export default function Home() {
+  const [showMain, setShowMain] = useState(false);
+  const [canScroll, setCanScroll] = useState(true);
+
+  // Function to enable scrolling after a delay
+  const enableScrollingAfterDelay = () => {
+    setTimeout(() => {
+      setCanScroll(true);
+    }, 1000);
+  };
+
+  useEffect(() => {
+    if (showMain) {
+      setCanScroll(false);
+      enableScrollingAfterDelay();
+    }
+  }, [showMain]);
+
+  useEffect(() => {
+    if (canScroll) {
+      document.body.classList.remove('no-scroll');
+    } else {
+      document.body.classList.add('no-scroll');
+    }
+  }, [canScroll]);
+
+  useEffect(() => {
+    let lastScrollPosition = window.scrollY;
+    let lastTime = Date.now();
+
+    const handleScroll = (event: any) => {
+      const currentTime = Date.now();
+      const currentScrollPosition = window.scrollY;
+      const deltaPosition = currentScrollPosition - lastScrollPosition;
+      const deltaTime = currentTime - lastTime;
+      const velocity = deltaPosition / deltaTime;
+
+      if (Math.abs(velocity) > 0.2 && currentScrollPosition === 0) {
+        setShowMain(false);
+      } else if (window.scrollY > 0) {
+        setShowMain(true);
+      }
+
+      lastScrollPosition = currentScrollPosition;
+      lastTime = currentTime;
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [showMain]);
+
   return (
-    <Container>
-      <ImageWrapper>
-        <ResponsiveImage src={'/images/sample.jpg'} alt={'My photo'} />
-      </ImageWrapper>
-      <h1>Title</h1>
-      <p>Hello!</p>
-      <MaskImage img={'/images/logo.png'} width={'50px'} color={'green'} />
-      <ImageWrapper>
-        <ResponsiveImage src={'/images/sample.jpg'} alt={'My photo'} />
-      </ImageWrapper>
-      <ImageWrapper>
-        <ResponsiveImage src={'/images/sample.jpg'} alt={'My photo'} />
-      </ImageWrapper>
-      <ImageWrapper>
-        <ResponsiveImage src={'/images/sample.jpg'} alt={'My photo'} />
-      </ImageWrapper>
-    </Container>
+    <>
+      <Slideshow images={slideshowImages} showMain={showMain} />
+      <Layout showMain={showMain}>
+        <MainContentContainer showMain={showMain}>Hello</MainContentContainer>
+      </Layout>
+    </>
   );
 }

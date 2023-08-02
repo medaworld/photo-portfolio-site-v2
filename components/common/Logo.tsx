@@ -1,4 +1,5 @@
 import { styled } from 'styled-components';
+import MaskImage from './MaskImage';
 
 export const LogoContainer = styled.a`
   text-decoration: none;
@@ -6,20 +7,22 @@ export const LogoContainer = styled.a`
   align-items: center;
 `;
 
-export const LogoImage = styled.img`
-  width: 30px;
-`;
-
 interface LogoPropTypes {
   src: string;
   alt: string;
   href?: string;
+  size?: string;
+  color?: string;
 }
 
-const Logo = ({ src, alt, href }: LogoPropTypes) => {
+const Logo = ({ src, alt, href, size, color }: LogoPropTypes) => {
   return (
     <LogoContainer>
-      <LogoImage src={src} alt={alt} />
+      <MaskImage
+        src={src}
+        width={size ? size : '30px'}
+        color={color ? color : 'black'}
+      />
     </LogoContainer>
   );
 };

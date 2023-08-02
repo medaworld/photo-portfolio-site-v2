@@ -10,6 +10,7 @@ import {
 } from './FooterStyle';
 import { NavLinkList } from '../../utils/dummyData';
 import Logo from '../common/Logo';
+import SocialMediaIcon from '../common/SocialMediaIcon';
 
 const Footer = () => {
   const scrollToSection = (sectionId: string) => {
@@ -44,6 +45,12 @@ const Footer = () => {
             );
           })}
         </FooterList>
+        <SocialMediaIcon
+          href={'https://www.instagram.com/meda.world'}
+          size={20}
+          platform={'instagram'}
+          margin={'0 0 15px 0'}
+        />
         <FooterToTop
           onClick={() => {
             scrollToSection('top');
@@ -60,7 +67,7 @@ const Footer = () => {
         </FooterText>
       </FooterContainer>
       <WarningFooter>
-        This is a mock site for demonstration purposes only.
+        This is a site for demonstration purposes only.
       </WarningFooter>
     </>
   );

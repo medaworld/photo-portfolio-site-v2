@@ -2,10 +2,11 @@ import { styled } from 'styled-components';
 
 const MaskImageContainer = styled.div<{ width: string }>`
   display: flex;
+  align-items: center;
   width: ${({ width }) => width};
 `;
 
-const GridIcon = styled.div<{
+const MaskedImage = styled.div<{
   img: string;
   width: string;
   color: string;
@@ -30,19 +31,17 @@ const GridIcon = styled.div<{
 `;
 
 const MaskImage = ({
-  img,
+  src,
   width,
-
   color,
 }: {
-  img: string;
+  src: string;
   width: string;
-
   color: string;
 }) => {
   return (
     <MaskImageContainer width={width}>
-      <GridIcon img={img} width={width} color={color} />
+      <MaskedImage img={src} width={width} color={color} />
     </MaskImageContainer>
   );
 };

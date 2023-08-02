@@ -6,10 +6,13 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     margin: 0;
     font-family: 'Open Sans', sans-serif;
-    background-color: ${(props) => props.theme.light};
+    font-weight: 400;
     color: ${(props) => props.theme.darker};
   }
 
+  .no-scroll {
+    overflow: hidden;
+  }
 
   h1,
   h2,
@@ -18,6 +21,7 @@ const GlobalStyle = createGlobalStyle`
   h5,
   h6 {
     font-family: 'Raleway', sans-serif;
+    font-weight: 400;
   }
 
   main {

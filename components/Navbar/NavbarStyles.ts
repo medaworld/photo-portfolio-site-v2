@@ -2,28 +2,31 @@
 
 import styled, { css } from 'styled-components';
 
-export const NavbarContainer = styled.nav<{ isOpen: boolean }>`
+export const NavbarContainer = styled.nav<{
+  isOpen: boolean;
+  showMain: boolean;
+}>`
   background-color: ${(props) => props.theme.tplight};
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 55px;
   display: flex;
-  align-items: center;
+  opacity: ${({ showMain }) => (showMain ? '1' : '0')};
+  transition: ${({ showMain }) => (showMain ? 'opacity 0.5s ease 1s' : 'none')};
   justify-content: space-between;
   padding: 1rem 1rem;
   z-index: 5;
   max-height: ${({ isOpen }) => (isOpen ? '250px' : '70px')};
-  transition: max-height 0.3s ease;
-  border-bottom: 1px solid ${(props) => props.theme.grey};
 
   @media (max-width: 768px) {
     align-items: start;
     height: ${({ isOpen }) => (isOpen ? '215px' : 'none')};
     overflow: hidden;
+    transition: max-height 0.3s ease;
   }
 `;
 
@@ -96,17 +99,6 @@ export const SocialWrapper = styled.div<{ isOpen: boolean }>`
   }
 `;
 
-export const SocialLink = styled.a`
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-
-  &:hover {
-    opacity: 0.7;
-  }
-`;
-
 export const HamburgerMenu = styled.div`
   display: none;
   cursor: pointer;
@@ -119,9 +111,9 @@ export const HamburgerMenu = styled.div`
 export const HamburgerBar = styled.span<{ isOpen: boolean }>`
   display: block;
   width: 25px;
-  height: 2px;
+  height: 3px;
   margin: 5px 0;
-  background-color: ${(props) => props.theme.dark};
+  background-color: ${(props) => props.theme.light};
   transition: all 0.3s ease-in-out;
 
   ${({ isOpen }) => isOpen && 'transform: translateY(8px) rotate(-45deg);'}
