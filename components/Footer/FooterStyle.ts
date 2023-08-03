@@ -9,6 +9,7 @@ export const FooterContainer = styled.footer`
   align-items: center;
   background-color: ${(props) => props.theme.offlight};
   padding: 1.5rem;
+  z-index: 5;
 `;
 
 export const FooterList = styled.ul`

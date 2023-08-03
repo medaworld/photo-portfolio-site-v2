@@ -2,6 +2,7 @@ import { styled } from 'styled-components';
 import Logo from '../common/Logo';
 import { DarkOverShadow } from '../common/DarkOverShadow';
 import ImageCarousel from '../ImageCarousel/ImageCarousel';
+import { useCallback } from 'react';
 
 const SlideshowContainer = styled.div<{ showMain: boolean }>`
   position: fixed;
@@ -16,41 +17,61 @@ const SlideshowContainer = styled.div<{ showMain: boolean }>`
   transition: visibility 1s ease;
 `;
 
-const SlideshowText = styled.div`
+const SlideshowOverlay = styled.div`
   position: absolute;
   width: 100%;
   height: 100vh;
-  font-size: 28px;
-  font-family: 'Raleway';
-  font-weight: 100;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: ${(props) => props.theme.light};
   z-index: 2;
   pointer-events: none;
-
-  p {
-    margin-left: 10px;
-  }
 
   @media (max-width: 768px) {
     height: 80vh;
   }
 `;
 
-export default function Slideshow({ images, showMain }) {
+const SlideshowContent = styled.div`
+  height: 40px;
+  font-size: 28px;
+  font-family: 'Raleway';
+  font-weight: 100;
+  color: ${(props) => props.theme.light};
+  display: flex;
+  align-items: center;
+  pointer-events: visible;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    opacity: 0.7;
+    transform: scale(1.05);
+  }
+
+  p {
+    margin-left: 10px;
+  }
+`;
+
+export default function Slideshow({ images, showMain, setShowMain }) {
+  const handleClick = useCallback(() => {
+    setShowMain(true);
+  }, [setShowMain]);
+
   return (
     <SlideshowContainer showMain={showMain}>
-      <SlideshowText>
-        <Logo
-          src={'/images/logo.png'}
-          alt={'Logo'}
-          color={'#f0f0f0'}
-          size="35px"
-        />
-        <p>Photography</p>
-      </SlideshowText>
+      <SlideshowOverlay>
+        <SlideshowContent onClick={handleClick}>
+          <Logo
+            src={'/images/logo.png'}
+            alt={'Logo'}
+            color={'#f0f0f0'}
+            size="35px"
+          />
+          <p>Photography</p>
+        </SlideshowContent>
+      </SlideshowOverlay>
       <DarkOverShadow />
       <ImageCarousel images={images} />
     </SlideshowContainer>

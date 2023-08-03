@@ -24,10 +24,6 @@ const MaskedImage = styled.div<{
   mask-position: center;
   transition: right 0.5s ease;
   cursor: pointer;
-
-  &:hover {
-    opacity: 0.8;
-  }
 `;
 
 const MaskImage = ({

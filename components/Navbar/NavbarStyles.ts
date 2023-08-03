@@ -2,10 +2,7 @@
 
 import styled, { css } from 'styled-components';
 
-export const NavbarContainer = styled.nav<{
-  isOpen: boolean;
-  showMain: boolean;
-}>`
+export const NavbarContainer = styled.nav<{ isOpen: boolean }>`
   background-color: ${(props) => props.theme.tplight};
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
@@ -15,7 +12,7 @@ export const NavbarContainer = styled.nav<{
   width: 100%;
   height: 55px;
   display: flex;
-  opacity: ${({ showMain }) => (showMain ? '1' : '0')};
+  opacity: 0;
   justify-content: space-between;
   padding: 1rem 1rem;
   z-index: 5;

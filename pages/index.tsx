@@ -4,14 +4,12 @@ import Layout from '../components/Layout/Layout';
 import { slideshowImages } from '../utils/dummyData';
 import Slideshow from '../components/Slideshow/Slideshow';
 import { isMobileDevice, preventTouchMove } from '../utils/scrollTouchUtils';
+import Work from '../components/Work/Work';
 
 const MainContentContainer = styled.div<{ showMain: boolean }>`
   background-color: white;
   margin-top: 130vh;
-  height: 100vh;
-  padding: 1rem;
   padding-top: 55px;
-  z-index: 2;
   transition: margin-top 1s ease;
 `;
 
@@ -27,7 +25,7 @@ export default function Home() {
   const enableScrollingAfterDelay = () => {
     setTimeout(() => {
       setCanScroll(true);
-    }, 1000);
+    }, 1200);
   };
 
   useEffect(() => {
@@ -90,6 +88,7 @@ export default function Home() {
     };
 
     const onTouchEnd = (event: any) => {
+      const currentScrollPosition = window.scrollY;
       const touch = event.changedTouches[0];
       const endY = touch.clientY;
       const endTime = Date.now();
@@ -97,10 +96,10 @@ export default function Home() {
       const deltaTime = endTime - startTime;
       const velocity = deltaY / deltaTime;
 
-      if (velocity > 1.5) {
+      if (velocity > 1.5 && currentScrollPosition === 0) {
         // Swiped down
         setShowMain(false);
-      } else if (velocity < -0) {
+      } else if (velocity < -0.2 || window.scrollY > 0) {
         // Swiped up
         setShowMain(true);
       }
@@ -140,10 +139,14 @@ export default function Home() {
 
   return (
     <>
-      <Slideshow images={slideshowImages} showMain={showMain} />
+      <Slideshow
+        images={slideshowImages}
+        showMain={showMain}
+        setShowMain={setShowMain}
+      />
       <Layout showMain={showMain}>
         <MainContentContainer showMain={showMain} id="main-content">
-          <div style={{ marginTop: '30px' }}>Hello</div>
+          <Work />
         </MainContentContainer>
       </Layout>
     </>
