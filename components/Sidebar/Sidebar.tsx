@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { styled } from 'styled-components';
+import Breadcrumb from '../common/Breadcrumb';
+import { useRouter } from 'next/router';
 
 const CollapseButton = styled.div`
   position: fixed;
@@ -67,8 +69,25 @@ const Menu = styled.ul<{ collapsed: boolean }>`
   }
 `;
 
-export default function Sidebar() {
+interface SidebarProps {
+  name: string;
+  path: string;
+}
+
+export default function Sidebar({
+  options,
+  crumbData,
+}: {
+  options?: SidebarProps[];
+  crumbData?: { name: string; url: string }[];
+}) {
   const [collapsed, setCollapsed] = useState(false);
+
+  let breadcrumbs = [{ name: 'Work', url: '/work' }];
+
+  if (crumbData) {
+    breadcrumbs = breadcrumbs.concat(crumbData);
+  }
 
   return (
     <>
@@ -77,18 +96,15 @@ export default function Sidebar() {
       </CollapseButton>
       <SidebarContainer collapsed={collapsed}>
         <Menu collapsed={collapsed}>
-          <li>
-            <Link href={'/work/concert'}>Concert</Link>
-          </li>
-          <li>
-            <Link href={'/work/people'}>People</Link>
-          </li>
-          <li>
-            <Link href={'/work/travel'}>Travel</Link>
-          </li>
-          <li>
-            <Link href={'/work/35mm'}>35mm</Link>
-          </li>
+          {breadcrumbs.length > 1 && <Breadcrumb paths={breadcrumbs} />}
+          {options &&
+            options.map((option, index) => {
+              return (
+                <li key={index}>
+                  <Link href={option.path}>{option.name}</Link>
+                </li>
+              );
+            })}
         </Menu>
       </SidebarContainer>
     </>

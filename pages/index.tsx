@@ -140,16 +140,21 @@ export default function Home({ categories }) {
     }
   }, [showMain]);
 
-  const sec = [];
-  categories.map((category) => {
-    sec.push(category.coverImg);
+  const list = categories.map((category) => {
+    return {
+      image: category.coverImg,
+      option: {
+        name: category.category,
+        path: `/work/${category.category_lower}`,
+      },
+    };
   });
 
   return (
     <>
       <Slideshow images={slideshowImages} />
       <MainContentContainer id="main-content" showMain={showMain}>
-        <WorkContent sections={sec} />
+        <WorkContent list={list} />
       </MainContentContainer>
     </>
   );
@@ -163,13 +168,12 @@ export async function getStaticProps() {
     );
     const querySnapshot = await getDocs(categoriesCollection);
 
-    const promises = querySnapshot.docs.map((doc) => ({
+    const categories = querySnapshot.docs.map((doc) => ({
       category: doc.data().category,
+      category_lower: doc.data().category_lower,
       id: doc.data().id,
       coverImg: doc.data().coverImg,
     }));
-
-    const categories = await Promise.all(promises);
 
     return {
       props: { categories },

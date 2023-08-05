@@ -6,10 +6,22 @@ const WorkContainer = styled.div`
   display: flex;
 `;
 
-export default function WorkContent({ sections }) {
+export default function WorkContent({ list, crumbData }: { list; crumbData? }) {
+  const sections = list.map((listItem) => {
+    return listItem.image;
+  });
+
+  const containsOption = list.some((listItem) =>
+    listItem.hasOwnProperty('option')
+  );
+
+  const options = containsOption
+    ? list.map((listItem) => listItem.option ?? null)
+    : null;
+
   return (
     <WorkContainer>
-      <Sidebar />
+      <Sidebar options={options} crumbData={crumbData} />
       <ImageGrid sections={sections} />
     </WorkContainer>
   );

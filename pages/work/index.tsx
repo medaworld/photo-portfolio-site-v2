@@ -9,11 +9,19 @@ const MainContentContainer = styled.div`
 `;
 
 export default function Work({ categories }) {
-  const sections = categories.map((category) => category.coverImg);
+  const list = categories.map((category) => {
+    return {
+      image: category.coverImg,
+      option: {
+        name: category.category,
+        path: `/work/${category.category_lower}`,
+      },
+    };
+  });
 
   return (
     <MainContentContainer id="main-content">
-      <WorkContent sections={sections} />
+      <WorkContent list={list} />
     </MainContentContainer>
   );
 }
@@ -28,6 +36,7 @@ export async function getStaticProps() {
 
     const categories = querySnapshot.docs.map((doc) => ({
       category: doc.data().category,
+      category_lower: doc.data().category_lower,
       id: doc.data().id,
       coverImg: doc.data().coverImg,
     }));

@@ -1,7 +1,6 @@
 import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
 import { firestore } from '../../../lib/firebase';
 import { styled } from 'styled-components';
-import Layout from '../../../components/Layout/Layout';
 import WorkContent from '../../../components/Work/Work';
 
 const MainContentContainer = styled.div<{ showMain: boolean }>`
@@ -10,15 +9,20 @@ const MainContentContainer = styled.div<{ showMain: boolean }>`
   transition: margin-top 1s ease;
 `;
 
-export default function Work({ subcategories }) {
-  const sec = [];
-  subcategories.map((subcategory) => {
-    sec.push(subcategory.coverImg);
+export default function Work({ subcategories, crumbData }) {
+  const list = subcategories.map((subcategory) => {
+    return {
+      image: subcategory.coverImg,
+      option: {
+        name: subcategory.subcategory,
+        path: `/work/${subcategory.category_lower}/${subcategory.subcategory_lower}`,
+      },
+    };
   });
 
   return (
     <MainContentContainer showMain={true} id="main-content">
-      <WorkContent sections={sec} />
+      <WorkContent list={list} crumbData={crumbData} />
     </MainContentContainer>
   );
 }
@@ -59,6 +63,13 @@ export async function getStaticProps(context: { params: any }) {
     );
     const querySnapshot = await getDocs(subcategoriesCollection);
 
+    const crumbData = [
+      {
+        name: querySnapshot.docs[0].data().category,
+        url: `/work/${querySnapshot.docs[0].data().category_lower}`,
+      },
+    ];
+
     const promise = querySnapshot.docs.map((doc) => ({
       category: doc.data().category,
       subcategory: doc.data().subcategory,
@@ -72,7 +83,7 @@ export async function getStaticProps(context: { params: any }) {
     const subcategories = await Promise.all(promise);
 
     return {
-      props: { subcategories },
+      props: { subcategories, crumbData },
       revalidate: 60,
     };
   } catch (err) {
