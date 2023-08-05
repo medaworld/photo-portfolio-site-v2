@@ -2,7 +2,8 @@ import { styled } from 'styled-components';
 import Logo from '../common/Logo';
 import { DarkOverShadow } from '../common/DarkOverShadow';
 import ImageCarousel from '../ImageCarousel/ImageCarousel';
-import { useCallback } from 'react';
+import { useCallback, useContext } from 'react';
+import { GlobalStateContext } from '../../context/globalState/GlobalStateContext';
 
 const SlideshowContainer = styled.div<{ showMain: boolean }>`
   position: fixed;
@@ -54,7 +55,9 @@ const SlideshowContent = styled.div`
   }
 `;
 
-export default function Slideshow({ images, showMain, setShowMain }) {
+export default function Slideshow({ images }) {
+  const { showMain, setShowMain } = useContext(GlobalStateContext);
+
   const handleClick = useCallback(() => {
     setShowMain(true);
   }, [setShowMain]);

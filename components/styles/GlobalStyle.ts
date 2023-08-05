@@ -40,8 +40,8 @@ const GlobalStyle = createGlobalStyle`
       color-scheme: dark;
     }
     body {
-      color: ${(props) => props.theme.light};
-      background: ${(props) => props.theme.dark};
+      /* color: ${(props) => props.theme.light};
+      background: ${(props) => props.theme.dark}; */
     }
   }
 `;

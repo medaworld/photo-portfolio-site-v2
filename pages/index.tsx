@@ -1,21 +1,23 @@
 import { styled } from 'styled-components';
-import { useCallback, useEffect, useState } from 'react';
-import Layout from '../components/Layout/Layout';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { slideshowImages } from '../utils/dummyData';
 import Slideshow from '../components/Slideshow/Slideshow';
 import { isMobileDevice, preventTouchMove } from '../utils/scrollTouchUtils';
-import Work from '../components/Work/Work';
+import WorkContent from '../components/Work/Work';
+import { collection, getDocs, orderBy, query } from 'firebase/firestore';
+import { firestore } from '../lib/firebase';
+import { GlobalStateContext } from '../context/globalState/GlobalStateContext';
 
 const MainContentContainer = styled.div<{ showMain: boolean }>`
   background-color: white;
-  margin-top: 130vh;
+  margin-top: 150vh;
   padding-top: 55px;
-  transition: margin-top 1s ease;
 `;
 
-export default function Home() {
+export default function Home({ categories }) {
+  const { showMain, setShowMain } = useContext(GlobalStateContext);
+
   // Disable Scroll during transitions
-  const [showMain, setShowMain] = useState(false);
   const [canScroll, setCanScroll] = useState(true);
 
   const forceScrollToTop = useCallback(() => {
@@ -121,7 +123,7 @@ export default function Home() {
         window.removeEventListener('scroll', handleScroll);
       }
     };
-  }, [showMain, startTime, startY]);
+  }, [setShowMain, showMain, startTime, startY]);
 
   // Set main content style changes
   useEffect(() => {
@@ -132,23 +134,52 @@ export default function Home() {
       }, 100);
     } else {
       setTimeout(() => {
-        mainContent.style.marginTop = '130vh';
+        mainContent.style.marginTop = '150vh';
+        mainContent.style.transition = 'margin-top 1s ease';
       }, 100);
     }
   }, [showMain]);
 
+  const sec = [];
+  categories.map((category) => {
+    sec.push(category.coverImg);
+  });
+
   return (
     <>
-      <Slideshow
-        images={slideshowImages}
-        showMain={showMain}
-        setShowMain={setShowMain}
-      />
-      <Layout showMain={showMain}>
-        <MainContentContainer showMain={showMain} id="main-content">
-          <Work />
-        </MainContentContainer>
-      </Layout>
+      <Slideshow images={slideshowImages} />
+      <MainContentContainer id="main-content" showMain={showMain}>
+        <WorkContent sections={sec} />
+      </MainContentContainer>
     </>
   );
+}
+
+export async function getStaticProps() {
+  try {
+    const categoriesCollection = query(
+      collection(firestore, 'categories'),
+      orderBy('category', 'asc')
+    );
+    const querySnapshot = await getDocs(categoriesCollection);
+
+    const promises = querySnapshot.docs.map((doc) => ({
+      category: doc.data().category,
+      id: doc.data().id,
+      coverImg: doc.data().coverImg,
+    }));
+
+    const categories = await Promise.all(promises);
+
+    return {
+      props: { categories },
+      revalidate: 60,
+    };
+  } catch (err) {
+    console.error('Failed to fetch categories:', err);
+    return {
+      props: { error: 'Failed to load categories, please try again later.' },
+      revalidate: 60,
+    };
+  }
 }

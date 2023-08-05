@@ -32,7 +32,6 @@ const Navbar = ({ showMain }) => {
     }
   }, [showMain]);
 
-  console.log(isMenuOpen);
   return (
     <NavbarContainer isOpen={isMenuOpen}>
       <Logo src="/images/logo.png" alt="MEDA Logo" />

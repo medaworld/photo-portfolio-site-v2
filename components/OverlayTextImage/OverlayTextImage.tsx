@@ -43,17 +43,13 @@ export default function OverlayTextImage({
   alt,
   category,
   url,
-}: {
-  src: string;
-  alt: string;
-  category: string;
-  url: string;
+  onImageLoaded,
 }) {
   return (
     <CoverContainer>
       <Link href={url} scroll={false}>
         <CoverTitle>{category}</CoverTitle>
-        <Image src={src} alt={alt} />
+        <Image src={src} alt={alt} onLoad={onImageLoaded} />
       </Link>
     </CoverContainer>
   );

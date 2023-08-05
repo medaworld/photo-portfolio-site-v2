@@ -23,7 +23,6 @@ const MaskedImage = styled.div<{
   mask-repeat: no-repeat;
   mask-position: center;
   transition: right 0.5s ease;
-  cursor: pointer;
 `;
 
 const MaskImage = ({

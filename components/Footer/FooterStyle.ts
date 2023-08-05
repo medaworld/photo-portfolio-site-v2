@@ -7,7 +7,7 @@ export const FooterContainer = styled.footer`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: ${(props) => props.theme.offlight};
+  background-color: ${(props) => props.theme.light};
   padding: 1.5rem;
   z-index: 5;
 `;
