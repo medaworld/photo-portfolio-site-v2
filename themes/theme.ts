@@ -8,4 +8,9 @@ export const theme = {
   bglight: '#fff',
   light: '#f3f3f3',
   lighter: '#fff',
+  formBorder: 'rgba(198, 198, 198, 0.8)',
+  background: '#fff',
+  error: '#f44e4e',
+  success: '#4ef461',
+  color: '#407095',
 };

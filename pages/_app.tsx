@@ -7,6 +7,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { GlobalStateProvider } from '../context/globalState/GlobalStateProvider';
 import Layout from '../components/Layout/Layout';
+import { NotificationProvider } from '../context/notification/NotificationProvider';
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -24,9 +25,11 @@ function MyApp({ Component, pageProps }) {
         <ThemeProvider theme={theme}>
           <GlobalStyle />
           <GlobalStateProvider>
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
+            <NotificationProvider>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            </NotificationProvider>
           </GlobalStateProvider>
         </ThemeProvider>
       </StyleSheetManager>

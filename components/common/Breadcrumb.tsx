@@ -24,6 +24,10 @@ const BreadcrumbItem = styled.li`
   }
 `;
 
+const BreadcrumbLast = styled.span`
+  color: ${(props) => props.theme.color};
+`;
+
 const Breadcrumb = ({ paths }) => (
   <BreadcrumbNav aria-label="breadcrumb">
     <BreadcrumbList>
@@ -32,7 +36,7 @@ const Breadcrumb = ({ paths }) => (
           {index < paths.length - 1 ? (
             <Link href={path.url}>{path.name}</Link>
           ) : (
-            path.name
+            <BreadcrumbLast>{path.name}</BreadcrumbLast>
           )}
         </BreadcrumbItem>
       ))}

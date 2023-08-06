@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { styled } from 'styled-components';
 import Breadcrumb from '../common/Breadcrumb';
-import { useRouter } from 'next/router';
+import { size } from '../../utils/breakpoints';
 
 const CollapseButton = styled.div`
   position: fixed;
@@ -41,6 +41,10 @@ const SidebarContainer = styled.div<{ collapsed: boolean }>`
   font-size: 36px;
   font-weight: 100;
   transition: all 0.3s;
+
+  @media (max-width: ${size.mobileL}) {
+    font-size: 28px;
+  }
 `;
 
 const Menu = styled.ul<{ collapsed: boolean }>`
