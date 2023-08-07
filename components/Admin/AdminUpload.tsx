@@ -3,6 +3,7 @@ import { useDropzone } from 'react-dropzone';
 import Modal from 'react-modal';
 import imageCompression from 'browser-image-compression';
 import {
+  AdminUploadContainer,
   Button,
   CloseButton,
   DragAndDropSection,
@@ -10,6 +11,9 @@ import {
   Preview,
   PreviewGrid,
   PreviewImage,
+  UploadButton,
+  UploadNavBar,
+  UploadNavButton,
   UploadSection,
   ViewButton,
 } from './AdminUploadStyles';
@@ -39,7 +43,7 @@ export default function AdminUpload() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState([]);
 
-  const inputRef: RefObject<HTMLInputElement> = useRef();
+  const inputRef: RefObject<HTMLInputElement> = useRef(null);
 
   const compressImage = async (file) => {
     const options = {
@@ -63,15 +67,19 @@ export default function AdminUpload() {
       acceptedFiles.map((file) => compressImage(file))
     );
     setFiles((prev) => [...prev, ...compressedFiles]);
+    if (inputRef.current) {
+      inputRef.current.value = ''; // Clear the input here
+    }
   }, []);
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   const removeFile = (file) => () => {
     setFiles((prev) => prev.filter((f) => f !== file));
+    setSelectedFiles((prev) => prev.filter((f) => f !== file));
   };
 
-  const viewFile = (file) => () => {
+  const viewFile = (file: any) => () => {
     setSelectedFile(file);
     setModalIsOpen(true);
   };
@@ -79,12 +87,6 @@ export default function AdminUpload() {
   const closeModal = () => {
     setSelectedFile(null);
     setModalIsOpen(false);
-  };
-
-  const openFileChooser = () => {
-    if (inputRef.current) {
-      inputRef.current.click();
-    }
   };
 
   const toggleSelectedFile = (file) => {
@@ -102,53 +104,100 @@ export default function AdminUpload() {
     });
   };
 
+  const onFileChange = async (event) => {
+    if (event.target.files && event.target.files.length > 0) {
+      const acceptedFiles = Object.values(event.target.files);
+      onDrop(acceptedFiles);
+    }
+  };
+
+  const onAddClick = () => {
+    if (inputRef.current) {
+      inputRef.current.click();
+    }
+  };
+
+  const onRemoveClick = () => {
+    setFiles((prevFiles) =>
+      prevFiles.filter((file) => !selectedFiles.includes(file))
+    );
+    setSelectedFiles([]);
+  };
+
+  const onSubmitClick = () => {
+    // submitFiles(files)
+    //   .then(() => {
+    //     console.log('Submission successful');
+    //     setFiles([]);  // Clear files after successful submission
+    //     setSelectedFiles([]);  // Clear selection after successful submission
+    //   })
+    //   .catch((error) => {
+    //     console.error('Submission failed', error);
+    //   });
+  };
+
   return (
-    <DragAndDropSection {...getRootProps()}>
-      {files.length === 0 ? (
-        <UploadSection>
-          <input {...getInputProps()} ref={inputRef} />
-          <p>Drag & drop photos and videos here</p>
-          <p>or</p>
-          <Button onClick={openFileChooser}>Choose photos to upload</Button>
-        </UploadSection>
-      ) : (
-        <>
-          <PreviewGrid>
-            {files.map((file) => (
-              <Preview
-                key={file.path}
-                onClick={() => toggleSelectedFile(file)}
-                selected={selectedFiles.includes(file)}
-              >
-                <PreviewImage
-                  src={URL.createObjectURL(file)}
-                  alt={file.name}
-                ></PreviewImage>
-                <CloseButton onClick={removeFile(file)}>
-                  <CloseIcon color={'white'} />
-                </CloseButton>
-                <ViewButton onClick={viewFile(file)}>🔍</ViewButton>
-                <FileName>{file.name}</FileName>
-              </Preview>
-            ))}
-          </PreviewGrid>
-          <Modal
-            isOpen={modalIsOpen}
-            onRequestClose={closeModal}
-            contentLabel="Image Preview"
-            style={customStyles}
-          >
-            {selectedFile && (
-              <picture>
-                <img
-                  src={URL.createObjectURL(selectedFile)}
-                  alt={selectedFile.name}
-                />
-              </picture>
-            )}
-          </Modal>
-        </>
-      )}
-    </DragAndDropSection>
+    <AdminUploadContainer>
+      <UploadNavBar>
+        <div>
+          <UploadNavButton onClick={onAddClick}>Add</UploadNavButton>
+          <UploadNavButton onClick={onRemoveClick}>Remove</UploadNavButton>
+        </div>
+        <UploadButton>Upload</UploadButton>
+      </UploadNavBar>
+      <DragAndDropSection {...getRootProps()}>
+        <input
+          {...getInputProps()}
+          hidden
+          ref={inputRef}
+          multiple
+          onChange={onFileChange}
+        />
+        {files.length === 0 ? (
+          <UploadSection>
+            <p>Drag & drop photos and videos here</p>
+            <p>or</p>
+            <Button onClick={onAddClick}>Choose photos to upload</Button>
+          </UploadSection>
+        ) : (
+          <>
+            <PreviewGrid>
+              {files.map((file) => (
+                <Preview
+                  key={file.path}
+                  onClick={() => toggleSelectedFile(file)}
+                  selected={selectedFiles.includes(file)}
+                >
+                  <PreviewImage
+                    src={URL.createObjectURL(file)}
+                    alt={file.name}
+                  ></PreviewImage>
+                  <CloseButton onClick={removeFile(file)}>
+                    <CloseIcon color={'white'} />
+                  </CloseButton>
+                  <ViewButton onClick={viewFile(file)}>🔍</ViewButton>
+                  <FileName>{file.name}</FileName>
+                </Preview>
+              ))}
+            </PreviewGrid>
+            <Modal
+              isOpen={modalIsOpen}
+              onRequestClose={closeModal}
+              contentLabel="Image Preview"
+              style={customStyles}
+            >
+              {selectedFile && (
+                <picture>
+                  <img
+                    src={URL.createObjectURL(selectedFile)}
+                    alt={selectedFile.name}
+                  />
+                </picture>
+              )}
+            </Modal>
+          </>
+        )}
+      </DragAndDropSection>
+    </AdminUploadContainer>
   );
 }

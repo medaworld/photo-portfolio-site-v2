@@ -13,6 +13,7 @@ import {
 import Logo from '../common/Logo';
 import SocialMediaIcon from '../common/SocialMediaIcon';
 import Link from 'next/link';
+import ThemeSwitch from '../ThemeSwitch/ThemeSwitch';
 
 const Navbar = ({ showMain }) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
@@ -36,6 +37,7 @@ const Navbar = ({ showMain }) => {
     <NavbarContainer isOpen={isMenuOpen}>
       <Logo src="/images/logo.png" alt="MEDA Logo" />
       <Links>
+        <ThemeSwitch />
         <NavLinks isOpen={isMenuOpen}>
           {NavLinkList.map((navLink, key) => {
             return (
