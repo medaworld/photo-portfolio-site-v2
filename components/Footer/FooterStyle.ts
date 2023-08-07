@@ -8,7 +8,7 @@ export const FooterContainer = styled.footer`
   justify-content: center;
   align-items: center;
   background-color: ${(props) => props.theme.light};
-  padding: 1.5rem;
+  padding: 1rem;
   z-index: 5;
 `;
 
@@ -18,7 +18,7 @@ export const FooterList = styled.ul`
   font-family: 'Raleway', sans-serif;
   text-transform: uppercase;
   padding: 0;
-  margin: 2rem 0;
+  margin: 1rem 0;
 `;
 
 export const FooterItem = styled.li`

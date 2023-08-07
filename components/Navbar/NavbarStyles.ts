@@ -21,7 +21,9 @@ export const NavbarContainer = styled.nav<{ isOpen: boolean }>`
 
   @media (max-width: 768px) {
     align-items: start;
+    justify-content: space-between;
     height: ${({ isOpen }) => (isOpen ? '215px' : 'none')};
+    max-height: ${({ isOpen }) => (isOpen ? '250px' : '70px')};
     overflow: hidden;
     transition: max-height 0.3s ease;
   }
@@ -88,7 +90,7 @@ export const SocialWrapper = styled.div<{ isOpen: boolean }>`
     flex-direction: column;
     align-items: center;
     position: absolute;
-    top: 160px;
+    top: 140px;
     left: 0;
     width: 100%;
     margin: 0;

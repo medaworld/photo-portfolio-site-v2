@@ -9,7 +9,6 @@ import {
   FooterToTop,
 } from './FooterStyle';
 import { NavLinkList } from '../../utils/dummyData';
-import Logo from '../common/Logo';
 import SocialMediaIcon from '../common/SocialMediaIcon';
 
 const Footer = () => {
@@ -29,7 +28,6 @@ const Footer = () => {
   return (
     <>
       <FooterContainer>
-        <Logo src="/images/logo.png" alt="MEDA Logo" />
         <FooterList>
           {NavLinkList.map((navLink, key) => {
             return (

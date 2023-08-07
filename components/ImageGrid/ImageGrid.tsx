@@ -12,7 +12,7 @@ const GridContainer = styled.div`
   column-gap: 50px;
   -webkit-column-gap: 10px;
   column-width: 50%;
-  padding: 1rem 1.5rem;
+  padding: 28px 1.5rem;
 `;
 
 const ImageContainer = styled.div<{ loaded: boolean }>`

@@ -4,6 +4,7 @@ import Sidebar from '../Sidebar/Sidebar';
 
 const WorkContainer = styled.div`
   display: flex;
+  padding-top: 55px;
 `;
 
 export default function WorkContent({ list, crumbData }: { list; crumbData? }) {

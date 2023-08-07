@@ -17,7 +17,7 @@ const CollapseButton = styled.div`
   font-family: 'Raleway';
   font-size: 35px;
   font-weight: 100;
-  margin: 1rem;
+  margin: calc(1rem + 26px) 1rem;
   z-index: 3;
   user-select: none;
   cursor: pointer;
@@ -51,7 +51,7 @@ const Menu = styled.ul<{ collapsed: boolean }>`
   position: ${(props) => (props.collapsed ? 'relative' : 'fixed')};
   list-style: none;
   padding: 0;
-  margin: 3rem 0;
+  margin: calc(3rem + 26px) 0;
   z-index: 3;
 
   li {
@@ -95,12 +95,12 @@ export default function Sidebar({
 
   return (
     <>
+      <Breadcrumb paths={breadcrumbs} />
       <CollapseButton onClick={() => setCollapsed(!collapsed)}>
         <CollapseIcon>{collapsed ? '»' : '«'}</CollapseIcon>
       </CollapseButton>
       <SidebarContainer collapsed={collapsed}>
         <Menu collapsed={collapsed}>
-          {breadcrumbs.length > 1 && <Breadcrumb paths={breadcrumbs} />}
           {options &&
             options.map((option, index) => {
               return (

@@ -13,6 +13,11 @@ export const ContactContainer = styled.div`
   background-color: ${(props) => props.theme.background};
 `;
 
+export const ContactTitle = styled.h1`
+  font-family: 'Raleway';
+  font-weight: 100;
+`;
+
 export const Form = styled.form`
   display: flex;
   flex-direction: column;
@@ -31,6 +36,7 @@ const Input = styled.input<{ invalid: boolean }>`
   border-radius: 5px;
   font-family: 'Open sans';
   border: 1px solid ${(p) => (p.invalid ? p.theme.error : p.theme.formBorder)};
+  background-color: ${(props) => props.theme.background};
 `;
 
 const Textarea = styled.textarea<{ invalid: boolean }>`
@@ -41,19 +47,20 @@ const Textarea = styled.textarea<{ invalid: boolean }>`
   resize: none;
   height: 120px;
   border: 1px solid ${(p) => (p.invalid ? p.theme.error : p.theme.formBorder)};
+  background-color: ${(props) => props.theme.background};
 `;
 
 const Button = styled.button`
   padding: 10px 20px;
-  background-color: #333;
-  color: #fff;
+  background-color: ${(props) => props.theme.dark};
+  color: ${(props) => props.theme.background};
   border: none;
   border-radius: 5px;
   font-family: 'Open sans';
   cursor: pointer;
 
   &:hover {
-    background-color: #444;
+    opacity: 0.9;
   }
 `;
 
@@ -172,7 +179,7 @@ export default function Contact() {
 
   return (
     <ContactContainer>
-      <h1>Get in Touch</h1>
+      <ContactTitle>Get in Touch</ContactTitle>
       <Form onSubmit={handleSubmit} ref={formRef}>
         <Input
           type="text"

@@ -5,8 +5,6 @@ import WorkContent from '../../../components/Work/Work';
 
 const MainContentContainer = styled.div<{ showMain: boolean }>`
   background-color: white;
-  padding-top: 55px;
-  transition: margin-top 1s ease;
 `;
 
 export default function Work({ subcategories, crumbData }) {

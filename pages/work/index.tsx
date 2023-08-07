@@ -5,7 +5,6 @@ import { firestore } from '../../lib/firebase';
 
 const MainContentContainer = styled.div`
   background-color: white;
-  padding-top: 55px;
 `;
 
 export default function Work({ categories }) {
