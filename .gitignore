@@ -37,3 +37,7 @@ next-env.d.ts
 
 
 /lib
+
+.env.local
+
+next.config.js

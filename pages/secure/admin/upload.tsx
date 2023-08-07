@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
 import AdminSidebar from '../../../components/Admin/AdminSidebar';
-import AdminUpload from '../../../components/Admin/AdminUpload';
+import AdminUpload from '../../../components/Admin/AdminUpload/AdminUpload';
 
 const UploadContainer = styled.div`
   display: flex;

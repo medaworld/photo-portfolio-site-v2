@@ -14,9 +14,11 @@ import Logo from '../common/Logo';
 import SocialMediaIcon from '../common/SocialMediaIcon';
 import Link from 'next/link';
 import ThemeSwitch from '../ThemeSwitch/ThemeSwitch';
+import { useTheme } from 'styled-components';
 
 const Navbar = ({ showMain }) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
+  const theme = useTheme();
 
   const toggleMenu = () => {
     setMenuOpen(!isMenuOpen);
@@ -35,7 +37,7 @@ const Navbar = ({ showMain }) => {
 
   return (
     <NavbarContainer isOpen={isMenuOpen}>
-      <Logo src="/images/logo.png" alt="MEDA Logo" />
+      <Logo src="/images/logo.png" alt="MEDA Logo" color={theme.primary} />
       <Links>
         <ThemeSwitch />
         <NavLinks isOpen={isMenuOpen}>

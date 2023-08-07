@@ -12,6 +12,8 @@ const SwitchButton = styled.button`
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
+  margin-right: 10px;
+  color: ${(props) => props.theme.primary};
 `;
 
 function ThemeSwitch() {

@@ -1,41 +1,16 @@
 import { RefObject, useCallback, useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import Modal from 'react-modal';
 import imageCompression from 'browser-image-compression';
 import {
   AdminUploadContainer,
   Button,
-  CloseButton,
   DragAndDropSection,
-  FileName,
-  Preview,
-  PreviewGrid,
-  PreviewImage,
-  UploadButton,
-  UploadNavBar,
-  UploadNavButton,
   UploadSection,
-  ViewButton,
 } from './AdminUploadStyles';
-import { CloseIcon } from '../common/CloseIcon';
 
-const customStyles = {
-  overlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.75)',
-    zIndex: '5',
-  },
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-    backgroundColor: '#fff',
-    borderRadius: '4px',
-    border: '1px solid #ccc',
-  },
-};
+import UploadNavbar from './UploadNavbar';
+import PreviewGrid from './PreviewGrid';
+import ImagePreviewModal from './ImagePreviewModal';
 
 export default function AdminUpload() {
   const [files, setFiles] = useState([]);
@@ -138,13 +113,7 @@ export default function AdminUpload() {
 
   return (
     <AdminUploadContainer>
-      <UploadNavBar>
-        <div>
-          <UploadNavButton onClick={onAddClick}>Add</UploadNavButton>
-          <UploadNavButton onClick={onRemoveClick}>Remove</UploadNavButton>
-        </div>
-        <UploadButton>Upload</UploadButton>
-      </UploadNavBar>
+      <UploadNavbar onAddClick={onAddClick} onRemoveClick={onRemoveClick} />
       <DragAndDropSection {...getRootProps()}>
         <input
           {...getInputProps()}
@@ -161,40 +130,18 @@ export default function AdminUpload() {
           </UploadSection>
         ) : (
           <>
-            <PreviewGrid>
-              {files.map((file) => (
-                <Preview
-                  key={file.path}
-                  onClick={() => toggleSelectedFile(file)}
-                  selected={selectedFiles.includes(file)}
-                >
-                  <PreviewImage
-                    src={URL.createObjectURL(file)}
-                    alt={file.name}
-                  ></PreviewImage>
-                  <CloseButton onClick={removeFile(file)}>
-                    <CloseIcon color={'white'} />
-                  </CloseButton>
-                  <ViewButton onClick={viewFile(file)}>🔍</ViewButton>
-                  <FileName>{file.name}</FileName>
-                </Preview>
-              ))}
-            </PreviewGrid>
-            <Modal
-              isOpen={modalIsOpen}
-              onRequestClose={closeModal}
-              contentLabel="Image Preview"
-              style={customStyles}
-            >
-              {selectedFile && (
-                <picture>
-                  <img
-                    src={URL.createObjectURL(selectedFile)}
-                    alt={selectedFile.name}
-                  />
-                </picture>
-              )}
-            </Modal>
+            <PreviewGrid
+              files={files}
+              toggleSelectedFile={toggleSelectedFile}
+              removeFile={removeFile}
+              viewFile={viewFile}
+              selectedFiles={selectedFiles}
+            />
+            <ImagePreviewModal
+              modalIsOpen={modalIsOpen}
+              closeModal={closeModal}
+              selectedFile={selectedFile}
+            />
           </>
         )}
       </DragAndDropSection>

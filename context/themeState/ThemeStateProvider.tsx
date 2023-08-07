@@ -1,13 +1,25 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { darkTheme, lightTheme } from '../../themes/themes';
 import { ThemeStateContext } from './ThemeStateContext';
 
-export const ThemeContextProvider = ({ children }) => {
+export const ThemeStateContextProvider = ({ children }) => {
   const [theme, setTheme] = useState('light');
 
+  useEffect(() => {
+    const localTheme = window.localStorage.getItem('theme');
+    if (localTheme) {
+      setTheme(localTheme);
+    } else {
+      window.localStorage.setItem('theme', theme);
+    }
+  }, [theme]);
+
   const toggleTheme = () => {
-    setTheme(theme === 'light' ? 'dark' : 'light');
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+
+    window.localStorage.setItem('theme', newTheme);
   };
 
   return (
