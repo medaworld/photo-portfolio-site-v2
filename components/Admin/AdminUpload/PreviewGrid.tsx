@@ -104,10 +104,12 @@ export default function PreviewGrid({
             src={URL.createObjectURL(file)}
             alt={file.name}
           ></PreviewImage>
-          <CloseButton onClick={removeFile(file)}>
+          <CloseButton onClick={removeFile(file)} type="button">
             <CloseIcon color={'white'} />
           </CloseButton>
-          <ViewButton onClick={viewFile(file)}>🔍</ViewButton>
+          <ViewButton onClick={viewFile(file)} type="button">
+            🔍
+          </ViewButton>
           <FileName>{file.name}</FileName>
         </Preview>
       ))}

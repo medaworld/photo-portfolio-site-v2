@@ -1,9 +1,10 @@
-import { signOut } from '@firebase/auth';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import { auth } from '../../lib/firebase';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { signOut } from 'next-auth/react';
+import { NotificationContext } from '../../context/notification/NotificationContext';
 
 const SidebarContainer = styled.div<{ isSidebarOpen: boolean }>`
   position: relative;
@@ -80,14 +81,28 @@ const ToggleButton = styled.button<{ isSidebarOpen: boolean }>`
 export default function AdminSidebar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const router = useRouter();
+  const notificationCtx = useContext(NotificationContext);
 
-  const logoutHandler = async () => {
-    try {
-      await signOut(auth);
-      router.push('/secure/admin');
-    } catch (error) {
-      console.log('Logout Error: ', error.message);
-    }
+  const logoutHandler = () => {
+    signOut({
+      callbackUrl: '/secure/admin',
+      redirect: true,
+    })
+      .then(() => {
+        notificationCtx.showNotification({
+          title: 'Success',
+          message: 'Logged out successfully!',
+          status: 'success',
+        });
+      })
+      .catch((error) => {
+        notificationCtx.showNotification({
+          title: 'Error',
+          message: 'Error logging out',
+          status: 'error',
+        });
+        console.error('Logout Error: ', error.message);
+      });
   };
 
   const renderLink = (href: string, text: string) => {

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@firebase/auth": "^1.1.0",
+    "@types/next-auth": "^3.15.0",
     "@types/styled-components": "^5.1.26",
     "browser-image-compression": "^2.0.2",
     "emailjs-com": "^3.2.0",
@@ -17,6 +18,7 @@
     "firebase-admin": "^11.10.1",
     "gsap": "^3.12.2",
     "next": "^13.4.12",
+    "next-auth": "^4.22.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-dropzone": "^14.2.3",
@@ -24,7 +26,6 @@
     "react-modal": "^3.16.1",
     "react-slick": "^0.29.0",
     "scrollmagic": "^2.0.8",
-    "sharp": "^0.32.4",
     "slick-carousel": "^1.8.1",
     "styled-components": "^6.0.5"
   },
@@ -32,6 +33,7 @@
     "@types/node": "^20.4.5",
     "@types/react": "^18.2.18",
     "@types/react-modal": "^3.16.0",
+    "@types/uuid": "^9.0.2",
     "eslint": "8.46.0",
     "eslint-config-next": "13.4.12",
     "typescript": "^5.1.6"

@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
 
-export const AdminUploadContainer = styled.div`
+export const AdminUploadContainer = styled.form`
   width: 100%;
 `;
 

@@ -1,10 +1,13 @@
-import { onAuthStateChanged } from '@firebase/auth';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
-import { auth, firestore } from '../../../lib/firebase';
+import { firestore } from '../../../lib/firebase';
 import AdminSidebar from '../../../components/Admin/AdminSidebar';
 import { fetchCategories } from '../../../utils/firebaseUtils';
+import { GetServerSideProps } from 'next';
+import { authOptions } from '../../api/auth/[...nextauth]';
+import { getServerSession } from 'next-auth/next';
+import { useSession } from 'next-auth/react';
 
 const AdminDashboardContainer = styled.div`
   display: flex;
@@ -26,9 +29,8 @@ export default function AdminDashboard() {
   const [totalImages, setTotalImages] = useState(0);
   const [totalCategories, setTotalCategories] = useState(0);
   const [totalSubCategories, setTotalSubCategories] = useState(0);
-
-  const [user, setUser] = useState(null);
   const router = useRouter();
+  const { data: session, status } = useSession();
 
   useEffect(() => {
     // Fetch the data when the component mounts
@@ -50,29 +52,38 @@ export default function AdminDashboard() {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        setUser(currentUser);
-      } else {
-        router.push('/work');
-      }
-    });
-
-    return () => unsubscribe();
-  }, [router]);
+  if (status === 'loading') return null;
+  if (!session) {
+    router.push('/work');
+    return null;
+  }
 
   return (
     <AdminDashboardContainer>
       <AdminSidebar />
-      {user && (
-        <DashboardCard>
-          <h1>Welcome, Admin!</h1>
-          <p>Total Images: {totalImages}</p>
-          <p>Total Categories: {totalCategories}</p>
-          <p>Total Subcategories: {totalSubCategories}</p>
-        </DashboardCard>
-      )}
+      <DashboardCard>
+        <h1>Welcome, Admin!</h1>
+        <p>Total Images: {totalImages}</p>
+        <p>Total Categories: {totalCategories}</p>
+        <p>Total Subcategories: {totalSubCategories}</p>
+      </DashboardCard>
     </AdminDashboardContainer>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getServerSession(context.req, context.res, authOptions);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/work',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+};

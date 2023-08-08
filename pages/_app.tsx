@@ -8,6 +8,7 @@ import { GlobalStateProvider } from '../context/globalState/GlobalStateProvider'
 import Layout from '../components/Layout/Layout';
 import { NotificationProvider } from '../context/notification/NotificationProvider';
 import { ThemeStateContextProvider } from '../context/themeState/ThemeStateProvider';
+import { SessionProvider } from 'next-auth/react';
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -25,11 +26,13 @@ function MyApp({ Component, pageProps }) {
         <ThemeStateContextProvider>
           <GlobalStyle />
           <GlobalStateProvider>
-            <NotificationProvider>
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
-            </NotificationProvider>
+            <SessionProvider>
+              <NotificationProvider>
+                <Layout>
+                  <Component {...pageProps} />
+                </Layout>
+              </NotificationProvider>
+            </SessionProvider>
           </GlobalStateProvider>
         </ThemeStateContextProvider>
       </StyleSheetManager>

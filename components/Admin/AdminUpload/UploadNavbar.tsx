@@ -47,10 +47,14 @@ export default function UploadNavbar({ onAddClick, onRemoveClick }) {
   return (
     <UploadNavbarContainer>
       <div>
-        <UploadNavButton onClick={onAddClick}>Add</UploadNavButton>
-        <UploadNavButton onClick={onRemoveClick}>Remove</UploadNavButton>
+        <UploadNavButton onClick={onAddClick} type="button">
+          Add
+        </UploadNavButton>
+        <UploadNavButton onClick={onRemoveClick} type="button">
+          Remove
+        </UploadNavButton>
       </div>
-      <UploadButton>Upload</UploadButton>
+      <UploadButton type="submit">Upload</UploadButton>
     </UploadNavbarContainer>
   );
 }
