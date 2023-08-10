@@ -1,6 +1,5 @@
 import { styled } from 'styled-components';
 import AdminSidebar from '../../../components/Admin/AdminSidebar';
-import AdminUpload from '../../../components/Admin/AdminUpload/AdminUpload';
 import { GetServerSideProps } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../../api/auth/[...nextauth]';
@@ -8,8 +7,9 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import LoadingScreen from '../../../components/Loading/Loading';
+import AdminPhotoLibrary from '../../../components/Admin/AdminPhotoLibrary/AdminPhotoLibrary';
 
-const UploadContainer = styled.div`
+const PhotosContainer = styled.div`
   display: flex;
   flex-direction: row;
   min-height: calc(100vh - 55px);
@@ -17,7 +17,7 @@ const UploadContainer = styled.div`
   background-color: ${(props) => props.theme.background};
 `;
 
-export default function UploadImage() {
+export default function AdminPhotos() {
   const { data: session, status } = useSession();
   const router = useRouter();
 
@@ -35,10 +35,10 @@ export default function UploadImage() {
   }
 
   return (
-    <UploadContainer>
+    <PhotosContainer>
       <AdminSidebar />
-      <AdminUpload />
-    </UploadContainer>
+      <AdminPhotoLibrary />
+    </PhotosContainer>
   );
 }
 

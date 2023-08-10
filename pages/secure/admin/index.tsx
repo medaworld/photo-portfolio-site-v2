@@ -20,8 +20,8 @@ export default function AdminLogin() {
   const [enteredEmail, setEnteredEmail] = useState('');
   const [enteredPassword, setEnteredPassword] = useState('');
   const [error, setError] = useState(null);
-  const router = useRouter();
   const { data: session } = useSession();
+  const router = useRouter();
 
   useEffect(() => {
     if (session) {
@@ -85,7 +85,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return {
       redirect: {
         destination: '/secure/admin/dashboard',
-        permanent: false, // This should be a temporary redirect (HTTP 302)
+        permanent: false,
       },
     };
   }

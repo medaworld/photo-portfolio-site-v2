@@ -8,6 +8,7 @@ import { GetServerSideProps } from 'next';
 import { authOptions } from '../../api/auth/[...nextauth]';
 import { getServerSession } from 'next-auth/next';
 import { useSession } from 'next-auth/react';
+import LoadingScreen from '../../../components/Loading/Loading';
 
 const AdminDashboardContainer = styled.div`
   display: flex;
@@ -29,11 +30,19 @@ export default function AdminDashboard() {
   const [totalImages, setTotalImages] = useState(0);
   const [totalCategories, setTotalCategories] = useState(0);
   const [totalSubCategories, setTotalSubCategories] = useState(0);
-  const router = useRouter();
   const { data: session, status } = useSession();
+  const router = useRouter();
 
   useEffect(() => {
-    // Fetch the data when the component mounts
+    if (status === 'loading') return;
+
+    if (status === 'unauthenticated' || !session) {
+      console.log('Redirecting...');
+      router.push('/work');
+    }
+  }, [router, session, status]);
+
+  useEffect(() => {
     const fetchData = async () => {
       const categories = await fetchCategories(firestore);
       setTotalCategories(categories.length);
@@ -52,10 +61,8 @@ export default function AdminDashboard() {
     fetchData();
   }, []);
 
-  if (status === 'loading') return null;
-  if (!session) {
-    router.push('/work');
-    return null;
+  if (status === 'loading') {
+    return <LoadingScreen />;
   }
 
   return (

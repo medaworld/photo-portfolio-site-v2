@@ -25,7 +25,7 @@ export const useImageUpload = ({ inputRef }) => {
       );
       setFiles((prev) => [...prev, ...compressedFiles]);
       if (inputRef.current) {
-        inputRef.current.value = ''; // Clear the input here
+        inputRef.current.value = '';
       }
     },
     [inputRef]
@@ -48,14 +48,11 @@ export const useImageUpload = ({ inputRef }) => {
 
   const toggleSelectedFile = (file) => {
     setSelectedFiles((prevSelected) => {
-      // Check if file is already selected
       const isAlreadySelected = prevSelected.includes(file);
 
       if (isAlreadySelected) {
-        // If already selected, remove from array
         return prevSelected.filter((selectedFile) => selectedFile !== file);
       } else {
-        // Else add to array
         return [...prevSelected, file];
       }
     });

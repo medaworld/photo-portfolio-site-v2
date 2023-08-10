@@ -2,12 +2,15 @@ import { styled } from 'styled-components';
 
 export const AdminUploadContainer = styled.form`
   width: 100%;
+  height: calc(100vh - 110px);
+  overflow: hidden;
 `;
 
 export const DragAndDropSection = styled.div`
   padding: 20px;
   width: 100%;
-  height: calc(100% - 2rem);
+  height: calc(100vh - 110px);
+  overflow: scroll;
   color: #bbb;
   background-color: ${(props) => props.theme.dark};
   display: flex;

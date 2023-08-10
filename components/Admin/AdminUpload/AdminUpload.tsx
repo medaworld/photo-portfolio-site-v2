@@ -43,6 +43,7 @@ export default function AdminUpload() {
           ref={inputRef}
           multiple
           onChange={onFileChange}
+          accept="image/jpeg, image/png, image/jpg"
         />
         {files.length === 0 ? (
           <UploadSection>

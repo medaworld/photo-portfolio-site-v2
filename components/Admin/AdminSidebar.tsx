@@ -71,7 +71,7 @@ const ToggleButton = styled.button<{ isSidebarOpen: boolean }>`
   padding: 0;
   width: 30px;
   color: ${(props) => props.theme.dark};
-  height: 100%;
+  height: calc(100vh - 110px);
 
   &:hover {
     color: ${(props) => props.theme.darker};
@@ -120,10 +120,10 @@ export default function AdminSidebar() {
     <SidebarContainer isSidebarOpen={isSidebarOpen}>
       <SidebarMenu>
         {renderLink('/secure/admin/dashboard', 'Dashboard')}
-        {renderLink('/secure/admin/upload', 'Upload Image')}
+        {renderLink('/secure/admin/upload', 'Upload')}
         {renderLink('/secure/admin/photos', 'Photos')}
+        {renderLink('/secure/admin/albums', 'Albums')}
         {renderLink('/secure/admin/categories', 'Categories')}
-        {renderLink('/secure/admin/subcategories', 'Subcategories')}
         <LogoutButton onClick={logoutHandler}>Logout</LogoutButton>
       </SidebarMenu>
       <ToggleButton
