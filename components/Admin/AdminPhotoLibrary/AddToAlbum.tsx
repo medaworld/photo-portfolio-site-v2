@@ -1,8 +1,18 @@
 import { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import { firestore } from '../../../lib/firebase';
-import { collection, getDocs } from 'firebase/firestore';
-import { FaCheck } from 'react-icons/fa';
+import {
+  Timestamp,
+  addDoc,
+  arrayRemove,
+  arrayUnion,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  updateDoc,
+} from 'firebase/firestore';
+import { FaCheckCircle } from 'react-icons/fa';
 
 const AddToAlbumContainer = styled.div`
   display: flex;
@@ -50,7 +60,8 @@ const AlbumItem = styled.div`
   transition: all 0.3s ease;
 
   &:hover {
-    opacity: 0.9;
+    background-color: #f5f5f5;
+    color: #333;
   }
 `;
 
@@ -84,11 +95,6 @@ const AlbumDetails = styled.div`
   }
 `;
 
-const AlbumCheck = styled.span`
-  width: 10px;
-  height: 10px;
-`;
-
 const AlbumMsg = styled.div`
   width: 100%;
   flex-grow: 1;
@@ -115,30 +121,16 @@ const NewAlbumPanel = styled.div`
 const Button = styled.button`
   padding: 5px 10px;
   margin: 5px;
+  cursor: pointer;
 `;
 
-const CheckMarkIcon = styled(FaCheck)`
-  color: green;
-  font-size: 20px;
-  margin-left: 10px;
+const AlbumCheck = styled.span`
+  margin-right: 5px;
 `;
-
-const mockAlbums = [
-  {
-    id: 1,
-    cover: 'path_to_image',
-    name: 'Album 1',
-    count: 5,
-    isSelected: false,
-  },
-  {
-    id: 2,
-    cover: 'path_to_image',
-    name: 'Album 2',
-    count: 3,
-    isSelected: true,
-  },
-];
+const CheckMarkIcon = styled(FaCheckCircle)`
+  color: #00b7ff;
+  font-size: 16px;
+`;
 
 export default function AddToAlbum({ selectedImages, closeModal }) {
   const [albums, setAlbums] = useState([]);
@@ -146,24 +138,111 @@ export default function AddToAlbum({ selectedImages, closeModal }) {
   const [showNewAlbumPanel, setShowNewAlbumPanel] = useState(false);
   const [newAlbumName, setNewAlbumName] = useState('');
   const [newAlbumDescription, setNewAlbumDescription] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  console.log(selectedImages);
   async function fetchAlbums() {
+    setLoading(true);
     const albumsRef = collection(firestore, 'albums');
 
     const snapshot = await getDocs(albumsRef);
 
-    const albums = snapshot.docs.map((docSnapshot) => {
-      const docData = docSnapshot.data();
+    const fetchImageUrl = async (imageId) => {
+      const imageRef = doc(firestore, 'images', imageId);
+      const imageSnapshot = await getDoc(imageRef);
+      if (imageSnapshot.exists()) {
+        return imageSnapshot.data().url;
+      }
+      return null;
+    };
 
-      return {
-        cover: docData.coverImg,
-        name: docData.title,
-        count: docData.images ? docData.images.length : 0,
-      };
+    const albums = await Promise.all(
+      snapshot.docs.map(async (docSnapshot) => {
+        const docData = docSnapshot.data();
+
+        const coverImageUrl = await fetchImageUrl(docData.cover);
+
+        return {
+          id: docData.id,
+          cover: coverImageUrl,
+          title: docData.title,
+          photos: docData.photos,
+          count: docData.photos ? docData.photos.length : 0,
+        };
+      })
+    );
+
+    setLoading(false);
+    return albums;
+  }
+
+  async function handleAddImagesToAlbum(albumId: string) {
+    const albumRef = doc(firestore, 'albums', albumId);
+
+    const albumSnapshot = await getDoc(albumRef);
+    const albumData = albumSnapshot.data();
+    const currentPhotos = albumData.photos || [];
+
+    const imagesToAdd = selectedImages.filter(
+      (img) => !currentPhotos.includes(img)
+    );
+
+    const imagesToRemove = selectedImages.filter((img) =>
+      currentPhotos.includes(img)
+    );
+
+    if (imagesToAdd.length > 0) {
+      await updateDoc(albumRef, {
+        photos: arrayUnion(...imagesToAdd),
+      });
+    }
+
+    if (imagesToRemove.length > 0 && imagesToAdd.length === 0) {
+      await updateDoc(albumRef, {
+        photos: arrayRemove(...imagesToRemove),
+      });
+    }
+
+    const updatedAlbums = await fetchAlbums();
+    setAlbums(updatedAlbums);
+  }
+
+  async function createNewAlbum() {
+    const newAlbum = {
+      title: newAlbumName,
+      description: newAlbumDescription,
+      photos: selectedImages,
+      cover: selectedImages[0] || null,
+      createdAt: Timestamp.now(),
+    };
+
+    const albumsRef = collection(firestore, 'albums');
+    const docRef = await addDoc(albumsRef, newAlbum);
+
+    await updateDoc(docRef, {
+      id: docRef.id,
     });
 
-    return albums;
+    const fetchImageUrl = async (imageId) => {
+      if (!imageId) return null;
+      const imageRef = doc(firestore, 'images', imageId);
+      const imageData = await getDoc(imageRef);
+      return imageData.exists() ? imageData.data().url : null;
+    };
+
+    const coverUrl = await fetchImageUrl(newAlbum.cover);
+
+    setAlbums([
+      {
+        ...newAlbum,
+        id: docRef.id,
+        cover: coverUrl,
+        count: selectedImages.length,
+      },
+      ...albums,
+    ]);
+    setShowNewAlbumPanel(false);
+    setNewAlbumName('');
+    setNewAlbumDescription('');
   }
 
   useEffect(() => {
@@ -180,9 +259,8 @@ export default function AddToAlbum({ selectedImages, closeModal }) {
   }, []);
 
   const filteredAlbums = albums.filter((album) =>
-    album.name.toLowerCase().includes(searchTerm.toLowerCase())
+    album.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  console.log(filteredAlbums);
 
   return (
     <AddToAlbumContainer>
@@ -194,11 +272,14 @@ export default function AddToAlbum({ selectedImages, closeModal }) {
       />
       <AlbumList>
         {filteredAlbums.map((album) => (
-          <AlbumItem key={album.id}>
+          <AlbumItem
+            key={album.id}
+            onClick={() => handleAddImagesToAlbum(album.id)}
+          >
             <AlbumInfo>
-              <AlbumCover src={album.cover} alt={album.name} />
+              <AlbumCover src={album.cover} alt={album.title} />
               <AlbumDetails>
-                <span>{album.name}</span>
+                <span>{album.title}</span>
                 <small>{album.count} items</small>
               </AlbumDetails>
             </AlbumInfo>
@@ -209,7 +290,9 @@ export default function AddToAlbum({ selectedImages, closeModal }) {
             </AlbumCheck>
           </AlbumItem>
         ))}
-        {filteredAlbums.length === 0 && <AlbumMsg>No albums</AlbumMsg>}
+        {filteredAlbums.length === 0 && (
+          <AlbumMsg>{loading ? 'Loading...' : 'No albums'}</AlbumMsg>
+        )}
       </AlbumList>
       {showNewAlbumPanel && (
         <NewAlbumPanel>
@@ -225,15 +308,19 @@ export default function AddToAlbum({ selectedImages, closeModal }) {
           />
           <div>
             <Button onClick={() => setShowNewAlbumPanel(false)}>Cancel</Button>
-            <Button>Create</Button>
+            <Button onClick={createNewAlbum}>Create</Button>
           </div>
         </NewAlbumPanel>
       )}
       <div>
-        <Button onClick={() => setShowNewAlbumPanel(!showNewAlbumPanel)}>
-          + Create New Album
+        {!showNewAlbumPanel && (
+          <Button onClick={() => setShowNewAlbumPanel(!showNewAlbumPanel)}>
+            + Create New Album
+          </Button>
+        )}
+        <Button style={{ float: 'right' }} onClick={closeModal}>
+          Done
         </Button>
-        <Button style={{ float: 'right' }}>Done</Button>
       </div>
     </AddToAlbumContainer>
   );
