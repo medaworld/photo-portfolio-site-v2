@@ -123,7 +123,7 @@ export default function AdminSidebar() {
         {renderLink('/secure/admin/upload', 'Upload')}
         {renderLink('/secure/admin/photos', 'Photos')}
         {renderLink('/secure/admin/albums', 'Albums')}
-        {renderLink('/secure/admin/categories', 'Categories')}
+        {renderLink('/secure/admin/collections', 'Collections')}
         <LogoutButton onClick={logoutHandler}>Logout</LogoutButton>
       </SidebarMenu>
       <ToggleButton
