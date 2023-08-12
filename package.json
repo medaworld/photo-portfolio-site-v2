@@ -23,6 +23,7 @@
     "next": "^13.4.12",
     "next-auth": "^4.22.4",
     "react": "18.2.0",
+    "react-beautiful-dnd": "^13.1.1",
     "react-dom": "18.2.0",
     "react-dropzone": "^14.2.3",
     "react-icons": "^4.10.1",
@@ -35,6 +36,7 @@
   "devDependencies": {
     "@types/node": "^20.4.5",
     "@types/react": "^18.2.18",
+    "@types/react-beautiful-dnd": "^13.1.4",
     "@types/react-modal": "^3.16.0",
     "@types/uuid": "^9.0.2",
     "eslint": "8.46.0",

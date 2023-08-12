@@ -16,6 +16,7 @@ export const lightTheme = {
   formBorder: 'rgba(198, 198, 198, 0.8)',
   error: '#f44e4e',
   success: '#4ef461',
+  primaryButton: '#007bff',
   color: '#407095',
 };
 
@@ -35,5 +36,6 @@ export const darkTheme = {
   formBorder: 'rgba(198, 198, 198, 0.8)',
   error: '#f44e4e',
   success: '#4ef461',
+  primaryButton: '#007bff',
   color: '#407095',
 };

@@ -28,8 +28,8 @@ const DashboardCard = styled.div`
 
 export default function AdminDashboard() {
   const [totalImages, setTotalImages] = useState(0);
-  const [totalCategories, setTotalCategories] = useState(0);
   const [totalSubCategories, setTotalSubCategories] = useState(0);
+  const [totalCategories, setTotalCategories] = useState(0);
   const { data: session, status } = useSession();
   const router = useRouter();
 
@@ -71,8 +71,8 @@ export default function AdminDashboard() {
       <DashboardCard>
         <h1>Welcome, Admin!</h1>
         <p>Total Images: {totalImages}</p>
-        <p>Total Categories: {totalCategories}</p>
-        <p>Total Subcategories: {totalSubCategories}</p>
+        <p>Total Albums: {totalSubCategories}</p>
+        <p>Total Collections: {totalCategories}</p>
       </DashboardCard>
     </AdminDashboardContainer>
   );

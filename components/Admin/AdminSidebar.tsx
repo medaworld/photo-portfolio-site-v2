@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
-import { auth } from '../../lib/firebase';
 import { useContext, useState } from 'react';
 import { signOut } from 'next-auth/react';
 import { NotificationContext } from '../../context/notification/NotificationContext';
@@ -106,7 +105,7 @@ export default function AdminSidebar() {
   };
 
   const renderLink = (href: string, text: string) => {
-    if (router.pathname === href) {
+    if (router.pathname.includes(href)) {
       return <ActiveSidebarLink>{text}</ActiveSidebarLink>;
     }
     return (
