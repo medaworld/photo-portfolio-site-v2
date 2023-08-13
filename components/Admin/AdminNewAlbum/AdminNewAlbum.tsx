@@ -7,6 +7,8 @@ import DateInput from '../../common/DateInput';
 import { fetchImages } from '../../../utils/firebaseUtils';
 import PhotoCard from '../../common/PhotoCard';
 import Image from 'next/image';
+import StyledButton from '../../common/StyledButton';
+import { FaStar } from 'react-icons/fa';
 
 export const AdminNewAlbumContainer = styled.div`
   width: 100%;
@@ -37,20 +39,8 @@ export const NewAlbumForm = styled.form`
 export const FormInputs = styled.div`
   display: flex;
   flex-direction: column;
-  max-width: 400px;
-`;
-
-export const CoverImageContainer = styled.div`
-  margin: 2rem 0;
-  background-color: #bababa;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  max-width: 400px;
-
-  &:hover {
-    cursor: pointer;
-  }
+  max-width: 500px;
+  margin: 1rem auto;
 `;
 
 export const InputField = styled.input`
@@ -66,7 +56,7 @@ export const TextareaField = styled.textarea`
   border-radius: 5px;
   border: 1px solid #ccc;
   resize: none;
-  height: 200px;
+  height: 150px;
   font-family: 'Open Sans';
 `;
 
@@ -96,11 +86,58 @@ export const Photo = styled.div`
   }
 `;
 
+export const CoverImageContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  background-color: #bfbfbf;
+  height: 30vw !important;
+  min-height: 300px;
+  max-height: 500px;
+  max-width: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  margin: 1rem auto;
+  position: relative;
+
+  .image {
+    object-fit: cover;
+    width: 100% !important;
+    position: relative !important;
+    height: 100% !important;
+    min-height: 300px;
+  }
+`;
+
+export const CoverText = styled.div`
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  font-family: 'Raleway';
+
+  .title {
+    font-size: 2rem;
+  }
+`;
+
 export default function AdminNewAlbum({ images }) {
   const [albumPhotos, setAlbumPhotos] = useState([]);
   const [allPhotos, setAllPhotos] = useState(images.images);
   const [cover, setCover] = useState(null);
   const [lastVisible, setLastVisible] = useState(images.lastVisible);
+  const [enteredTitle, setEnteredTitle] = useState('');
+  const [enteredDescription, setEnteredDescription] = useState('');
+  const [enteredDate, setEnteredDate] = useState('');
   const loadMoreRef = useRef(null);
 
   const addToAlbum = (photo) => {
@@ -144,12 +181,32 @@ export default function AdminNewAlbum({ images }) {
   }, [lastVisible]);
 
   function handleDeletePhoto(id) {
+    if (cover.id === id) {
+      setCover(null);
+    }
     setAlbumPhotos((prev) => prev.filter((photo) => photo.id !== id));
   }
 
   function handleSetCover(photo) {
     setCover(photo);
   }
+
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = event.target;
+
+    switch (name) {
+      case 'title':
+        setEnteredTitle(value);
+        break;
+      case 'description':
+        setEnteredDescription(value);
+        break;
+      default:
+        break;
+    }
+  };
 
   return (
     <AdminNewAlbumContainer>
@@ -160,13 +217,44 @@ export default function AdminNewAlbum({ images }) {
 
       <NewAlbumForm>
         <FormInputs>
-          <InputField placeholder="Title" />
-          <TextareaField placeholder="Description" />
+          <label>Title</label>
+          <InputField
+            type="text"
+            placeholder="Title"
+            name="title"
+            onChange={handleInputChange}
+          />
+          <label>Description</label>
+          <TextareaField
+            placeholder="Description"
+            name="description"
+            onChange={handleInputChange}
+          />
+          <label>Date</label>
           <DateInput />
         </FormInputs>
+
         <CoverImageContainer>
-          {cover && <Image src={cover.url} width={200} height={200} alt={''} />}
-          <span>Click to select a cover image</span>
+          <CoverText>
+            {enteredTitle && <div className="title">{enteredTitle}</div>}
+            {enteredDescription && (
+              <div className="description">{enteredDescription}</div>
+            )}
+            {enteredDate && <div className="date">{enteredDate}</div>}
+          </CoverText>
+          {cover ? (
+            <>
+              <Image
+                src={cover.url}
+                alt={cover.title || 'Image'}
+                className={'image'}
+                width={400}
+                height={400}
+              />
+            </>
+          ) : (
+            <span>Select a cover</span>
+          )}
         </CoverImageContainer>
 
         <h4>Photos in Album:</h4>
@@ -193,7 +281,7 @@ export default function AdminNewAlbum({ images }) {
           ))}
           <div ref={loadMoreRef}></div>
         </InfinitePhotos>
-        <button>Add Album</button>
+        <StyledButton variant={'neutral'}>Add Album</StyledButton>
       </NewAlbumForm>
     </AdminNewAlbumContainer>
   );

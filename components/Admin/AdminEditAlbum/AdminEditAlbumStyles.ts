@@ -91,16 +91,20 @@ export const DoneButton = styled.button`
 `;
 
 export const PhotosGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 150px);
+  display: flex;
+  overflow-x: scroll;
+  padding-bottom: 5px;
   gap: 1rem;
-  justify-content: center;
+  justify-content: start;
+  align-items: center;
+  white-space: nowrap;
 `;
 
 export const PhotoCard = styled.div`
   position: relative;
   width: 150px;
   height: 150px;
+  flex: none;
 
   img {
     width: 100%;

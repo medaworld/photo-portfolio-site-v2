@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { MdArrowBack, MdDelete } from 'react-icons/md';
 import { FaStar } from 'react-icons/fa';
 import Image from 'next/image';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+
 import {
   AdminAlbumsLibraryContainer,
   AlbumCard,
@@ -15,12 +17,12 @@ import {
   BackLink,
   CoverImageContainer,
   Buttons,
-  AddButton,
-  DeleteButton,
 } from './AdminEditAlbumStyles';
+import StyledButton from '../../common/StyledButton';
 
 export default function AdminEditAlbum({ albumData }) {
   const [album, setAlbum] = useState(albumData);
+  const [photos, setPhotos] = useState(albumData.photos);
   const [isEditing, setIsEditing] = useState(false);
   const [enteredTitle, setEnteredTitle] = useState(album.title || '');
   const [enteredDescription, setEnteredDescription] = useState(
@@ -34,9 +36,9 @@ export default function AdminEditAlbum({ albumData }) {
 
   const handleSaveChanges = () => {
     setIsEditing(false);
-    // setIsEditingDescription(false);
-    // setIsEditingDate(false);
   };
+
+  console.log(photos);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -63,6 +65,16 @@ export default function AdminEditAlbum({ albumData }) {
   const handleAddMoreImages = () => {};
 
   const handleDeleteAlbum = () => {};
+
+  const onDragEnd = (result) => {
+    if (!result.destination) return;
+
+    const reorderedPhotos = Array.from(photos);
+    const [removed] = reorderedPhotos.splice(result.source.index, 1);
+    reorderedPhotos.splice(result.destination.index, 0, removed);
+
+    setPhotos(reorderedPhotos);
+  };
 
   return (
     <AdminAlbumsLibraryContainer>
@@ -130,30 +142,50 @@ export default function AdminEditAlbum({ albumData }) {
         {isEditing && <DoneButton onClick={handleSaveChanges}>Done</DoneButton>}
       </AlbumCard>
 
-      <PhotosGrid>
-        {album.photos.map((photo, index) => (
-          <PhotoCard key={photo.id}>
-            <ImageContainer>
-              <Image
-                src={photo.url}
-                alt={album.title || 'Image'}
-                className={'image'}
-                width={400}
-                height={400}
-              />
-            </ImageContainer>
-            <CoverIcon onClick={() => handleSetCover(photo.id)}>
-              <FaStar size={20} />
-            </CoverIcon>
-            <DeleteIcon onClick={() => handleDeletePhoto(photo.id)}>
-              <MdDelete size={20} />
-            </DeleteIcon>
-          </PhotoCard>
-        ))}
-      </PhotosGrid>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="photosGrid" direction="horizontal">
+          {(provided) => (
+            <PhotosGrid ref={provided.innerRef} {...provided.droppableProps}>
+              {photos.map((photo, index) => (
+                <Draggable key={photo.id} draggableId={photo.id} index={index}>
+                  {(provided) => (
+                    <PhotoCard
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                    >
+                      <ImageContainer>
+                        <Image
+                          src={photo.url}
+                          alt={photo.title || 'Image'}
+                          className={'image'}
+                          width={400}
+                          height={400}
+                        />
+                      </ImageContainer>
+                      <CoverIcon onClick={() => handleSetCover(photo.id)}>
+                        <FaStar size={20} />
+                      </CoverIcon>
+                      <DeleteIcon onClick={() => handleDeletePhoto(photo.id)}>
+                        <MdDelete size={20} />
+                      </DeleteIcon>
+                    </PhotoCard>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </PhotosGrid>
+          )}
+        </Droppable>
+      </DragDropContext>
+
       <Buttons>
-        <AddButton onClick={handleAddMoreImages}>Add more images</AddButton>
-        <DeleteButton onClick={handleDeleteAlbum}>Delete album</DeleteButton>
+        <StyledButton variant="neutral" onClick={handleAddMoreImages}>
+          Add more images
+        </StyledButton>
+        <StyledButton variant="error" onClick={handleDeleteAlbum}>
+          Delete album
+        </StyledButton>
       </Buttons>
     </AdminAlbumsLibraryContainer>
   );

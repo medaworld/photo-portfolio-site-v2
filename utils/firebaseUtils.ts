@@ -33,11 +33,9 @@ export async function fetchAlbumData(albumId: string): Promise<Album> {
   if (albumSnapshot.exists()) {
     const data = albumSnapshot.data();
 
-    // Fetch cover image
     const coverURL = await fetchImageUrl(data.cover);
     const cover = { id: data.cover, url: coverURL };
 
-    // Fetch photos
     const photosRefs = data.photos.map((id) => doc(firestore, 'images', id));
     const photosSnapshots = await Promise.all(
       photosRefs.map((ref) => getDoc(ref))
