@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import { firestore } from '../../../lib/firebase';
 import AdminSidebar from '../../../components/Admin/AdminSidebar';
-import { fetchCategories } from '../../../utils/firebaseUtils';
+import { fetchCategories, fetchCount } from '../../../utils/firebaseUtils';
 import { GetServerSideProps } from 'next';
 import { authOptions } from '../../api/auth/[...nextauth]';
 import { getServerSession } from 'next-auth/next';
@@ -26,10 +26,11 @@ const DashboardCard = styled.div`
   background-color: #fff;
 `;
 
-export default function AdminDashboard() {
-  const [totalImages, setTotalImages] = useState(0);
-  const [totalSubCategories, setTotalSubCategories] = useState(0);
-  const [totalCategories, setTotalCategories] = useState(0);
+export default function AdminDashboard({
+  imageCount,
+  albumCount,
+  collectionCount,
+}) {
   const { data: session, status } = useSession();
   const router = useRouter();
 
@@ -42,25 +43,6 @@ export default function AdminDashboard() {
     }
   }, [router, session, status]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const categories = await fetchCategories(firestore);
-      setTotalCategories(categories.length);
-
-      let imageCount = 0;
-      let subCategoryCount = 0;
-      for (let category of categories) {
-        // imageCount += category.images.length;
-        // subCategoryCount += category.subcategories.length;
-      }
-
-      setTotalImages(imageCount);
-      setTotalSubCategories(subCategoryCount);
-    };
-
-    fetchData();
-  }, []);
-
   if (status === 'loading') {
     return <LoadingScreen />;
   }
@@ -70,9 +52,9 @@ export default function AdminDashboard() {
       <AdminSidebar />
       <DashboardCard>
         <h1>Welcome, Admin!</h1>
-        <p>Total Images: {totalImages}</p>
-        <p>Total Albums: {totalSubCategories}</p>
-        <p>Total Collections: {totalCategories}</p>
+        <p>Total Images: {imageCount}</p>
+        <p>Total Albums: {albumCount}</p>
+        <p>Total Collections: {collectionCount}</p>
       </DashboardCard>
     </AdminDashboardContainer>
   );
@@ -90,7 +72,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
+  const imageCount = await fetchCount('images');
+  const albumCount = await fetchCount('albums');
+  const collectionCount = await fetchCount('collections');
+
   return {
-    props: {},
+    props: {
+      imageCount,
+      albumCount,
+      collectionCount,
+    },
   };
 };

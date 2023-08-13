@@ -1,5 +1,4 @@
 import {
-  OrderByDirection,
   collection,
   doc,
   getDoc,
@@ -12,6 +11,17 @@ import {
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 import { firestore } from '../lib/firebase';
 import { Album, FetchImagesOptions } from '../types/firebase';
+
+export async function fetchCount(collectionName: string) {
+  const querySnapshot = await getDocs(collection(firestore, collectionName));
+
+  if (querySnapshot) {
+    return querySnapshot.size;
+  } else {
+    console.error(`No such document for collection: ${collectionName}!`);
+    return 0;
+  }
+}
 
 export async function fetchImageFromStorage(storage, imagePath) {
   const storageRef = ref(storage, imagePath);
