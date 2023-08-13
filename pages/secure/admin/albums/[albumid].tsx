@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import AdminSidebar from '../../../../components/Admin/AdminSidebar';
+import AdminSidebar from '../../../../components/Admin/AdminSidebar/AdminSidebar';
 import { GetServerSideProps } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../../../api/auth/[...nextauth]';

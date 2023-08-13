@@ -1,14 +1,14 @@
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { styled } from 'styled-components';
-import { firestore } from '../../../lib/firebase';
-import AdminSidebar from '../../../components/Admin/AdminSidebar';
-import { fetchCategories, fetchCount } from '../../../utils/firebaseUtils';
+import AdminSidebar from '../../../components/Admin/AdminSidebar/AdminSidebar';
+import { fetchCount } from '../../../utils/firebaseUtils';
 import { GetServerSideProps } from 'next';
 import { authOptions } from '../../api/auth/[...nextauth]';
 import { getServerSession } from 'next-auth/next';
 import { useSession } from 'next-auth/react';
 import LoadingScreen from '../../../components/Loading/Loading';
+import Link from 'next/link';
 
 const AdminDashboardContainer = styled.div`
   display: flex;
@@ -52,7 +52,9 @@ export default function AdminDashboard({
       <AdminSidebar />
       <DashboardCard>
         <h1>Welcome, Admin!</h1>
-        <p>Total Images: {imageCount}</p>
+        <p>
+          Total Images: <Link href={'/secure/admin/images'}>{imageCount}</Link>
+        </p>
         <p>Total Albums: {albumCount}</p>
         <p>Total Collections: {collectionCount}</p>
       </DashboardCard>

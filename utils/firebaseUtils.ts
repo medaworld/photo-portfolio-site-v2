@@ -8,7 +8,7 @@ import {
   query,
   startAfter,
 } from 'firebase/firestore';
-import { getStorage, ref, getDownloadURL } from 'firebase/storage';
+import { ref, getDownloadURL } from 'firebase/storage';
 import { firestore } from '../lib/firebase';
 import { Album, FetchImagesOptions } from '../types/firebase';
 
@@ -20,6 +20,60 @@ export async function fetchCount(collectionName: string) {
   } else {
     console.error(`No such document for collection: ${collectionName}!`);
     return 0;
+  }
+}
+
+export async function fetchImages({
+  orderByField = 'uploadedAt',
+  orderDirection = 'desc',
+  lastVisible = null,
+  limitCount = 20,
+}: FetchImagesOptions) {
+  try {
+    let imagesQuery = query(
+      collection(firestore, 'images'),
+      orderBy(orderByField, orderDirection),
+      limit(limitCount)
+    );
+
+    if (lastVisible) {
+      const lastVisibleDoc = await getDoc(
+        doc(firestore, 'images', lastVisible)
+      );
+
+      imagesQuery = query(
+        collection(firestore, 'images'),
+        orderBy(orderByField, orderDirection),
+        startAfter(lastVisibleDoc),
+        limit(limitCount)
+      );
+    }
+
+    const snapshot = await getDocs(imagesQuery);
+
+    const images = snapshot.docs.map((doc) => {
+      const data = doc.data();
+
+      if (data.uploadedAt && typeof data.uploadedAt.toDate === 'function') {
+        data.uploadedAt = data.uploadedAt.toDate().toISOString();
+      }
+      if (data.dateTaken && typeof data.dateTaken.toDate === 'function') {
+        data.dateTaken = data.dateTaken.toDate().toISOString();
+      }
+
+      return {
+        id: doc.id,
+        ...data,
+      };
+    });
+
+    return {
+      images,
+      lastVisible: images[images.length - 1].id,
+    };
+  } catch (error) {
+    console.error('Error fetching images:', error);
+    return {};
   }
 }
 
@@ -99,58 +153,4 @@ export async function fetchAlbums() {
   );
 
   return albums;
-}
-
-export async function fetchImages({
-  orderByField = 'uploadedAt',
-  orderDirection = 'desc',
-  lastVisible = null,
-  limitCount = 20,
-}: FetchImagesOptions) {
-  try {
-    let imagesQuery = query(
-      collection(firestore, 'images'),
-      orderBy(orderByField, orderDirection),
-      limit(limitCount)
-    );
-
-    if (lastVisible) {
-      const lastVisibleDoc = await getDoc(
-        doc(firestore, 'images', lastVisible)
-      );
-
-      imagesQuery = query(
-        collection(firestore, 'images'),
-        orderBy(orderByField, orderDirection),
-        startAfter(lastVisibleDoc),
-        limit(limitCount)
-      );
-    }
-
-    const snapshot = await getDocs(imagesQuery);
-
-    const images = snapshot.docs.map((doc) => {
-      const data = doc.data();
-
-      if (data.uploadedAt && typeof data.uploadedAt.toDate === 'function') {
-        data.uploadedAt = data.uploadedAt.toDate().toISOString();
-      }
-      if (data.dateTaken && typeof data.dateTaken.toDate === 'function') {
-        data.dateTaken = data.dateTaken.toDate().toISOString();
-      }
-
-      return {
-        id: doc.id,
-        ...data,
-      };
-    });
-
-    return {
-      images,
-      lastVisible: images[images.length - 1].id,
-    };
-  } catch (error) {
-    console.error('Error fetching images:', error);
-    return {};
-  }
 }

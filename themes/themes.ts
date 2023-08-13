@@ -1,7 +1,11 @@
 export const lightTheme = {
   id: 'light',
-  primary: 'rgb(23, 23, 23)',
-  secondary: '#27272A',
+  primary: '#333',
+  secondary: '#555',
+  tertiary: '#777',
+  border: '#ddd',
+  footer: '#f4f4f4',
+  hover: '#e6e6e6',
   background: 'rgb(255, 255, 255)',
   backgroundSecondary: '#f3f3f3',
   tplight: 'rgba(255, 255, 255, 0.8)',

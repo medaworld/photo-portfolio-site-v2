@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import AdminSidebar from '../../../components/Admin/AdminSidebar';
+import AdminSidebar from '../../../components/Admin/AdminSidebar/AdminSidebar';
 import { GetServerSideProps } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../../api/auth/[...nextauth]';
@@ -7,7 +7,8 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import LoadingScreen from '../../../components/Loading/Loading';
-import AdminPhotoLibrary from '../../../components/Admin/AdminPhotoLibrary/AdminPhotoLibrary';
+import AdminPhotoLibrary from '../../../components/Admin/AdminImageLibrary/AdminImageLibrary';
+import { fetchImages } from '../../../utils/firebaseUtils';
 
 const PhotosContainer = styled.div`
   display: flex;
@@ -17,7 +18,7 @@ const PhotosContainer = styled.div`
   background-color: ${(props) => props.theme.background};
 `;
 
-export default function AdminPhotos() {
+export default function AdminPhotos({ images }) {
   const { data: session, status } = useSession();
   const router = useRouter();
 
@@ -37,7 +38,7 @@ export default function AdminPhotos() {
   return (
     <PhotosContainer>
       <AdminSidebar />
-      <AdminPhotoLibrary />
+      <AdminPhotoLibrary imagesData={images} />
     </PhotosContainer>
   );
 }
@@ -54,7 +55,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
+  const images = await fetchImages({});
+
   return {
-    props: {},
+    props: { images },
   };
 };

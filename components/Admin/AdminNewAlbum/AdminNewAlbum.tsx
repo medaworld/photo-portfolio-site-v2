@@ -8,7 +8,6 @@ import { fetchImages } from '../../../utils/firebaseUtils';
 import PhotoCard from '../../common/PhotoCard';
 import Image from 'next/image';
 import StyledButton from '../../common/StyledButton';
-import { FaStar } from 'react-icons/fa';
 
 export const AdminNewAlbumContainer = styled.div`
   width: 100%;
@@ -279,7 +278,7 @@ export default function AdminNewAlbum({ images }) {
               onClick={() => addToAlbum(photo)}
             />
           ))}
-          <div ref={loadMoreRef}></div>
+          <div ref={loadMoreRef} />
         </InfinitePhotos>
         <StyledButton variant={'neutral'}>Add Album</StyledButton>
       </NewAlbumForm>
