@@ -8,6 +8,7 @@ import {
   orderBy,
   query,
   startAfter,
+  updateDoc,
   where,
   writeBatch,
 } from 'firebase/firestore';
@@ -209,4 +210,14 @@ async function removePhotoIdFromAlbums(photoId) {
   });
 
   await batch.commit();
+}
+
+// UPDATE IMAGES
+export async function updateImages(selectedImages, imageData) {
+  const updatePromises = selectedImages.map(async (imageId) => {
+    const imageRef = doc(firestore, 'images', imageId);
+    await updateDoc(imageRef, imageData);
+  });
+
+  await Promise.all(updatePromises);
 }

@@ -6,10 +6,13 @@ const DateContainer = styled.div`
   display: flex;
   gap: 10px;
   align-items: center;
+`;
 
-  select option {
-    max-height: 30px;
-  }
+const DateSelect = styled.select`
+  background-color: white;
+  color: black;
+  border: none;
+  font-family: 'Open sans';
 `;
 
 export default function DateInput({ setSelectedDate }) {
@@ -17,11 +20,19 @@ export default function DateInput({ setSelectedDate }) {
   const [selectedYear, setSelectedYear] = useState('');
   const [selectedDay, setSelectedDay] = useState('');
 
+  useEffect(() => {
+    if (selectedDay && selectedMonth && selectedYear) {
+      const newDate = new Date(
+        `${selectedYear}, ${selectedMonth}, ${selectedDay}`
+      );
+      setSelectedDate(newDate);
+    }
+  }, [selectedDay, selectedMonth, selectedYear, setSelectedDate]);
+
   const handleMonthChange = (event: any) => {
     const type = event.target.getAttribute('data-type');
     const value = event.target.value;
     setSelectedMonth(value);
-    setSelectedDate(new Date());
   };
 
   const handleYearChange = (event: any) => {
@@ -36,17 +47,9 @@ export default function DateInput({ setSelectedDate }) {
     setSelectedDay(value);
   };
 
-  useEffect(() => {
-    if (selectedDay && selectedMonth && selectedYear) {
-      setSelectedDate(
-        new Date(`${selectedMonth} ${selectedDay}, ${selectedYear}`)
-      );
-    }
-  }, [selectedDay, selectedMonth, selectedYear, setSelectedDate]);
-
   return (
     <DateContainer>
-      <select
+      <DateSelect
         name="year"
         value={selectedYear}
         onChange={handleYearChange}
@@ -56,19 +59,23 @@ export default function DateInput({ setSelectedDate }) {
           Year
         </option>
         <YearOptions />
-      </select>
-      <select name="month" value={selectedMonth} onChange={handleMonthChange}>
+      </DateSelect>
+      <DateSelect
+        name="month"
+        value={selectedMonth}
+        onChange={handleMonthChange}
+      >
         <option value="" disabled hidden>
           Month
         </option>
         <MonthOptions />
-      </select>
-      <select name="day" value={selectedDay} onChange={handleDayChange}>
+      </DateSelect>
+      <DateSelect name="day" value={selectedDay} onChange={handleDayChange}>
         <option value="" disabled hidden>
           Day
         </option>
         <DayOptions month={selectedMonth} year={selectedYear} />
-      </select>
+      </DateSelect>
     </DateContainer>
   );
 }

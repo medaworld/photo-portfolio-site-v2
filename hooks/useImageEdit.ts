@@ -5,7 +5,7 @@ import { NotificationContext } from '../context/notification/NotificationContext
 
 export function useImageEdit(imagesData) {
   const notificationCtx = useContext(NotificationContext);
-  const [allPhotos, setAllPhotos] = useState(imagesData.images);
+  const [allImages, setAllImages] = useState(imagesData.images);
   const [lastVisible, setLastVisible] = useState(imagesData.lastVisible);
   const [selectedImages, setSelectedImages] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -20,8 +20,8 @@ export function useImageEdit(imagesData) {
       if (lastVisible) {
         console.log(lastVisible);
         const newImages = await fetchImages({ lastVisible: lastVisible });
-        setAllPhotos((prevPhotos) => [
-          ...prevPhotos,
+        setAllImages((prevImages) => [
+          ...prevImages,
           ...(newImages.images || []),
         ]);
         setLastVisible(newImages.lastVisible);
@@ -50,6 +50,7 @@ export function useImageEdit(imagesData) {
     };
   }, [lastVisible]);
 
+  // TOGGLE SELECT
   function toggleSelectImage(imageId) {
     if (selectedImages.includes(imageId)) {
       setSelectedImages((prev) => prev.filter((id) => id !== imageId));
@@ -58,23 +59,27 @@ export function useImageEdit(imagesData) {
     }
   }
 
+  // SELECT ALL BY GROUP
   function selectAllFromGroup(group) {
     const newSelectedImages = group.map((image) => image.id);
     setSelectedImages((prev) => [...new Set([...prev, ...newSelectedImages])]);
   }
 
+  // EDIT
   function editSelectedImages() {
     setAddToAlbumIsOpen(false);
     setModalIsOpen(true);
     setEditIsOpen(true);
   }
 
+  // ADD TO ALBUM
   function addToAlbum() {
     setEditIsOpen(false);
     setModalIsOpen(true);
     setAddToAlbumIsOpen(true);
   }
 
+  // DELETE IMAGES
   async function deleteSelectedImages() {
     notificationCtx.showNotification({
       title: 'Deleting...',
@@ -84,7 +89,7 @@ export function useImageEdit(imagesData) {
 
     try {
       await deleteImages(selectedImages);
-      const updatedImages = allPhotos.filter(
+      const updatedImages = allImages.filter(
         (img) => !selectedImages.includes(img.id)
       );
 
@@ -94,7 +99,7 @@ export function useImageEdit(imagesData) {
         status: 'success',
       });
 
-      setAllPhotos(updatedImages);
+      setAllImages(updatedImages);
       setSelectedImages([]);
     } catch (error) {
       console.error('Error deleting images:', error);
@@ -107,21 +112,26 @@ export function useImageEdit(imagesData) {
     }
   }
 
+  // CLOSE MODAL
   const closeModal = () => {
     setModalIsOpen(false);
     setAddToAlbumIsOpen(false);
     setEditIsOpen(false);
   };
 
+  // CLEAR SELECTED
   const handleClearSelectedImages = () => {
     setSelectedImages([]);
   };
 
+  // REFRESH
   const handleRefreshImages = async () => {
     const newImages = await fetchImages({});
-    setAllPhotos(newImages);
+    setAllImages(newImages.images);
+    setLastVisible(newImages.lastVisible);
   };
 
+  // GROUP IMAGES
   function groupImagesByDateOrMonth(images) {
     return images.reduce((acc, image) => {
       const date = new Date(image.uploadedAt);
@@ -140,10 +150,10 @@ export function useImageEdit(imagesData) {
     }, {});
   }
 
-  const groupedImages = groupImagesByDateOrMonth(allPhotos);
+  const groupedImages = groupImagesByDateOrMonth(allImages);
 
   return {
-    allPhotos,
+    allImages,
     selectedImages,
     modalIsOpen,
     editIsOpen,

@@ -37,4 +37,5 @@ export const ButtonContainer = styled.div`
 
 export const DateLabel = styled.span`
   margin-right: 10px;
+  font-size: 14px;
 `;

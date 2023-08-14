@@ -2,7 +2,6 @@ import { useContext, useState } from 'react';
 import { firestore } from '../../../lib/firebase';
 import { doc, updateDoc } from 'firebase/firestore';
 import { NotificationContext } from '../../../context/notification/NotificationContext';
-import { months } from '../../../utils/dateUtils';
 import StyledButton from '../../common/StyledButton';
 import {
   EditPhotosContainer,
@@ -15,6 +14,8 @@ import {
 import StyledInput from '../../common/StyledInput';
 import StyledTextArea from '../../common/StyledTextArea';
 import DateInput from '../../common/DateInput';
+import { ImageDataProps } from '../../../types/firebase';
+import { updateImages } from '../../../utils/firebaseUtils';
 
 export default function EditPhotos({
   selectedImages,
@@ -26,83 +27,7 @@ export default function EditPhotos({
   const [enteredTitle, setEnteredTitle] = useState('');
   const [enteredDescription, setEnteredDescription] = useState('');
   const [dateTaken, setDateTaken] = useState('');
-  const [selectedTakenMonth, setSelectedTakenMonth] = useState('');
-  const [selectedTakenYear, setSelectedTakenYear] = useState('');
-  const [selectedTakenDay, setSelectedTakenDay] = useState('');
-  const [selectedUploadedMonth, setSelectedUploadedMonth] = useState('');
-  const [selectedUploadedYear, setSelectedUploadedYear] = useState('');
-  const [selectedUploadedDay, setSelectedUploadedDay] = useState('');
-
-  function MonthOptions() {
-    return months.map((month, index) => (
-      <option key={index} value={index + 1}>
-        {month}
-      </option>
-    ));
-  }
-
-  function YearOptions({
-    startYear = new Date().getFullYear(),
-    endYear = 1900,
-  }) {
-    const years = [];
-    for (let year = startYear; year >= endYear; year--) {
-      years.push(year);
-    }
-
-    return years.map((year) => (
-      <option key={year} value={year}>
-        {year}
-      </option>
-    ));
-  }
-
-  function DayOptions({ month, year }) {
-    const daysInMonth = new Date(year, month, 0).getDate();
-    const days = [];
-    for (let day = 1; day <= daysInMonth; day++) {
-      days.push(day);
-    }
-
-    return days.map((day) => (
-      <option key={day} value={day}>
-        {day}
-      </option>
-    ));
-  }
-
-  const handleMonthChange = (event: any) => {
-    const type = event.target.getAttribute('data-type');
-    const value = event.target.value;
-
-    if (type === 'taken') {
-      setSelectedTakenMonth(value);
-    } else if (type === 'uploaded') {
-      setSelectedUploadedMonth(value);
-    }
-  };
-
-  const handleYearChange = (event: any) => {
-    const type = event.target.getAttribute('data-type');
-    const value = event.target.value;
-
-    if (type === 'taken') {
-      setSelectedTakenYear(value);
-    } else if (type === 'uploaded') {
-      setSelectedUploadedYear(value);
-    }
-  };
-
-  const handleDayChange = (event: any) => {
-    const type = event.target.getAttribute('data-type');
-    const value = event.target.value;
-
-    if (type === 'taken') {
-      setSelectedTakenDay(value);
-    } else if (type === 'uploaded') {
-      setSelectedUploadedDay(value);
-    }
-  };
+  const [uploadedAt, setUploadedAt] = useState('');
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -121,14 +46,7 @@ export default function EditPhotos({
     }
   };
 
-  type imageData = {
-    title?: string;
-    description?: string;
-    dateTaken?: Date;
-    uploadedAt?: Date;
-  };
-
-  let imageData: imageData = {};
+  let imageData: ImageDataProps = {};
 
   if (enteredTitle) {
     imageData.title = enteredTitle;
@@ -138,16 +56,12 @@ export default function EditPhotos({
     imageData.description = enteredDescription;
   }
 
-  if (selectedTakenYear && selectedTakenMonth && selectedTakenDay) {
-    imageData.dateTaken = new Date(
-      `${selectedTakenYear}-${selectedTakenMonth}-${selectedTakenDay}`
-    );
+  if (dateTaken) {
+    imageData.dateTaken = new Date(dateTaken);
   }
 
-  if (selectedUploadedYear && selectedUploadedMonth && selectedUploadedDay) {
-    imageData.uploadedAt = new Date(
-      `${selectedUploadedYear}-${selectedUploadedMonth}-${selectedUploadedDay}`
-    );
+  if (uploadedAt) {
+    imageData.uploadedAt = new Date(uploadedAt);
   }
 
   async function handleSubmit(event: any) {
@@ -162,10 +76,7 @@ export default function EditPhotos({
       status: 'Pending',
     });
     try {
-      for (let imageId of selectedImages) {
-        const imageRef = doc(firestore, 'images', imageId);
-        await updateDoc(imageRef, imageData);
-      }
+      await updateImages(selectedImages, imageData);
       notificationCtx.showNotification({
         title: 'Success',
         message: 'Images updated successfully',
@@ -184,7 +95,6 @@ export default function EditPhotos({
       });
     }
   }
-  console.log(dateTaken);
 
   return (
     <EditPhotosContainer>
@@ -209,80 +119,11 @@ export default function EditPhotos({
         <DateContainer>
           <DateLabel>Date Taken: </DateLabel>
           <DateInput setSelectedDate={setDateTaken} />
-          {/* <select
-            name="year"
-            data-type="taken"
-            value={selectedTakenYear}
-            onChange={handleYearChange}
-            placeholder="Please select year"
-          >
-            <option value="" disabled hidden>
-              Year
-            </option>
-            <YearOptions />
-          </select>
-          <select
-            name="month"
-            data-type="taken"
-            value={selectedTakenMonth}
-            onChange={handleMonthChange}
-          >
-            <option value="" disabled hidden>
-              Month
-            </option>
-            <MonthOptions />
-          </select>
-          <select
-            name="day"
-            data-type="taken"
-            value={selectedTakenDay}
-            onChange={handleDayChange}
-          >
-            <option value="" disabled hidden>
-              Day
-            </option>
-            <DayOptions month={selectedTakenMonth} year={selectedTakenYear} />
-          </select> */}
         </DateContainer>
 
         <DateContainer>
           <DateLabel>Uploaded At: </DateLabel>
-          <select
-            name="year"
-            data-type="uploaded"
-            value={selectedUploadedYear}
-            onChange={handleYearChange}
-          >
-            <option value="" disabled hidden>
-              Year
-            </option>
-            <YearOptions />
-          </select>
-          <select
-            name="month"
-            data-type="uploaded"
-            value={selectedUploadedMonth}
-            onChange={handleMonthChange}
-          >
-            <option value="" disabled hidden>
-              Month
-            </option>
-            <MonthOptions />
-          </select>
-          <select
-            name="day"
-            data-type="uploaded"
-            value={selectedUploadedDay}
-            onChange={handleDayChange}
-          >
-            <option value="" disabled hidden>
-              Day
-            </option>
-            <DayOptions
-              month={selectedUploadedMonth}
-              year={selectedUploadedYear}
-            />
-          </select>
+          <DateInput setSelectedDate={setUploadedAt} />
         </DateContainer>
 
         <ButtonContainer>

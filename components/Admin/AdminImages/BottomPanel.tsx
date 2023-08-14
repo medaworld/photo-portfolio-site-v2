@@ -9,7 +9,7 @@ import {
 
 export default function BottomPanel({
   selectedImages,
-  allPhotos,
+  allImages,
   handleClearSelectedImages,
   editSelectedImages,
   addToAlbum,
@@ -27,7 +27,7 @@ export default function BottomPanel({
               marginTop: '0.5rem',
             }}
           >
-            {allPhotos
+            {allImages
               .filter((img) => selectedImages.includes(img.id))
               .slice(0, 4)
               .map((img) => (

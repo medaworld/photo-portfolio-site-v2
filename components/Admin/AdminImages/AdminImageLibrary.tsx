@@ -12,12 +12,13 @@ import { useImageEdit } from '../../../hooks/useImageEdit';
 
 export default function AdminPhotoLibrary({ imagesData }) {
   const {
-    allPhotos,
+    allImages,
     selectedImages,
     modalIsOpen,
     editIsOpen,
     addToAlbumIsOpen,
     loadMoreRef,
+    groupedImages,
     toggleSelectImage,
     selectAllFromGroup,
     editSelectedImages,
@@ -26,7 +27,6 @@ export default function AdminPhotoLibrary({ imagesData }) {
     closeModal,
     handleClearSelectedImages,
     handleRefreshImages,
-    groupedImages,
   } = useImageEdit(imagesData);
 
   return (
@@ -44,7 +44,7 @@ export default function AdminPhotoLibrary({ imagesData }) {
       {selectedImages.length > 0 && (
         <BottomPanel
           selectedImages={selectedImages}
-          allPhotos={allPhotos}
+          allImages={allImages}
           handleClearSelectedImages={handleClearSelectedImages}
           editSelectedImages={editSelectedImages}
           addToAlbum={addToAlbum}

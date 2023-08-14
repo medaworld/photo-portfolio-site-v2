@@ -15,3 +15,10 @@ export type FetchImagesOptions = {
   lastVisible?: any;
   limitCount?: number;
 };
+
+export type ImageDataProps = {
+  title?: string;
+  description?: string;
+  dateTaken?: Date;
+  uploadedAt?: Date;
+};
