@@ -42,6 +42,8 @@ const getCustomStyles = (theme) => ({
     maxHeight: '80%',
     padding: '1rem',
     display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

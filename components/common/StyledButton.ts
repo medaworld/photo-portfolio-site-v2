@@ -41,7 +41,6 @@ const StyledButton = styled.button<{ variant: string }>`
   cursor: pointer;
   padding: 5px 15px;
   transition: background-color 0.3s;
-  margin: 1rem 0;
   ${(props) => getButtonStyles(props.variant)}
 `;
 
