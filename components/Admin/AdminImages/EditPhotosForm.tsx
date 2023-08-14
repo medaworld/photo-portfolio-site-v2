@@ -1,46 +1,20 @@
 import { useContext, useState } from 'react';
-import { styled } from 'styled-components';
 import { firestore } from '../../../lib/firebase';
 import { doc, updateDoc } from 'firebase/firestore';
 import { NotificationContext } from '../../../context/notification/NotificationContext';
-
-const EditPhotosContainer = styled.div`
-  padding-top: 30px;
-`;
-
-const Title = styled.div`
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  font-size: 1rem;
-`;
-
-const EditForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-`;
-
-const DateContainer = styled.div`
-  display: flex;
-  gap: 10px;
-  align-items: center;
-
-  select option {
-    max-height: 30px;
-  }
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  gap: 15px;
-  margin-top: 20px;
-`;
-
-const DateLabel = styled.span`
-  margin-right: 10px;
-`;
+import { months } from '../../../utils/dateUtils';
+import StyledButton from '../../common/StyledButton';
+import {
+  EditPhotosContainer,
+  Title,
+  EditForm,
+  DateContainer,
+  DateLabel,
+  ButtonContainer,
+} from './EditPhotosFormStyles';
+import StyledInput from '../../common/StyledInput';
+import StyledTextArea from '../../common/StyledTextArea';
+import DateInput from '../../common/DateInput';
 
 export default function EditPhotos({
   selectedImages,
@@ -51,30 +25,15 @@ export default function EditPhotos({
   const notificationCtx = useContext(NotificationContext);
   const [enteredTitle, setEnteredTitle] = useState('');
   const [enteredDescription, setEnteredDescription] = useState('');
+  const [dateTaken, setDateTaken] = useState('');
   const [selectedTakenMonth, setSelectedTakenMonth] = useState('');
   const [selectedTakenYear, setSelectedTakenYear] = useState('');
   const [selectedTakenDay, setSelectedTakenDay] = useState('');
-
   const [selectedUploadedMonth, setSelectedUploadedMonth] = useState('');
   const [selectedUploadedYear, setSelectedUploadedYear] = useState('');
   const [selectedUploadedDay, setSelectedUploadedDay] = useState('');
 
   function MonthOptions() {
-    const months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
-    ];
-
     return months.map((month, index) => (
       <option key={index} value={index + 1}>
         {month}
@@ -145,7 +104,9 @@ export default function EditPhotos({
     }
   };
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = event.target;
 
     switch (name) {
@@ -223,20 +184,22 @@ export default function EditPhotos({
       });
     }
   }
+  console.log(dateTaken);
 
   return (
     <EditPhotosContainer>
       <Title>Editing</Title>
       <EditForm onSubmit={handleSubmit}>
-        <input
+        <StyledInput
+          variant="primary"
           type="text"
           name="title"
           placeholder="Change title"
           value={enteredTitle || ''}
           onChange={handleInputChange}
         />
-        <input
-          type="text"
+        <StyledTextArea
+          variant="primary"
           name="description"
           placeholder="Change description"
           value={enteredDescription || ''}
@@ -245,7 +208,8 @@ export default function EditPhotos({
 
         <DateContainer>
           <DateLabel>Date Taken: </DateLabel>
-          <select
+          <DateInput setSelectedDate={setDateTaken} />
+          {/* <select
             name="year"
             data-type="taken"
             value={selectedTakenYear}
@@ -278,7 +242,7 @@ export default function EditPhotos({
               Day
             </option>
             <DayOptions month={selectedTakenMonth} year={selectedTakenYear} />
-          </select>
+          </select> */}
         </DateContainer>
 
         <DateContainer>
@@ -322,15 +286,18 @@ export default function EditPhotos({
         </DateContainer>
 
         <ButtonContainer>
-          <button
+          <StyledButton
+            variant="neutral"
             type="button"
             onClick={() => {
               closeModal();
             }}
           >
             Cancel
-          </button>
-          <button type="submit">Submit</button>
+          </StyledButton>
+          <StyledButton variant="primary" type="submit">
+            Submit
+          </StyledButton>
         </ButtonContainer>
       </EditForm>
     </EditPhotosContainer>

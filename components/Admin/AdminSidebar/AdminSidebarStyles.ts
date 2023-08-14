@@ -39,7 +39,7 @@ export const SidebarLinkWrapper = styled.div`
 `;
 
 export const LogoutButton = styled.button`
-  color: ${(props) => props.theme.dark};
+  color: ${(props) => props.theme.primary};
   background: none;
   border: none;
   padding: 0;

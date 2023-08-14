@@ -2,9 +2,6 @@ import { useState, useEffect, useContext, useRef } from 'react';
 import { deleteImages, fetchImages } from '../utils/firebaseUtils';
 import { months } from '../utils/dateUtils';
 import { NotificationContext } from '../context/notification/NotificationContext';
-import { firestore, storage } from '../lib/firebase';
-import { deleteDoc, doc } from 'firebase/firestore';
-import { deleteObject, ref } from 'firebase/storage';
 
 export function useImageEdit(imagesData) {
   const notificationCtx = useContext(NotificationContext);
@@ -21,6 +18,7 @@ export function useImageEdit(imagesData) {
   useEffect(() => {
     const fetchMoreImages = async () => {
       if (lastVisible) {
+        console.log(lastVisible);
         const newImages = await fetchImages({ lastVisible: lastVisible });
         setAllPhotos((prevPhotos) => [
           ...prevPhotos,

@@ -17,7 +17,7 @@ export const AdminNewAlbumContainer = styled.div`
   padding: 1rem;
 
   @media (max-width: ${size.mobileL}) {
-    height: calc(100vh - 170px);
+    /* height: calc(100vh - 170px); */
   }
 `;
 
@@ -230,7 +230,7 @@ export default function AdminNewAlbum({ images }) {
             onChange={handleInputChange}
           />
           <label>Date</label>
-          <DateInput />
+          <DateInput setSelectedDate={undefined} />
         </FormInputs>
 
         <CoverImageContainer>

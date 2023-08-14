@@ -69,9 +69,15 @@ export async function fetchImages({
     };
   });
 
+  if (images[images.length - 1]?.id) {
+    lastVisible = images[images.length - 1].id;
+  } else {
+    lastVisible = null;
+  }
+
   return {
     images,
-    lastVisible: images[images.length - 1].id,
+    lastVisible: lastVisible,
   };
 }
 
