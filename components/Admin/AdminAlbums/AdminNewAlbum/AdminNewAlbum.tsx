@@ -1,133 +1,25 @@
-import { styled } from 'styled-components';
-import { size } from '../../../../utils/breakpoints';
 import { MdArrowBack } from 'react-icons/md';
-import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import DateInput from '../../../common/DateInput';
-import { fetchImages } from '../../../../utils/firebaseUtils';
+import { addAlbum, fetchImages } from '../../../../utils/firebaseUtils';
 import PhotoCard from '../../../common/PhotoCard';
 import Image from 'next/image';
 import StyledButton from '../../../common/StyledButton';
-
-export const AdminNewAlbumContainer = styled.div`
-  width: 100%;
-  background-color: ${(props) => props.theme.backgroundSecondary};
-  height: calc(100vh - 110px);
-  overflow: scroll;
-  padding: 1rem;
-
-  @media (max-width: ${size.mobileL}) {
-    /* height: calc(100vh - 170px); */
-  }
-`;
-
-export const BackLink = styled(Link)`
-  align-items: center;
-  font-size: 16px;
-  transition: opacity 0.2s ease;
-
-  &:hover {
-    opacity: 0.7;
-  }
-`;
-
-export const NewAlbumForm = styled.form`
-  margin: 2rem auto;
-`;
-
-export const FormInputs = styled.div`
-  display: flex;
-  flex-direction: column;
-  max-width: 500px;
-  margin: 1rem auto;
-`;
-
-export const InputField = styled.input`
-  padding: 10px;
-  margin-bottom: 20px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-`;
-
-export const TextareaField = styled.textarea`
-  padding: 10px;
-  margin-bottom: 20px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  resize: none;
-  height: 150px;
-  font-family: 'Open Sans';
-`;
-
-export const PhotosDisplay = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 20px;
-`;
-
-export const InfinitePhotos = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  height: 200px;
-  overflow-y: auto;
-`;
-
-export const Photo = styled.div`
-  width: 100px;
-  height: 100px;
-  background-size: cover;
-  cursor: pointer;
-
-  &:hover {
-    opacity: 0.8;
-  }
-`;
-
-export const CoverImageContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  background-color: #bfbfbf;
-  height: 30vw !important;
-  min-height: 300px;
-  max-height: 500px;
-  max-width: 600px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  margin: 1rem auto;
-  position: relative;
-
-  .image {
-    object-fit: cover;
-    width: 100% !important;
-    position: relative !important;
-    height: 100% !important;
-    min-height: 300px;
-  }
-`;
-
-export const CoverText = styled.div`
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  z-index: 1;
-  color: white;
-  background-color: rgba(0, 0, 0, 0.5);
-  font-family: 'Raleway';
-
-  .title {
-    font-size: 2rem;
-  }
-`;
+import {
+  AdminNewAlbumContainer,
+  BackLink,
+  NewAlbumForm,
+  FormInputs,
+  CoverImageContainer,
+  CoverText,
+  PhotosDisplay,
+  InfinitePhotos,
+  Photo,
+} from './AdminNewAlbumStyles';
+import StyledInput from '../../../common/StyledInput';
+import StyledTextArea from '../../../common/StyledTextArea';
+import { NotificationContext } from '../../../../context/notification/NotificationContext';
+import { useRouter } from 'next/router';
 
 export default function AdminNewAlbum({ images }) {
   const [albumPhotos, setAlbumPhotos] = useState([]);
@@ -136,8 +28,10 @@ export default function AdminNewAlbum({ images }) {
   const [lastVisible, setLastVisible] = useState(images.lastVisible);
   const [enteredTitle, setEnteredTitle] = useState('');
   const [enteredDescription, setEnteredDescription] = useState('');
-  const [enteredDate, setEnteredDate] = useState('');
+  const [enteredDate, setEnteredDate] = useState<Date>();
   const loadMoreRef = useRef(null);
+  const notificationCtx = useContext(NotificationContext);
+  const router = useRouter();
 
   const addToAlbum = (photo) => {
     if (!albumPhotos.includes(photo)) {
@@ -180,7 +74,7 @@ export default function AdminNewAlbum({ images }) {
   }, [lastVisible]);
 
   function handleDeletePhoto(id) {
-    if (cover.id === id) {
+    if (cover?.id === id) {
       setCover(null);
     }
     setAlbumPhotos((prev) => prev.filter((photo) => photo.id !== id));
@@ -207,6 +101,49 @@ export default function AdminNewAlbum({ images }) {
     }
   };
 
+  async function submitHandler(event) {
+    event.preventDefault();
+    if (!enteredTitle || !albumPhotos || !cover) {
+      alert('Please enter all input fields');
+      return;
+    }
+    notificationCtx.showNotification({
+      title: 'Uploading...',
+      message: 'Please wait. Adding album',
+      status: 'Pending',
+    });
+
+    try {
+      const photos = albumPhotos.map((photo) => {
+        return photo.id;
+      });
+
+      const albumData = {
+        title: enteredTitle,
+        description: enteredDescription,
+        photos: photos,
+        cover: cover.id,
+        dateTaken: enteredDate,
+      };
+
+      await addAlbum(albumData);
+      notificationCtx.showNotification({
+        title: 'Success',
+        message: 'Album added successfully',
+        status: 'success',
+      });
+      router.push('/secure/admin/albums');
+    } catch (error) {
+      console.error('Error updating image data: ', error);
+      notificationCtx.showNotification({
+        title: 'Error',
+        message:
+          'An error occurred while updating the images. Please try again.',
+        status: 'error',
+      });
+    }
+  }
+
   return (
     <AdminNewAlbumContainer>
       <BackLink href={'/secure/admin/albums'}>
@@ -217,20 +154,22 @@ export default function AdminNewAlbum({ images }) {
       <NewAlbumForm>
         <FormInputs>
           <label>Title</label>
-          <InputField
+          <StyledInput
+            variant="primary"
             type="text"
             placeholder="Title"
             name="title"
             onChange={handleInputChange}
           />
           <label>Description</label>
-          <TextareaField
+          <StyledTextArea
+            variant="primary"
             placeholder="Description"
             name="description"
             onChange={handleInputChange}
           />
           <label>Date</label>
-          <DateInput setSelectedDate={undefined} />
+          <DateInput setSelectedDate={setEnteredDate} />
         </FormInputs>
 
         <CoverImageContainer>
@@ -239,7 +178,9 @@ export default function AdminNewAlbum({ images }) {
             {enteredDescription && (
               <div className="description">{enteredDescription}</div>
             )}
-            {enteredDate && <div className="date">{enteredDate}</div>}
+            {enteredDate && (
+              <div className="date">{enteredDate.toLocaleDateString()}</div>
+            )}
           </CoverText>
           {cover ? (
             <>
@@ -280,7 +221,9 @@ export default function AdminNewAlbum({ images }) {
           ))}
           <div ref={loadMoreRef} />
         </InfinitePhotos>
-        <StyledButton variant={'neutral'}>Add Album</StyledButton>
+        <StyledButton variant={'primary'} onClick={submitHandler}>
+          Add Album
+        </StyledButton>
       </NewAlbumForm>
     </AdminNewAlbumContainer>
   );

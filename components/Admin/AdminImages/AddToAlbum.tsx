@@ -16,6 +16,7 @@ import { FaCheckCircle } from 'react-icons/fa';
 import StyledInput from '../../common/StyledInput';
 import StyledTextArea from '../../common/StyledTextArea';
 import StyledButton from '../../common/StyledButton';
+import { addAlbum } from '../../../utils/firebaseUtils';
 
 const AddToAlbumContainer = styled.div`
   display: flex;
@@ -218,12 +219,7 @@ export default function AddToAlbum({ selectedImages, closeModal }) {
       createdAt: Timestamp.now(),
     };
 
-    const albumsRef = collection(firestore, 'albums');
-    const docRef = await addDoc(albumsRef, newAlbum);
-
-    await updateDoc(docRef, {
-      id: docRef.id,
-    });
+    const albumId = await addAlbum(newAlbum);
 
     const fetchImageUrl = async (imageId) => {
       if (!imageId) return null;
@@ -237,7 +233,7 @@ export default function AddToAlbum({ selectedImages, closeModal }) {
     setAlbums([
       {
         ...newAlbum,
-        id: docRef.id,
+        id: albumId,
         cover: coverUrl,
         count: selectedImages.length,
       },

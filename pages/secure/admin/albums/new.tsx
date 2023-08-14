@@ -1,5 +1,3 @@
-import { styled } from 'styled-components';
-import AdminSidebar from '../../../../components/Admin/AdminSidebar/AdminSidebar';
 import { GetServerSideProps } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../../../api/auth/[...nextauth]';
@@ -9,14 +7,7 @@ import { useSession } from 'next-auth/react';
 import LoadingScreen from '../../../../components/Loading/Loading';
 import AdminNewAlbum from '../../../../components/Admin/AdminAlbums/AdminNewAlbum/AdminNewAlbum';
 import { fetchImages } from '../../../../utils/firebaseUtils';
-
-const NewAlbumContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  min-height: calc(100vh - 55px);
-  padding-top: 55px;
-  background-color: ${(props) => props.theme.background};
-`;
+import AdminLayout from '../../../../components/Admin/AdminLayout';
 
 export default function NewAlbum({ images }) {
   const { data: session, status } = useSession();
@@ -36,10 +27,9 @@ export default function NewAlbum({ images }) {
   }
 
   return (
-    <NewAlbumContainer>
-      <AdminSidebar />
+    <AdminLayout>
       <AdminNewAlbum images={images} />
-    </NewAlbumContainer>
+    </AdminLayout>
   );
 }
 

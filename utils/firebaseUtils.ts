@@ -1,4 +1,5 @@
 import {
+  addDoc,
   collection,
   deleteDoc,
   doc,
@@ -186,7 +187,7 @@ export async function deleteAlbum(albumId) {
   console.log('Album deleted successfully.');
 }
 
-// REMOVE ID FROM ALBUM
+// REMOVE PHOTO FROM ALBUM
 async function removePhotoIdFromAlbums(photoId) {
   const q = query(
     collection(firestore, 'albums'),
@@ -220,4 +221,16 @@ export async function updateImages(selectedImages, imageData) {
   });
 
   await Promise.all(updatePromises);
+}
+
+// ADD ALBUM
+export async function addAlbum(albumData) {
+  const albumsRef = collection(firestore, 'albums');
+  const docRef = await addDoc(albumsRef, albumData);
+
+  await updateDoc(docRef, {
+    id: docRef.id,
+  });
+
+  return docRef.id;
 }
