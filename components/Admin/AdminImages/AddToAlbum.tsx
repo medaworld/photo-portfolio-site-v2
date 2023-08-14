@@ -13,6 +13,9 @@ import {
   updateDoc,
 } from 'firebase/firestore';
 import { FaCheckCircle } from 'react-icons/fa';
+import StyledInput from '../../common/StyledInput';
+import StyledTextArea from '../../common/StyledTextArea';
+import StyledButton from '../../common/StyledButton';
 
 const AddToAlbumContainer = styled.div`
   display: flex;
@@ -118,10 +121,10 @@ const NewAlbumPanel = styled.div`
   }
 `;
 
-const Button = styled.button`
-  padding: 5px 10px;
-  margin: 5px;
-  cursor: pointer;
+const Buttons = styled.div`
+  display: flex;
+  margin: 10px 0;
+  gap: 10px;
 `;
 
 const AlbumCheck = styled.span`
@@ -296,31 +299,48 @@ export default function AddToAlbum({ selectedImages, closeModal }) {
       </AlbumList>
       {showNewAlbumPanel && (
         <NewAlbumPanel>
-          <input
+          <StyledInput
+            variant="primary"
             placeholder="Album title"
             value={newAlbumName}
             onChange={(e) => setNewAlbumName(e.target.value)}
           />
-          <textarea
+          <StyledTextArea
+            variant="primary"
             placeholder="Description"
             value={newAlbumDescription}
             onChange={(e) => setNewAlbumDescription(e.target.value)}
           />
-          <div>
-            <Button onClick={() => setShowNewAlbumPanel(false)}>Cancel</Button>
-            <Button onClick={createNewAlbum}>Create</Button>
-          </div>
+          <Buttons>
+            <StyledButton
+              variant="neutral"
+              onClick={() => setShowNewAlbumPanel(false)}
+            >
+              Cancel
+            </StyledButton>
+            <StyledButton variant="neutral" onClick={createNewAlbum}>
+              Create
+            </StyledButton>
+          </Buttons>
         </NewAlbumPanel>
       )}
       <div>
         {!showNewAlbumPanel && (
-          <Button onClick={() => setShowNewAlbumPanel(!showNewAlbumPanel)}>
+          <StyledButton
+            variant="neutral"
+            style={{ marginTop: '15px' }}
+            onClick={() => setShowNewAlbumPanel(!showNewAlbumPanel)}
+          >
             + Create New Album
-          </Button>
+          </StyledButton>
         )}
-        <Button style={{ float: 'right' }} onClick={closeModal}>
+        <StyledButton
+          variant="neutral"
+          style={{ float: 'right', marginTop: '15px', marginLeft: '30px' }}
+          onClick={closeModal}
+        >
           Done
-        </Button>
+        </StyledButton>
       </div>
     </AddToAlbumContainer>
   );

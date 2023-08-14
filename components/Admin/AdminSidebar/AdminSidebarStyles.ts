@@ -64,7 +64,7 @@ export const ToggleButton = styled.button<{ isSidebarOpen: boolean }>`
   right: 0;
   top: 0;
   width: 30px;
-  height: calc(100vh - 110px);
+  height: 100%;
   transition: color 0.3s ease;
 
   &:hover {
