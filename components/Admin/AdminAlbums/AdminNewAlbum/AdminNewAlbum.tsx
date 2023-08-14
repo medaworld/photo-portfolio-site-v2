@@ -1,13 +1,13 @@
 import { styled } from 'styled-components';
-import { size } from '../../../utils/breakpoints';
+import { size } from '../../../../utils/breakpoints';
 import { MdArrowBack } from 'react-icons/md';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
-import DateInput from '../../common/DateInput';
-import { fetchImages } from '../../../utils/firebaseUtils';
-import PhotoCard from '../../common/PhotoCard';
+import DateInput from '../../../common/DateInput';
+import { fetchImages } from '../../../../utils/firebaseUtils';
+import PhotoCard from '../../../common/PhotoCard';
 import Image from 'next/image';
-import StyledButton from '../../common/StyledButton';
+import StyledButton from '../../../common/StyledButton';
 
 export const AdminNewAlbumContainer = styled.div`
   width: 100%;

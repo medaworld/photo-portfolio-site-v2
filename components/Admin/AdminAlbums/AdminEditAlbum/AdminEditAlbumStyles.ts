@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { size } from '../../../utils/breakpoints';
+import { size } from '../../../../utils/breakpoints';
 import Link from 'next/link';
 
 export const AdminAlbumsLibraryContainer = styled.div`

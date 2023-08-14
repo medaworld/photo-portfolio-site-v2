@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import LoadingScreen from '../../../../components/Loading/Loading';
-import AdminAlbumsLibrary from '../../../../components/Admin/AdminAlbumsLibrary/AdminAlbumsLibrary';
+import AdminAlbumsLibrary from '../../../../components/Admin/AdminAlbums/AdminAlbumsLibrary/AdminAlbumsLibrary';
 import { fetchAlbums } from '../../../../utils/firebaseUtils';
 
 const AlbumsContainer = styled.div`

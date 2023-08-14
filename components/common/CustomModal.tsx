@@ -10,14 +10,14 @@ const CloseButton = styled.button`
   border: none;
   cursor: pointer;
   color: ${(props) => props.theme.primary};
-  transition: opacity 0.3s ease;
+  background-color: ${(props) => props.theme.background};
   font-size: 1.2rem;
   line-height: 0;
   border-radius: 50%;
   z-index: 1;
 
   &:hover {
-    opacity: 1;
+    opacity: 0.7;
   }
 `;
 

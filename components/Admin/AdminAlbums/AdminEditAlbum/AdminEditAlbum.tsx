@@ -18,11 +18,12 @@ import {
   CoverImageContainer,
   Buttons,
 } from './AdminEditAlbumStyles';
-import StyledButton from '../../common/StyledButton';
+import StyledButton from '../../../common/StyledButton';
+import { deleteAlbum } from '../../../../utils/firebaseUtils';
 
 export default function AdminEditAlbum({ albumData }) {
   const [album, setAlbum] = useState(albumData);
-  const [photos, setPhotos] = useState(albumData.photos);
+  const [photos, setPhotos] = useState(albumData.photos || []);
   const [isEditing, setIsEditing] = useState(false);
   const [enteredTitle, setEnteredTitle] = useState(album.title || '');
   const [enteredDescription, setEnteredDescription] = useState(
@@ -37,8 +38,6 @@ export default function AdminEditAlbum({ albumData }) {
   const handleSaveChanges = () => {
     setIsEditing(false);
   };
-
-  console.log(photos);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -64,7 +63,9 @@ export default function AdminEditAlbum({ albumData }) {
 
   const handleAddMoreImages = () => {};
 
-  const handleDeleteAlbum = () => {};
+  const handleDeleteAlbum = async () => {
+    await deleteAlbum(album.id);
+  };
 
   const onDragEnd = (result) => {
     if (!result.destination) return;
@@ -85,13 +86,15 @@ export default function AdminEditAlbum({ albumData }) {
 
       <AlbumCard>
         <CoverImageContainer>
-          <Image
-            src={album.cover.url}
-            alt={album.title || 'Image'}
-            className={'image'}
-            width={400}
-            height={400}
-          />
+          {album.cover.url && (
+            <Image
+              src={album.cover.url}
+              alt={album.title || 'Image'}
+              className={'image'}
+              width={400}
+              height={400}
+            />
+          )}
         </CoverImageContainer>
 
         <EditableText className="title">
@@ -142,42 +145,50 @@ export default function AdminEditAlbum({ albumData }) {
         {isEditing && <DoneButton onClick={handleSaveChanges}>Done</DoneButton>}
       </AlbumCard>
 
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="photosGrid" direction="horizontal">
-          {(provided) => (
-            <PhotosGrid ref={provided.innerRef} {...provided.droppableProps}>
-              {photos.map((photo, index) => (
-                <Draggable key={photo.id} draggableId={photo.id} index={index}>
-                  {(provided) => (
-                    <PhotoCard
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                    >
-                      <ImageContainer>
-                        <Image
-                          src={photo.url}
-                          alt={photo.title || 'Image'}
-                          className={'image'}
-                          width={400}
-                          height={400}
-                        />
-                      </ImageContainer>
-                      <CoverIcon onClick={() => handleSetCover(photo.id)}>
-                        <FaStar size={20} />
-                      </CoverIcon>
-                      <DeleteIcon onClick={() => handleDeletePhoto(photo.id)}>
-                        <MdDelete size={20} />
-                      </DeleteIcon>
-                    </PhotoCard>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </PhotosGrid>
-          )}
-        </Droppable>
-      </DragDropContext>
+      {photos.length > 0 ? (
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="photosGrid" direction="horizontal">
+            {(provided) => (
+              <PhotosGrid ref={provided.innerRef} {...provided.droppableProps}>
+                {photos.map((photo, index) => (
+                  <Draggable
+                    key={photo.id}
+                    draggableId={photo.id}
+                    index={index}
+                  >
+                    {(provided) => (
+                      <PhotoCard
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                      >
+                        <ImageContainer>
+                          <Image
+                            src={photo.url}
+                            alt={photo.title || 'Image'}
+                            className={'image'}
+                            width={400}
+                            height={400}
+                          />
+                        </ImageContainer>
+                        <CoverIcon onClick={() => handleSetCover(photo.id)}>
+                          <FaStar size={20} />
+                        </CoverIcon>
+                        <DeleteIcon onClick={() => handleDeletePhoto(photo.id)}>
+                          <MdDelete size={20} />
+                        </DeleteIcon>
+                      </PhotoCard>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </PhotosGrid>
+            )}
+          </Droppable>
+        </DragDropContext>
+      ) : (
+        <p>No photos added to this album yet. Add some to get started!</p>
+      )}
 
       <Buttons>
         <StyledButton variant="neutral" onClick={handleAddMoreImages}>

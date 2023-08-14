@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import LoadingScreen from '../../../../components/Loading/Loading';
 import { fetchAlbumData } from '../../../../utils/firebaseUtils';
-import AdminEditAlbum from '../../../../components/Admin/AdminEditAlbum/AdminEditAlbum';
+import AdminEditAlbum from '../../../../components/Admin/AdminAlbums/AdminEditAlbum/AdminEditAlbum';
 
 const AlbumEditContainer = styled.div`
   display: flex;
