@@ -1,4 +1,5 @@
 import {
+  Timestamp,
   addDoc,
   collection,
   deleteDoc,
@@ -121,6 +122,7 @@ export async function fetchAlbumData(albumId: string): Promise<Album> {
     return {
       ...data,
       createdAt: data.createdAt.toDate().toISOString(),
+      dateTaken: data.dateTaken.toDate().toISOString(),
       cover,
       photos,
     } as Album;
@@ -230,6 +232,7 @@ export async function addAlbum(albumData) {
 
   await updateDoc(docRef, {
     id: docRef.id,
+    createdAt: Timestamp.now(),
   });
 
   return docRef.id;

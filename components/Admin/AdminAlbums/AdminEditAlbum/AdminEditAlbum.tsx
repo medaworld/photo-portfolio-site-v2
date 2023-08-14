@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { MdArrowBack, MdDelete } from 'react-icons/md';
 import { FaStar } from 'react-icons/fa';
 import Image from 'next/image';
@@ -20,6 +20,8 @@ import {
 } from './AdminEditAlbumStyles';
 import StyledButton from '../../../common/StyledButton';
 import { deleteAlbum } from '../../../../utils/firebaseUtils';
+import { NotificationContext } from '../../../../context/notification/NotificationContext';
+import { useRouter } from 'next/router';
 
 export default function AdminEditAlbum({ albumData }) {
   const [album, setAlbum] = useState(albumData);
@@ -30,6 +32,8 @@ export default function AdminEditAlbum({ albumData }) {
     album.description || ''
   );
   const [enteredDate, setEnteredDate] = useState(album.date || '');
+  const notificationCtx = useContext(NotificationContext);
+  const router = useRouter();
 
   const handleEditToogle = (field) => {
     setIsEditing((prev) => !prev);
@@ -63,8 +67,29 @@ export default function AdminEditAlbum({ albumData }) {
 
   const handleAddMoreImages = () => {};
 
-  const handleDeleteAlbum = async () => {
-    await deleteAlbum(album.id);
+  const handleDeleteAlbum = async (event) => {
+    event.preventDefault();
+    notificationCtx.showNotification({
+      title: 'Deleting...',
+      message: 'Please wait. Deleting album',
+      status: 'Pending',
+    });
+    try {
+      await deleteAlbum(album.id);
+      notificationCtx.showNotification({
+        title: 'Success',
+        message: 'Album added successfully',
+        status: 'success',
+      });
+      router.push('/secure/admin/albums');
+    } catch (error) {
+      console.error('Error adding album: ', error);
+      notificationCtx.showNotification({
+        title: 'Error',
+        message: 'An error occurred while adding album. Please try again.',
+        status: 'error',
+      });
+    }
   };
 
   const onDragEnd = (result) => {

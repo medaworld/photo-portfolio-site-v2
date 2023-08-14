@@ -1,6 +1,4 @@
 import { useContext, useState } from 'react';
-import { firestore } from '../../../lib/firebase';
-import { doc, updateDoc } from 'firebase/firestore';
 import { NotificationContext } from '../../../context/notification/NotificationContext';
 import StyledButton from '../../common/StyledButton';
 import {

@@ -134,11 +134,10 @@ export default function AdminNewAlbum({ images }) {
       });
       router.push('/secure/admin/albums');
     } catch (error) {
-      console.error('Error updating image data: ', error);
+      console.error('Error adding album: ', error);
       notificationCtx.showNotification({
         title: 'Error',
-        message:
-          'An error occurred while updating the images. Please try again.',
+        message: 'An error occurred while adding album. Please try again.',
         status: 'error',
       });
     }

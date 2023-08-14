@@ -216,7 +216,6 @@ export default function AddToAlbum({ selectedImages, closeModal }) {
       description: newAlbumDescription,
       photos: selectedImages,
       cover: selectedImages[0] || null,
-      createdAt: Timestamp.now(),
     };
 
     const albumId = await addAlbum(newAlbum);

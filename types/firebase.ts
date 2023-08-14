@@ -5,6 +5,7 @@ export type Album = {
   createdAt: Date;
   cover: any;
   photos: any[];
+  dateTaken?: Date;
   coverURL?: string;
   photosURLs?: string[];
 };
