@@ -3,7 +3,7 @@
 import styled, { css } from 'styled-components';
 
 export const NavbarContainer = styled.nav<{ isOpen: boolean }>`
-  background-color: ${(props) => props.theme.tplight};
+  background-color: ${(props) => props.theme.tpBackground};
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
   position: fixed;
@@ -16,7 +16,7 @@ export const NavbarContainer = styled.nav<{ isOpen: boolean }>`
   justify-content: space-between;
   padding: 1rem 1rem;
   z-index: 5;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid ${(props) => props.theme.lightBorder};
   max-height: ${({ isOpen }) => (isOpen ? '250px' : '70px')};
 
   @media (max-width: 768px) {
@@ -69,7 +69,7 @@ export const NavLink = styled.li`
   }
 
   a {
-    color: ${(props) => props.theme.dark};
+    color: ${(props) => props.theme.primary};
     text-decoration: none;
     cursor: pointer;
 
@@ -112,7 +112,7 @@ export const HamburgerBar = styled.span<{ isOpen: boolean }>`
   width: 25px;
   height: 3px;
   margin: 5px 0;
-  background-color: ${(props) => props.theme.dark};
+  background-color: ${(props) => props.theme.primary};
   transition: all 0.3s ease-in-out;
 
   ${({ isOpen }) => isOpen && 'transform: translateY(8px) rotate(-45deg);'}

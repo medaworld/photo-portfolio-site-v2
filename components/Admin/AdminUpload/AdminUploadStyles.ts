@@ -2,17 +2,15 @@ import { styled } from 'styled-components';
 
 export const AdminUploadContainer = styled.form`
   width: 100%;
-  height: calc(100vh - 110px);
-  overflow: hidden;
 `;
 
 export const DragAndDropSection = styled.div`
   padding: 20px;
   width: 100%;
-  height: calc(100vh - 110px);
+  height: calc(100vh - 165px);
   overflow: scroll;
-  color: #bbb;
-  background-color: ${(props) => props.theme.dark};
+  color: #fff;
+  background-color: #333;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -22,23 +20,17 @@ export const UploadSection = styled.div`
   text-align: center;
 `;
 
-export const Sidebar = styled.aside`
-  width: 200px;
-  border: 1px solid #ccc;
-  padding: 20px;
-`;
+export const ImageContainer = styled.div`
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
 
-export const Button = styled.button`
-  padding: 10px 20px;
-  background-color: ${(props) => props.theme.color};
-  color: ${(props) => props.theme.background};
-  border: none;
-  border-radius: 5px;
-  font-family: 'Open sans';
-  cursor: pointer;
-  transition: all 0.3s ease;
-
-  &:hover {
-    opacity: 0.9;
+  img {
+    object-fit: contain;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
   }
 `;

@@ -1,54 +1,63 @@
 import Modal from 'react-modal';
-import { FaTimes } from 'react-icons/fa';
-import { styled } from 'styled-components';
+import { IoMdCloseCircle } from 'react-icons/io';
+import { styled, useTheme } from 'styled-components';
 
 const CloseButton = styled.button`
   position: absolute;
-  right: 10px;
-  top: 10px;
-  background: transparent;
+  right: 5px;
+  top: 5px;
+  padding: 0;
   border: none;
   cursor: pointer;
   color: ${(props) => props.theme.primary};
-  opacity: 0.7;
   transition: opacity 0.3s ease;
-  font-size: 1rem;
+  font-size: 1.2rem;
+  line-height: 0;
+  border-radius: 50%;
+  z-index: 1;
 
   &:hover {
     opacity: 1;
   }
 `;
 
-const customStyles = {
+const getCustomStyles = (theme) => ({
   overlay: {
     backgroundColor: 'rgba(0, 0, 0, 0.75)',
+    backdropFilter: 'blur(4px)',
+    webkitBackdropFilter: 'blur(4px)',
     zIndex: '5',
   },
   content: {
+    backgroundColor: theme.tpBackground,
+    border: 'none',
     top: '50%',
     left: '50%',
     right: 'auto',
     bottom: 'auto',
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
-    backgroundColor: '#fff',
-    borderRadius: '4px',
+    borderRadius: '5px',
     maxWidth: '80%',
     maxHeight: '80%',
-    padding: '15px',
+    padding: '1rem',
+    display: 'flex',
   },
-};
+});
 
 export default function CustomModal({ modalIsOpen, closeModal, children }) {
+  const theme = useTheme();
+  const styles = getCustomStyles(theme);
+
   return (
     <Modal
       isOpen={modalIsOpen}
       onRequestClose={closeModal}
       contentLabel="Edit Photos"
-      style={customStyles}
+      style={styles}
     >
       <CloseButton onClick={closeModal} aria-label="Close Modal">
-        <FaTimes />
+        <IoMdCloseCircle />
       </CloseButton>
       {children}
     </Modal>

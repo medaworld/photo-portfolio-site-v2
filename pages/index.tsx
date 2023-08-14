@@ -9,7 +9,6 @@ import { firestore } from '../lib/firebase';
 import { GlobalStateContext } from '../context/globalState/GlobalStateContext';
 
 const MainContentContainer = styled.div<{ showMain: boolean }>`
-  background-color: white;
   margin-top: 150vh;
 `;
 

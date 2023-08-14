@@ -1,7 +1,7 @@
 import { FaInstagram } from 'react-icons/fa';
 import { FaTwitter } from 'react-icons/fa';
 import { FaFacebook } from 'react-icons/fa';
-import { styled } from 'styled-components';
+import { styled, useTheme } from 'styled-components';
 
 const SocialLink = styled.a`
   cursor: pointer;
@@ -31,6 +31,7 @@ const SocialMediaIcon = ({
   margin,
   color,
 }: SocialMediaIconProps) => {
+  const theme = useTheme();
   return (
     <SocialLink
       href={href}
@@ -38,13 +39,13 @@ const SocialMediaIcon = ({
       style={{ margin: margin ? margin : 0 }}
     >
       {platform === 'instagram' && (
-        <FaInstagram size={size} color={color ? color : 'black'} />
+        <FaInstagram size={size} color={color ? color : theme.primary} />
       )}
       {platform === 'twitter' && (
-        <FaTwitter size={size} color={color ? color : 'black'} />
+        <FaTwitter size={size} color={color ? color : theme.primary} />
       )}
       {platform === 'facebook' && (
-        <FaFacebook size={size} color={color ? color : 'black'} />
+        <FaFacebook size={size} color={color ? color : theme.primary} />
       )}
     </SocialLink>
   );

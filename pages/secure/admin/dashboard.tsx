@@ -1,7 +1,5 @@
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { styled } from 'styled-components';
-import AdminSidebar from '../../../components/Admin/AdminSidebar/AdminSidebar';
 import { fetchCount } from '../../../utils/firebaseUtils';
 import { GetServerSideProps } from 'next';
 import { authOptions } from '../../api/auth/[...nextauth]';
@@ -10,21 +8,8 @@ import { useSession } from 'next-auth/react';
 import LoadingScreen from '../../../components/Loading/Loading';
 import Link from 'next/link';
 
-const AdminDashboardContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  min-height: calc(100vh - 55px);
-  padding-top: 55px;
-  background-color: ${(props) => props.theme.background};
-`;
-
-const DashboardCard = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  padding: 20px 30px;
-  background-color: #fff;
-`;
+import { DashboardCard } from '../../../components/Admin/AdminDashboard/AdminDashboardStyles';
+import AdminLayout from '../../../components/Admin/AdminLayout';
 
 export default function AdminDashboard({
   imageCount,
@@ -48,17 +33,21 @@ export default function AdminDashboard({
   }
 
   return (
-    <AdminDashboardContainer>
-      <AdminSidebar />
+    <AdminLayout>
       <DashboardCard>
-        <h1>Welcome, Admin!</h1>
+        <h1>Welcome!</h1>
         <p>
           Total Images: <Link href={'/secure/admin/images'}>{imageCount}</Link>
         </p>
-        <p>Total Albums: {albumCount}</p>
-        <p>Total Collections: {collectionCount}</p>
+        <p>
+          Total Albums: <Link href={'/secure/admin/albums'}>{albumCount}</Link>
+        </p>
+        <p>
+          Total Collections:{' '}
+          <Link href={'/secure/admin/collections'}>{collectionCount}</Link>
+        </p>
       </DashboardCard>
-    </AdminDashboardContainer>
+    </AdminLayout>
   );
 }
 

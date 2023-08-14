@@ -20,15 +20,35 @@ export const useImageUpload = ({ inputRef }) => {
 
   const onDrop = useCallback(
     async (acceptedFiles) => {
-      const compressedFiles = await Promise.all(
-        acceptedFiles.map((file) => compressImage(file))
-      );
-      setFiles((prev) => [...prev, ...compressedFiles]);
-      if (inputRef.current) {
-        inputRef.current.value = '';
+      try {
+        notificationCtx.showNotification({
+          title: 'Uploading...',
+          message: 'Please wait. Adding files',
+          status: 'Pending',
+        });
+
+        const compressedFiles = await Promise.all(
+          acceptedFiles.map((file) => compressImage(file))
+        );
+        setFiles((prev) => [...prev, ...compressedFiles]);
+        if (inputRef.current) {
+          inputRef.current.value = '';
+        }
+        notificationCtx.showNotification({
+          title: 'Success',
+          message: 'Files added successfully',
+          status: 'success',
+        });
+      } catch (error) {
+        console.error(`Failed to add file`, error);
+        notificationCtx.showNotification({
+          title: 'Error',
+          message: error.text || 'Something went wrong',
+          status: 'error',
+        });
       }
     },
-    [inputRef]
+    [inputRef, notificationCtx]
   );
 
   const removeFile = (file) => () => {

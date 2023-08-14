@@ -2,19 +2,24 @@ import { RefObject, useRef } from 'react';
 import { useDropzone } from 'react-dropzone';
 import {
   AdminUploadContainer,
-  Button,
   DragAndDropSection,
+  ImageContainer,
   UploadSection,
 } from './AdminUploadStyles';
 import UploadNavbar from './UploadNavbar';
 import PreviewGrid from './PreviewGrid';
-import ImagePreviewModal from './ImagePreviewModal';
 import { useImageUpload } from '../../../hooks/useImageUpload';
+import StyledButton from '../../common/StyledButton';
+import CustomModal from '../../common/CustomModal';
+import Image from 'next/image';
 
 export default function AdminUpload() {
   const inputRef: RefObject<HTMLInputElement> = useRef(null);
   const {
     files,
+    selectedFiles,
+    modalIsOpen,
+    modalImage,
     onDrop,
     removeFile,
     viewFile,
@@ -24,9 +29,6 @@ export default function AdminUpload() {
     onAddClick,
     onRemoveClick,
     onSubmitClick,
-    selectedFiles,
-    modalIsOpen,
-    modalImage,
   } = useImageUpload({ inputRef });
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
@@ -49,9 +51,9 @@ export default function AdminUpload() {
           <UploadSection>
             <p>Drag & drop photos and videos here</p>
             <p>or</p>
-            <Button onClick={onAddClick} type="button">
+            <StyledButton variant="neutral" onClick={onAddClick} type="button">
               Choose photos to upload
-            </Button>
+            </StyledButton>
           </UploadSection>
         ) : (
           <>
@@ -62,11 +64,20 @@ export default function AdminUpload() {
               viewFile={viewFile}
               selectedFiles={selectedFiles}
             />
-            <ImagePreviewModal
-              modalIsOpen={modalIsOpen}
-              closeModal={closeModal}
-              selectedFile={modalImage}
-            />
+            <CustomModal modalIsOpen={modalIsOpen} closeModal={closeModal}>
+              {modalImage && (
+                <ImageContainer>
+                  <Image
+                    src={URL.createObjectURL(modalImage)}
+                    alt={''}
+                    width={700}
+                    height={700}
+                    className={'image'}
+                    layout="responsive"
+                  />
+                </ImageContainer>
+              )}
+            </CustomModal>
           </>
         )}
       </DragAndDropSection>
