@@ -17,14 +17,14 @@ export const AdminAlbumsLibraryContainer = styled.div`
 export const AlbumCard = styled.div`
   width: 100%;
   margin: 2rem auto;
-  display: flex;
-  flex-direction: column;
   position: relative;
 `;
 
 export const CoverImageContainer = styled.div`
   width: 100%;
   height: 100%;
+  display: flex;
+  min-height: 300px;
 
   > div {
     position: unset !important;
@@ -39,8 +39,33 @@ export const CoverImageContainer = styled.div`
   }
 `;
 
-export const EditableText = styled.div`
+export const CoverText = styled.div`
   position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 1rem 0;
+  align-items: center;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  font-family: 'Raleway';
+  overflow: hidden;
+
+  .title {
+    font-size: 2rem;
+
+    input {
+      font-size: 2rem;
+    }
+  }
+`;
+
+export const EditableText = styled.div`
   color: white;
   background-color: rgba(0, 0, 0, 0.5);
   padding: 5px;
@@ -48,7 +73,7 @@ export const EditableText = styled.div`
   z-index: 1;
   font-family: 'Raleway';
   font-weight: 100;
-  font-size: minmax(14px, 2vw);
+  font-size: 16px;
 
   input {
     border: none;
@@ -57,30 +82,9 @@ export const EditableText = styled.div`
     font-weight: 100;
     background-color: transparent;
     color: white;
-    font-size: minmax(14px, 2vw);
-
+    padding: 0;
+    font-size: 16px;
     outline: none;
-  }
-
-  &.title {
-    font-size: 3vw;
-    top: 20%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-
-    input {
-      font-size: 3vw;
-    }
-  }
-  &.description {
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-  &.date {
-    top: 60%;
-    left: 50%;
-    transform: translate(-50%, -50%);
   }
 `;
 
@@ -100,7 +104,7 @@ export const PhotosGrid = styled.div`
   white-space: nowrap;
 `;
 
-export const PhotoCard = styled.div`
+export const PhotoCardContainer = styled.div`
   position: relative;
   width: 150px;
   height: 150px;

@@ -122,7 +122,7 @@ export async function fetchAlbumData(albumId: string): Promise<Album> {
     return {
       ...data,
       createdAt: data.createdAt.toDate().toISOString(),
-      dateTaken: data.dateTaken.toDate().toISOString(),
+      dateTaken: data.dateTaken ? data.dateTaken.toDate().toISOString() : null,
       cover,
       photos,
     } as Album;
@@ -236,4 +236,10 @@ export async function addAlbum(albumData) {
   });
 
   return docRef.id;
+}
+
+// UPDATE ALBUM
+export async function updateAlbum(albumData) {
+  const albumRef = doc(firestore, 'albums', albumData.id);
+  await updateDoc(albumRef, albumData);
 }
