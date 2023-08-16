@@ -7,22 +7,27 @@ import {
   AlbumText,
   Albums,
 } from './AdminAlbumsLibraryStyles';
+import { capitalizeFirstLetter } from '../../../../utils/stringUtils';
 
-export default function AdminAlbumsLibrary({ albums }) {
+export default function AdminAlbumsLibrary({ items, type }) {
+  const capitalType = capitalizeFirstLetter(type);
+  const pluralType = type + 's';
   return (
     <AdminAlbumsLibraryContainer>
-      <h1>Albums</h1>
-      <Link href="/secure/admin/albums/new">
-        <AddAlbumButton type="button">Add New Album</AddAlbumButton>
+      <h1>{capitalType + 's'}</h1>
+      <Link href={`/secure/admin/${pluralType}/new`}>
+        <AddAlbumButton type="button">Add New {capitalType}</AddAlbumButton>
       </Link>
 
       <Albums>
-        {albums.map((album) => (
-          <Link href={`/secure/admin/albums/${album.id}`} key={album.id}>
-            <AlbumCard style={{ backgroundImage: `url(${album.cover})` }}>
+        {items.map((item) => (
+          <Link href={`/secure/admin/${pluralType}/${item.id}`} key={item.id}>
+            <AlbumCard style={{ backgroundImage: `url(${item.cover})` }}>
               <AlbumCardInfo>
-                <AlbumText>{album.title}</AlbumText>
-                <AlbumText>{album.count} photos</AlbumText>
+                <AlbumText>{item.title}</AlbumText>
+                <AlbumText>
+                  {item.count} {type === 'collection' ? 'albums' : 'photos'}
+                </AlbumText>
               </AlbumCardInfo>
             </AlbumCard>
           </Link>

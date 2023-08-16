@@ -1,15 +1,15 @@
 import { GetServerSideProps } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../../../api/auth/[...nextauth]';
-import { useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import LoadingScreen from '../../../../components/Loading/Loading';
-import AdminAlbumsLibrary from '../../../../components/Admin/AdminAlbums/AdminAlbumsLibrary/AdminAlbumsLibrary';
 import { fetchAlbums } from '../../../../utils/firebaseUtils';
 import AdminLayout from '../../../../components/Admin/AdminLayout';
+import AdminNewCollection from '../../../../components/Admin/AdminCollections/AdminNewCollection/AdminNewCollection';
 
-export default function AdminAlbums({ albums }) {
+export default function NewCollection({ albums }) {
   const { data: session, status } = useSession();
   const router = useRouter();
 
@@ -28,7 +28,7 @@ export default function AdminAlbums({ albums }) {
 
   return (
     <AdminLayout>
-      <AdminAlbumsLibrary items={albums} type="album" />
+      <AdminNewCollection albums={albums} />
     </AdminLayout>
   );
 }
@@ -48,8 +48,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const albums = await fetchAlbums();
 
   return {
-    props: {
-      albums: albums,
-    },
+    props: { albums: albums },
   };
 };

@@ -1,5 +1,4 @@
 import { useContext, useEffect, useRef, useState } from 'react';
-import { MdArrowBack } from 'react-icons/md';
 import Image from 'next/image';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import {
@@ -8,7 +7,6 @@ import {
   EditableText,
   PhotoCardContainer,
   PhotosGrid,
-  BackLink,
   CoverImageContainer,
   CoverText,
 } from './AdminEditAlbumStyles';
@@ -21,8 +19,9 @@ import {
 import { NotificationContext } from '../../../../context/notification/NotificationContext';
 import { useRouter } from 'next/router';
 import DateInput from '../../../common/DateInput';
-import PhotoCard from '../../../common/PhotoCard';
+import PhotoCard from '../../../common/ImageCard';
 import InfiniteImagesBox from '../../../common/InfiniteImagesBox';
+import BackLink from '../../../common/BackLink';
 
 export default function AdminEditAlbum({ albumData }) {
   const [album, setAlbum] = useState(albumData);
@@ -202,11 +201,7 @@ export default function AdminEditAlbum({ albumData }) {
 
   return (
     <AdminAlbumsLibraryContainer>
-      <BackLink href={'/secure/admin/albums'}>
-        <MdArrowBack />
-        <span>Back to albums</span>
-      </BackLink>
-
+      <BackLink href={'/secure/admin/albums'} text={'Back to albums'} />
       <AlbumCard>
         <StyledButton
           variant="primary"
@@ -221,11 +216,11 @@ export default function AdminEditAlbum({ albumData }) {
           Save Change
         </StyledButton>
         <CoverImageContainer>
-          {cover ? (
+          {cover.url ? (
             <>
               <Image
                 src={cover.url}
-                alt={cover.title || 'Image'}
+                alt={cover.id || 'Image'}
                 className={'image'}
                 width={400}
                 height={400}

@@ -1,25 +1,22 @@
-import { MdArrowBack } from 'react-icons/md';
 import { useContext, useEffect, useRef, useState } from 'react';
 import DateInput from '../../../common/DateInput';
 import { addAlbum, fetchImages } from '../../../../utils/firebaseUtils';
-import PhotoCard from '../../../common/PhotoCard';
 import Image from 'next/image';
 import StyledButton from '../../../common/StyledButton';
 import {
   AdminNewAlbumContainer,
-  BackLink,
   NewAlbumForm,
   FormInputs,
   CoverImageContainer,
   CoverText,
-  PhotosDisplay,
-  InfinitePhotos,
-  Photo,
 } from './AdminNewAlbumStyles';
 import StyledInput from '../../../common/StyledInput';
 import StyledTextArea from '../../../common/StyledTextArea';
 import { NotificationContext } from '../../../../context/notification/NotificationContext';
 import { useRouter } from 'next/router';
+import BackLink from '../../../common/BackLink';
+import InfiniteImagesBox from '../../../common/InfiniteImagesBox';
+import DnDRow from '../../../common/DragDropRow';
 
 export default function AdminNewAlbum({ images }) {
   const [albumPhotos, setAlbumPhotos] = useState([]);
@@ -145,11 +142,7 @@ export default function AdminNewAlbum({ images }) {
 
   return (
     <AdminNewAlbumContainer>
-      <BackLink href={'/secure/admin/albums'}>
-        <MdArrowBack />
-        <span>Back to albums</span>
-      </BackLink>
-
+      <BackLink href={'/secure/admin/albums'} text={'Back to albums'} />
       <NewAlbumForm>
         <FormInputs>
           <label>Title</label>
@@ -197,29 +190,21 @@ export default function AdminNewAlbum({ images }) {
         </CoverImageContainer>
 
         <h4>Photos in Album:</h4>
-        <PhotosDisplay>
-          {albumPhotos.map((photo) => (
-            <PhotoCard
-              key={photo.id}
-              photo={photo}
-              handleSetCover={handleSetCover}
-              handleDeletePhoto={handleDeletePhoto}
-              cover={cover}
-            />
-          ))}
-        </PhotosDisplay>
+        <DnDRow
+          items={albumPhotos}
+          setItems={setAlbumPhotos}
+          handleSetCover={handleSetCover}
+          handleDeletePhoto={handleDeletePhoto}
+          cover={cover}
+        />
 
         <h4>All Photos:</h4>
-        <InfinitePhotos>
-          {allPhotos.map((photo) => (
-            <Photo
-              key={photo.id}
-              style={{ backgroundImage: `url(${photo.url})` }}
-              onClick={() => addToAlbum(photo)}
-            />
-          ))}
-          <div ref={loadMoreRef} />
-        </InfinitePhotos>
+        <InfiniteImagesBox
+          allImages={allPhotos}
+          addToAlbum={addToAlbum}
+          loadMoreRef={loadMoreRef}
+        />
+
         <StyledButton variant={'primary'} onClick={submitHandler}>
           Add Album
         </StyledButton>

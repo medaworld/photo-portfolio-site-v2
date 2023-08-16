@@ -1,4 +1,5 @@
 import { styled } from 'styled-components';
+import ImageCard from './ImageCard';
 
 export const InfiniteImagesContainer = styled.div`
   display: flex;
@@ -10,9 +11,6 @@ export const InfiniteImagesContainer = styled.div`
 `;
 
 export const Photo = styled.div`
-  width: 100px;
-  height: 100px;
-  background-size: cover;
   cursor: pointer;
 
   &:hover {
@@ -28,11 +26,9 @@ export default function InfiniteImagesBox({
   return (
     <InfiniteImagesContainer>
       {allImages.map((image) => (
-        <Photo
-          key={image.id}
-          style={{ backgroundImage: `url(${image.url})` }}
-          onClick={() => addToAlbum(image)}
-        />
+        <Photo key={image.id}>
+          <ImageCard image={image} handleAdd={addToAlbum} />
+        </Photo>
       ))}
       <div ref={loadMoreRef} />
     </InfiniteImagesContainer>

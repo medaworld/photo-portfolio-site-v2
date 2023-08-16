@@ -1,22 +1,15 @@
-import { styled } from 'styled-components';
-import AdminSidebar from '../../../components/Admin/AdminSidebar/AdminSidebar';
 import { GetServerSideProps } from 'next';
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '../../api/auth/[...nextauth]';
+import { authOptions } from '../../../api/auth/[...nextauth]';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
-import LoadingScreen from '../../../components/Loading/Loading';
+import LoadingScreen from '../../../../components/Loading/Loading';
+import AdminLayout from '../../../../components/Admin/AdminLayout';
+import AdminAlbumsLibrary from '../../../../components/Admin/AdminAlbums/AdminAlbumsLibrary/AdminAlbumsLibrary';
+import { fetchCollections } from '../../../../utils/firebaseUtils';
 
-const AdminAlbumsContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  min-height: calc(100vh - 55px);
-  padding-top: 55px;
-  background-color: ${(props) => props.theme.background};
-`;
-
-export default function AdminCollections() {
+export default function AdminCollections({ collections }) {
   const { data: session, status } = useSession();
   const router = useRouter();
 
@@ -34,10 +27,9 @@ export default function AdminCollections() {
   }
 
   return (
-    <AdminAlbumsContainer>
-      <AdminSidebar />
-      <h1>Collections</h1>
-    </AdminAlbumsContainer>
+    <AdminLayout>
+      <AdminAlbumsLibrary items={collections} type="collection" />
+    </AdminLayout>
   );
 }
 
@@ -53,7 +45,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
+  const collections = await fetchCollections();
+
   return {
-    props: {},
+    props: { collections: collections },
   };
 };

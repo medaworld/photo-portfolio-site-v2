@@ -194,13 +194,3 @@ export const ImageContainer = styled.div`
     height: 100% !important;
   }
 `;
-
-export const BackLink = styled(Link)`
-  align-items: center;
-  font-size: 16px;
-  transition: opacity 0.2s ease;
-
-  &:hover {
-    opacity: 0.7;
-  }
-`;

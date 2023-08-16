@@ -27,6 +27,7 @@ const StyledInput = styled.input<{ variant: string }>`
   padding: 5px;
   border-radius: 5px;
   font-family: 'Open sans';
+  border: 1px solid ${(props) => props.theme.primary};
   ${(props) => getInputStyles(props.variant)}
 `;
 

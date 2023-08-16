@@ -3,10 +3,8 @@ import { FaStar } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
 import { styled } from 'styled-components';
 
-export const PhotoCardContainer = styled.div`
+export const ImageCardContainer = styled.div`
   position: relative;
-  width: 150px;
-  height: 150px;
 
   img {
     width: 100%;
@@ -60,31 +58,61 @@ export const DeleteIcon = styled.div`
   }
 `;
 
-export default function PhotoCard({
-  photo,
-  handleSetCover,
-  handleDeletePhoto,
+export const Title = styled.div`
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  font-family: 'Raleway';
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  max-width: 80%;
+`;
+
+type PhotoCardProps = {
+  image: any;
+  size?: number;
+  handleSetCover?: (image) => void;
+  handleDelete?: (id) => void;
+  handleAdd?: (image) => void;
+  cover?: any;
+};
+
+export default function ImageCard({
+  image,
+  size = 150,
   cover,
-}) {
-  const isCover = photo.id === cover?.id;
+  handleSetCover,
+  handleDelete,
+  handleAdd,
+}: PhotoCardProps) {
+  const isCover = image.id === cover?.id;
 
   return (
-    <PhotoCardContainer>
+    <ImageCardContainer
+      style={{ width: size, height: size }}
+      onClick={handleAdd ? () => handleAdd(image) : () => {}}
+    >
       <ImageContainer>
         <Image
-          src={photo.url}
-          alt={photo.title || 'Image'}
+          src={image.url || image.cover}
+          alt={image.title || 'Image'}
           className={'image'}
           width={400}
           height={400}
         />
       </ImageContainer>
-      <CoverIcon onClick={() => handleSetCover(photo)} isCover={isCover}>
-        <FaStar size={20} />
-      </CoverIcon>
-      <DeleteIcon onClick={() => handleDeletePhoto(photo.id)}>
-        <MdDelete size={20} />
-      </DeleteIcon>
-    </PhotoCardContainer>
+      <Title>{image.title}</Title>
+      {handleSetCover && (
+        <CoverIcon onClick={() => handleSetCover(image)} isCover={isCover}>
+          <FaStar size={20} />
+        </CoverIcon>
+      )}
+      {handleDelete && (
+        <DeleteIcon onClick={() => handleDelete(image.id)}>
+          <MdDelete size={20} />
+        </DeleteIcon>
+      )}
+    </ImageCardContainer>
   );
 }
