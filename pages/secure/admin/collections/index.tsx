@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import LoadingScreen from '../../../../components/Loading/Loading';
 import AdminLayout from '../../../../components/Admin/AdminLayout';
-import AdminAlbumsLibrary from '../../../../components/Admin/AdminAlbums/AdminAlbumsLibrary/AdminAlbumsLibrary';
+import AdminCollectionsLibrary from '../../../../components/Admin/AdminCollections/AdminCollectionsLibrary/AdminCollectionsLibrary';
 import { fetchCollections } from '../../../../utils/firebaseUtils';
 
 export default function AdminCollections({ collections }) {
@@ -28,7 +28,7 @@ export default function AdminCollections({ collections }) {
 
   return (
     <AdminLayout>
-      <AdminAlbumsLibrary items={collections} type={'collection'} />
+      <AdminCollectionsLibrary items={collections} type={'collection'} />
     </AdminLayout>
   );
 }

@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 import { size } from '../../../../utils/breakpoints';
 
-export const AdminAlbumsLibraryContainer = styled.div`
+export const AdminCollectionsLibraryContainer = styled.div`
   width: 100%;
   background-color: ${(props) => props.theme.backgroundSecondary};
   padding: 1rem;
@@ -13,7 +13,7 @@ export const AdminAlbumsLibraryContainer = styled.div`
   }
 `;
 
-export const Albums = styled.div`
+export const Collections = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, 200px);
   gap: 1rem;
@@ -25,7 +25,7 @@ export const Albums = styled.div`
   }
 `;
 
-export const AlbumCard = styled.div`
+export const CollectionCard = styled.div`
   width: 200px;
   height: 200px;
   background-size: cover;
@@ -44,7 +44,7 @@ export const AlbumCard = styled.div`
   }
 `;
 
-export const AlbumCardInfo = styled.div`
+export const CollectionCardInfo = styled.div`
   position: absolute;
   bottom: 0;
   left: 0;
@@ -57,13 +57,13 @@ export const AlbumCardInfo = styled.div`
   flex-direction: column;
 `;
 
-export const AlbumText = styled.span`
+export const CollectionText = styled.span`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 `;
 
-export const AddAlbumButton = styled.button`
+export const AddCollectionButton = styled.button`
   background-color: ${(props) => props.theme.primaryButton};
   color: white;
   padding: 8px 16px;
