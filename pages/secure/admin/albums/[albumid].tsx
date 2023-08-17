@@ -8,6 +8,7 @@ import LoadingScreen from '../../../../components/Loading/Loading';
 import { fetchAlbumData } from '../../../../utils/firebaseUtils';
 import AdminEditAlbum from '../../../../components/Admin/AdminAlbums/AdminEditAlbum/AdminEditAlbum';
 import AdminLayout from '../../../../components/Admin/AdminLayout';
+import AdminEditCollection from '../../../../components/Admin/AdminCollections/AdminEditCollection/AdminEditCollection';
 
 export default function AdminAlbum({ album }) {
   const { data: session, status } = useSession();
@@ -28,7 +29,7 @@ export default function AdminAlbum({ album }) {
 
   return (
     <AdminLayout>
-      <AdminEditAlbum albumData={album} />
+      <AdminEditCollection collection={album} type={'album'} />
     </AdminLayout>
   );
 }

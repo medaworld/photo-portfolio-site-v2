@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useRef, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 
@@ -9,7 +9,11 @@ import StyledButton from '../../../common/StyledButton';
 import DragDropRow from '../../../common/DragDropRow';
 import InfiniteImagesBox from '../../../common/InfiniteItemsBox';
 
-import { addCollection } from '../../../../utils/firebaseUtils';
+import {
+  addAlbum,
+  addCollection,
+  fetchImages,
+} from '../../../../utils/firebaseUtils';
 import { NotificationContext } from '../../../../context/notification/NotificationContext';
 
 import {
@@ -19,14 +23,22 @@ import {
   FormInputs,
   NewCollectionForm,
 } from './AdminNewCollectionStyles';
+import { capitalizeFirstLetter } from '../../../../utils/stringUtils';
+import DateInput from '../../../common/DateInput';
 
-export default function AdminNewCollection({ albums }) {
+export default function AdminNewCollection({ items, type }) {
+  const pluralType = type + 's';
+  const itemType = type === 'collection' ? 'Albums' : 'Images';
   const [enteredTitle, setEnteredTitle] = useState('');
   const [enteredDescription, setEnteredDescription] = useState('');
-  const [selectedAlbums, setSelectedAlbums] = useState([]);
+  const [enteredDate, setEnteredDate] = useState<Date>();
+  const [allItems, setAllItems] = useState(items.images || items);
+  const [lastVisible, setLastVisible] = useState(items.lastVisible || null);
+  const [selectedItems, setSelectedItems] = useState([]);
   const [cover, setCover] = useState(null);
   const notificationCtx = useContext(NotificationContext);
   const router = useRouter();
+  const loadMoreRef = useRef(null);
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -44,9 +56,9 @@ export default function AdminNewCollection({ albums }) {
     }
   };
 
-  const addToCollection = (album) => {
-    if (!selectedAlbums.includes(album)) {
-      setSelectedAlbums([...selectedAlbums, album]);
+  const addToCollection = (item) => {
+    if (!selectedItems.some((existingItem) => existingItem.id === item.id)) {
+      setSelectedItems([...selectedItems, item]);
     }
   };
 
@@ -54,7 +66,7 @@ export default function AdminNewCollection({ albums }) {
     if (cover?.id === id) {
       setCover(null);
     }
-    setSelectedAlbums((prev) => prev.filter((photo) => photo.id !== id));
+    setSelectedItems((prev) => prev.filter((item) => item.id !== id));
   }
 
   function handleSetCover(photo) {
@@ -63,52 +75,98 @@ export default function AdminNewCollection({ albums }) {
 
   async function submitHandler(event: any) {
     event.preventDefault();
-    if (!enteredTitle || !selectedAlbums) {
+    if (!enteredTitle || !selectedItems) {
       alert('Please enter all input fields');
       return;
     }
     notificationCtx.showNotification({
       title: 'Uploading...',
-      message: 'Please wait. Adding collection',
+      message: `Please wait. Adding ${type}`,
       status: 'Pending',
     });
 
     try {
-      const albums = selectedAlbums.map((album) => {
-        return album.id;
+      const selectedItemsIds = selectedItems.map((item) => {
+        return item.id;
       });
 
-      const collectionData = {
-        title: enteredTitle,
-        description: enteredDescription,
-        cover: cover.id,
-        albums: albums,
-      };
-
-      await addCollection(collectionData);
+      let collectionData: any;
+      if (type === 'collection') {
+        collectionData = {
+          title: enteredTitle,
+          description: enteredDescription,
+          cover: cover.id,
+          albums: selectedItemsIds,
+        };
+        await addCollection(collectionData);
+      } else {
+        collectionData = {
+          title: enteredTitle,
+          description: enteredDescription,
+          dateTaken: enteredDate,
+          cover: cover.id,
+          photos: selectedItemsIds,
+        };
+        await addAlbum(collectionData);
+      }
       notificationCtx.showNotification({
         title: 'Success',
-        message: 'Collection added successfully',
+        message: `${capitalizeFirstLetter(type)} added successfully`,
         status: 'success',
       });
-      router.push('/secure/admin/collections');
+      router.push(`/secure/admin/${pluralType}`);
     } catch (error) {
-      console.error('Error adding collection: ', error);
+      console.error(`Error adding ${type}: `, error);
       notificationCtx.showNotification({
         title: 'Error',
-        message: 'An error occurred while adding collection. Please try again.',
+        message: `An error occurred while adding ${type}. Please try again.`,
         status: 'error',
       });
     }
   }
 
+  useEffect(() => {
+    if (type === 'album') {
+      const fetchMoreImages = async () => {
+        if (lastVisible) {
+          const newImages = await fetchImages({ lastVisible: lastVisible });
+          setAllItems((prevImages) => [
+            ...prevImages,
+            ...(newImages.images || []),
+          ]);
+          setLastVisible(newImages.lastVisible);
+        }
+      };
+      const currentRef = loadMoreRef.current;
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            fetchMoreImages();
+          }
+        },
+        { threshold: 1 }
+      );
+
+      if (currentRef) {
+        observer.observe(currentRef);
+      }
+
+      return () => {
+        if (currentRef) {
+          observer.unobserve(currentRef);
+        }
+      };
+    }
+  }, [lastVisible, type]);
+
   return (
     <AdminNewAlbumContainer>
       <BackLink
-        href={'/secure/admin/collections'}
-        text={'Back to collections'}
+        href={`/secure/admin/${pluralType}`}
+        text={`Back to ${pluralType}`}
       />
-      <NewCollectionForm onSubmit={submitHandler}>
+
+      <NewCollectionForm>
         <FormInputs>
           <label htmlFor="title">Title</label>
           <StyledInput
@@ -125,6 +183,12 @@ export default function AdminNewCollection({ albums }) {
             name="description"
             onChange={handleInputChange}
           />
+          {type === 'album' && (
+            <>
+              <label htmlFor="date">Date Taken</label>
+              <DateInput setSelectedDate={setEnteredDate} />
+            </>
+          )}
         </FormInputs>
 
         <CoverImageContainer>
@@ -133,11 +197,14 @@ export default function AdminNewCollection({ albums }) {
             {enteredDescription && (
               <div className="description">{enteredDescription}</div>
             )}
+            {enteredDate && (
+              <div className="date">{enteredDate.toLocaleDateString()}</div>
+            )}
           </CoverText>
           {cover ? (
             <>
               <Image
-                src={cover.cover}
+                src={cover.cover || cover.url}
                 alt={cover.title || 'Image'}
                 className={'image'}
                 width={400}
@@ -149,24 +216,28 @@ export default function AdminNewCollection({ albums }) {
           )}
         </CoverImageContainer>
 
-        <h4>Albums in Collection:</h4>
+        <h4>{`${itemType} in ${type}`}:</h4>
         <DragDropRow
-          items={selectedAlbums}
-          setItems={setSelectedAlbums}
+          items={selectedItems}
+          setItems={setSelectedItems}
           onSetCover={handleSetCover}
           onRemove={removeFromCollection}
           cover={cover}
         />
 
-        <h4>All Albums:</h4>
+        <h4>{`All ${itemType}:`}</h4>
         <InfiniteImagesBox
-          allItems={albums}
+          allItems={allItems}
           onAdd={addToCollection}
-          loadMoreRef={undefined}
+          loadMoreRef={loadMoreRef}
         />
 
-        <StyledButton variant={'primary'} onClick={submitHandler}>
-          Save Collection
+        <StyledButton
+          variant={'primary'}
+          onClick={submitHandler}
+          style={{ padding: '10px 20px' }}
+        >
+          Save {capitalizeFirstLetter(type)}
         </StyledButton>
       </NewCollectionForm>
     </AdminNewAlbumContainer>

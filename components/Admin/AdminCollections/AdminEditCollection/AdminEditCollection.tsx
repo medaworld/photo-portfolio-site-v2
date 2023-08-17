@@ -29,7 +29,7 @@ export default function AdminEditCollection({ collection, type }) {
     collection.photos || collection.albums || []
   );
   const [allItems, setAllItems] = useState([]);
-  const [lastVisible, setLastVisible] = useState([]);
+  const [lastVisible, setLastVisible] = useState();
   const [cover, setCover] = useState(collection.cover);
   const [enteredTitle, setEnteredTitle] = useState(collection.title || '');
   const [enteredDescription, setEnteredDescription] = useState(
@@ -93,7 +93,6 @@ export default function AdminEditCollection({ collection, type }) {
           albums: itemsData,
           id: collection.id,
         };
-        console.log(collectionData);
         await updateCollection(collectionData);
       } else {
         collectionData = {
@@ -141,13 +140,19 @@ export default function AdminEditCollection({ collection, type }) {
   }
 
   async function showAllItems() {
-    const albums = await fetchAlbums();
-    setAllItems(albums);
+    if (type === 'collection') {
+      const albums = await fetchAlbums();
+      setAllItems(albums);
+    } else {
+      const images = await fetchImages({});
+      setAllItems(images.images);
+      setLastVisible(images.lastVisible);
+    }
     setAddItems(true);
   }
 
   useEffect(() => {
-    if (type === 'albums') {
+    if (type === 'album') {
       const fetchMoreImages = async () => {
         if (lastVisible) {
           const newImages = await fetchImages({ lastVisible: lastVisible });
@@ -195,6 +200,7 @@ export default function AdminEditCollection({ collection, type }) {
         setEnteredDescription={setEnteredDescription}
         enteredDate={enteredDate}
         setEnteredDate={setEnteredDate}
+        type={type}
       />
 
       <h4>{`${itemType} in ${type}`}:</h4>
@@ -221,7 +227,7 @@ export default function AdminEditCollection({ collection, type }) {
           onClick={showAllItems}
           style={{ margin: '1rem 0' }}
         >
-          Add more images
+          Add More {itemType}
         </StyledButton>
       )}
 

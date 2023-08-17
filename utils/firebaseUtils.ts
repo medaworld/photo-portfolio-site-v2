@@ -110,6 +110,59 @@ async function removePhotoIdFromAlbumCover(photoId: string) {
   await batch.commit();
 }
 
+// REMOVE ALBUM FROM COLLECTION
+async function removeAlbumIdFromCollections(albumId: string) {
+  const q = query(
+    collection(firestore, 'collections'),
+    where('albums', 'array-contains', albumId)
+  );
+  const collectionsSnapshot = await getDocs(q);
+
+  if (collectionsSnapshot.empty) {
+    console.log('No collections found with the albumId:', albumId);
+    return;
+  }
+
+  const batch = writeBatch(firestore);
+
+  collectionsSnapshot.docs.forEach((docSnapshot) => {
+    const collectionData = docSnapshot.data() as Collection;
+    const updatedAlbums = collectionData.albums.filter((id) => id !== albumId);
+
+    const collectionDoc = doc(firestore, 'collections', docSnapshot.id);
+    batch.update(collectionDoc, { albums: updatedAlbums });
+  });
+
+  await batch.commit();
+}
+
+// REMOVE ALBUM FROM COLLECTION COVER
+async function removeAlbumIdFromCollectionCover(albumId: string) {
+  const q = query(
+    collection(firestore, 'collections'),
+    where('cover', '==', albumId)
+  );
+
+  const collectionsSnapshot = await getDocs(q);
+
+  if (collectionsSnapshot.empty) {
+    console.log('No collections found with the cover albumId:', albumId);
+    return;
+  }
+
+  const batch = writeBatch(firestore);
+
+  collectionsSnapshot.docs.forEach((docSnapshot) => {
+    const collectionData = docSnapshot.data() as Collection;
+    const firstAlbum = collectionData.albums[0] || null;
+
+    const collectionsDoc = doc(firestore, 'collections', docSnapshot.id);
+    batch.update(collectionsDoc, { cover: firstAlbum || null });
+  });
+
+  await batch.commit();
+}
+
 // FETCH IMAGES
 export async function fetchImages({
   orderByField = 'uploadedAt',
@@ -278,6 +331,8 @@ export async function deleteAlbum(albumId) {
   const albumRef = doc(firestore, 'albums', albumId);
   await deleteDoc(albumRef);
 
+  await removeAlbumIdFromCollections(albumId);
+  await removeAlbumIdFromCollectionCover(albumId);
   console.log('Album deleted successfully.');
 }
 

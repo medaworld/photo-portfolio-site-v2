@@ -5,9 +5,9 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import LoadingScreen from '../../../../components/Loading/Loading';
-import AdminNewAlbum from '../../../../components/Admin/AdminAlbums/AdminNewAlbum/AdminNewAlbum';
 import { fetchImages } from '../../../../utils/firebaseUtils';
 import AdminLayout from '../../../../components/Admin/AdminLayout';
+import AdminNewCollection from '../../../../components/Admin/AdminCollections/AdminNewCollection/AdminNewCollection';
 
 export default function NewAlbum({ images }) {
   const { data: session, status } = useSession();
@@ -28,7 +28,7 @@ export default function NewAlbum({ images }) {
 
   return (
     <AdminLayout>
-      <AdminNewAlbum images={images} />
+      <AdminNewCollection items={images} type={'album'} />
     </AdminLayout>
   );
 }

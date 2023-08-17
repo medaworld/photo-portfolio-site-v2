@@ -5,7 +5,7 @@ export const InfiniteItemsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  height: 200px;
+  height: 300px;
   overflow-y: auto;
   margin-bottom: 1rem;
 `;

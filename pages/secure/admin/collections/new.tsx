@@ -28,7 +28,7 @@ export default function NewCollection({ albums }) {
 
   return (
     <AdminLayout>
-      <AdminNewCollection albums={albums} />
+      <AdminNewCollection items={albums} type={'collection'} />
     </AdminLayout>
   );
 }

@@ -86,6 +86,7 @@ export const DoneButton = styled.button`
 
 type CoverCardProps = {
   cover: { id: string; url: string; cover: string };
+  type: string;
   enteredTitle: string;
   setEnteredTitle: Dispatch<any>;
   enteredDescription: string;
@@ -96,6 +97,7 @@ type CoverCardProps = {
 
 export default function CoverCard({
   cover,
+  type,
   enteredTitle,
   setEnteredTitle,
   enteredDescription,
@@ -175,7 +177,7 @@ export default function CoverCard({
           )}
         </EditableText>
 
-        {enteredDate && (
+        {type === 'album' && (
           <EditableText className="date">
             {isEditing ? (
               <DateInput setSelectedDate={setEnteredDate} />
