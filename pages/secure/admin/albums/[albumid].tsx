@@ -6,7 +6,6 @@ import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import LoadingScreen from '../../../../components/Loading/Loading';
 import { fetchAlbumData } from '../../../../utils/firebaseUtils';
-import AdminEditAlbum from '../../../../components/Admin/AdminAlbums/AdminEditAlbum/AdminEditAlbum';
 import AdminLayout from '../../../../components/Admin/AdminLayout';
 import AdminEditCollection from '../../../../components/Admin/AdminCollections/AdminEditCollection/AdminEditCollection';
 

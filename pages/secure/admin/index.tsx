@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import 'firebase/auth';
 import { NotificationContext } from '../../../context/notification/NotificationContext';
-import { useSession, signIn, signOut } from 'next-auth/react';
+import { useSession, signIn } from 'next-auth/react';
 import {
   AdminLoginContainer,
   ErrorText,

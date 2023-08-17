@@ -47,6 +47,8 @@ export const LogoutButton = styled.button`
   cursor: pointer;
   outline: inherit;
   display: flex;
+  align-items: center;
+  gap: 3px;
 
   &:hover {
     color: #ddd;

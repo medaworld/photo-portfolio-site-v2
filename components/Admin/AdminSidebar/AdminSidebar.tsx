@@ -12,6 +12,8 @@ import {
   ToggleButton,
 } from './AdminSidebarStyles';
 import { RxGrid } from 'react-icons/rx';
+import { PiUploadSimple, PiImageSquareBold } from 'react-icons/pi';
+import { BiPhotoAlbum, BiCollection, BiLogOut } from 'react-icons/bi';
 
 export default function AdminSidebar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -40,13 +42,19 @@ export default function AdminSidebar() {
       });
   };
 
-  const renderLink = (href: string, text: string) => {
+  const renderLink = (href: string, text: string, icon?: any) => {
     if (router.pathname.includes(href)) {
-      return <ActiveSidebarLink>{text}</ActiveSidebarLink>;
+      return (
+        <ActiveSidebarLink>
+          {icon} {text}
+        </ActiveSidebarLink>
+      );
     }
     return (
       <Link href={href} passHref>
-        <SidebarLinkWrapper>{text}</SidebarLinkWrapper>
+        <SidebarLinkWrapper>
+          {icon} {text}
+        </SidebarLinkWrapper>
       </Link>
     );
   };
@@ -54,12 +62,18 @@ export default function AdminSidebar() {
   return (
     <SidebarContainer isSidebarOpen={isSidebarOpen}>
       <SidebarMenu>
-        {renderLink('/secure/admin/dashboard', 'Dashboard')}
-        {renderLink('/secure/admin/upload', 'Upload')}
-        {renderLink('/secure/admin/images', 'Images')}
-        {renderLink('/secure/admin/albums', 'Albums')}
-        {renderLink('/secure/admin/collections', 'Collections')}
-        <LogoutButton onClick={logoutHandler}>Logout</LogoutButton>
+        {renderLink('/secure/admin/dashboard', 'Dashboard', <RxGrid />)}
+        {renderLink('/secure/admin/upload', 'Upload', <PiUploadSimple />)}
+        {renderLink('/secure/admin/images', 'Images', <PiImageSquareBold />)}
+        {renderLink('/secure/admin/albums', 'Albums', <BiPhotoAlbum />)}
+        {renderLink(
+          '/secure/admin/collections',
+          'Collections',
+          <BiCollection />
+        )}
+        <LogoutButton onClick={logoutHandler}>
+          <BiLogOut /> Logout
+        </LogoutButton>
       </SidebarMenu>
       <ToggleButton
         isSidebarOpen={isSidebarOpen}

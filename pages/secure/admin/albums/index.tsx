@@ -28,7 +28,7 @@ export default function AdminAlbums({ albums }) {
 
   return (
     <AdminLayout>
-      <AdminAlbumsLibrary items={albums} type="album" />
+      <AdminAlbumsLibrary items={albums} type={'album'} />
     </AdminLayout>
   );
 }
