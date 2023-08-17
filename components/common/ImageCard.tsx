@@ -34,8 +34,8 @@ export const CoverIcon = styled.div<{ isCover: boolean }>`
   bottom: 5px;
   left: 5px;
   cursor: pointer;
-  color: ${(props) => (props.isCover ? ' #ffd700' : props.theme.background)};
-  opacity: 0.7;
+  color: ${(props) => (props.isCover ? ' #ffd700' : 'white')};
+  opacity: 0.8;
   transition: all 0.2s ease;
 
   &:hover {
@@ -72,9 +72,9 @@ export const Title = styled.div`
 type PhotoCardProps = {
   image: any;
   size?: number;
-  handleSetCover?: (image) => void;
-  handleDelete?: (id) => void;
-  handleAdd?: (image) => void;
+  onSetCover?: (image) => void;
+  onRemove?: (id) => void;
+  onAdd?: (image) => void;
   cover?: any;
 };
 
@@ -82,16 +82,16 @@ export default function ImageCard({
   image,
   size = 150,
   cover,
-  handleSetCover,
-  handleDelete,
-  handleAdd,
+  onSetCover,
+  onRemove,
+  onAdd,
 }: PhotoCardProps) {
   const isCover = image.id === cover?.id;
 
   return (
     <ImageCardContainer
       style={{ width: size, height: size }}
-      onClick={handleAdd ? () => handleAdd(image) : () => {}}
+      onClick={onAdd ? () => onAdd(image) : () => {}}
     >
       <ImageContainer>
         <Image
@@ -103,13 +103,13 @@ export default function ImageCard({
         />
       </ImageContainer>
       <Title>{image.title}</Title>
-      {handleSetCover && (
-        <CoverIcon onClick={() => handleSetCover(image)} isCover={isCover}>
+      {onSetCover && (
+        <CoverIcon onClick={() => onSetCover(image)} isCover={isCover}>
           <FaStar size={20} />
         </CoverIcon>
       )}
-      {handleDelete && (
-        <DeleteIcon onClick={() => handleDelete(image.id)}>
+      {onRemove && (
+        <DeleteIcon onClick={() => onRemove(image.id)}>
           <MdDelete size={20} />
         </DeleteIcon>
       )}

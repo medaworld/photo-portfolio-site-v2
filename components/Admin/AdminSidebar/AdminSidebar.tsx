@@ -11,6 +11,7 @@ import {
   SidebarMenu,
   ToggleButton,
 } from './AdminSidebarStyles';
+import { RxGrid } from 'react-icons/rx';
 
 export default function AdminSidebar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);

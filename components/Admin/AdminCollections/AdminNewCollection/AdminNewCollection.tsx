@@ -7,7 +7,7 @@ import StyledInput from '../../../common/StyledInput';
 import StyledTextArea from '../../../common/StyledTextArea';
 import StyledButton from '../../../common/StyledButton';
 import DragDropRow from '../../../common/DragDropRow';
-import InfiniteImagesBox from '../../../common/InfiniteImagesBox';
+import InfiniteImagesBox from '../../../common/InfiniteItemsBox';
 
 import { addCollection } from '../../../../utils/firebaseUtils';
 import { NotificationContext } from '../../../../context/notification/NotificationContext';
@@ -153,15 +153,15 @@ export default function AdminNewCollection({ albums }) {
         <DragDropRow
           items={selectedAlbums}
           setItems={setSelectedAlbums}
-          handleSetCover={handleSetCover}
-          handleDeletePhoto={removeFromCollection}
+          onSetCover={handleSetCover}
+          onRemove={removeFromCollection}
           cover={cover}
         />
 
         <h4>All Albums:</h4>
         <InfiniteImagesBox
-          allImages={albums}
-          addToAlbum={addToCollection}
+          allItems={albums}
+          onAdd={addToCollection}
           loadMoreRef={undefined}
         />
 

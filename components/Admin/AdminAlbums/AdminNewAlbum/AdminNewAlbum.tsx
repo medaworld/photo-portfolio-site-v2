@@ -15,7 +15,7 @@ import StyledTextArea from '../../../common/StyledTextArea';
 import { NotificationContext } from '../../../../context/notification/NotificationContext';
 import { useRouter } from 'next/router';
 import BackLink from '../../../common/BackLink';
-import InfiniteImagesBox from '../../../common/InfiniteImagesBox';
+import InfiniteImagesBox from '../../../common/InfiniteItemsBox';
 import DnDRow from '../../../common/DragDropRow';
 
 export default function AdminNewAlbum({ images }) {

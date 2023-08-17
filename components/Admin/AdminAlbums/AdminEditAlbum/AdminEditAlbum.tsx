@@ -19,13 +19,15 @@ import {
 import { NotificationContext } from '../../../../context/notification/NotificationContext';
 import { useRouter } from 'next/router';
 import DateInput from '../../../common/DateInput';
-import PhotoCard from '../../../common/ImageCard';
-import InfiniteImagesBox from '../../../common/InfiniteImagesBox';
+import ImageCard from '../../../common/ImageCard';
+import InfiniteImagesBox from '../../../common/InfiniteItemsBox';
 import BackLink from '../../../common/BackLink';
 
 export default function AdminEditAlbum({ albumData }) {
   const [album, setAlbum] = useState(albumData);
-  const [photos, setPhotos] = useState(albumData.photos || []);
+  const [photos, setPhotos] = useState(
+    albumData.photos || albumData.albums || []
+  );
   const [allImages, setAllImages] = useState([]);
   const [lastVisible, setLastVisible] = useState([]);
   const [cover, setCover] = useState(albumData.cover);
@@ -93,7 +95,7 @@ export default function AdminEditAlbum({ albumData }) {
         photos: photoData,
         id: album.id,
       };
-      console.log(albumData);
+
       await updateAlbum(albumData);
       notificationCtx.showNotification({
         title: 'Success',
@@ -304,10 +306,10 @@ export default function AdminEditAlbum({ albumData }) {
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
                       >
-                        <PhotoCard
-                          photo={photo}
+                        <ImageCard
+                          image={photo}
                           handleSetCover={handleSetCover}
-                          handleDeletePhoto={handleDeletePhoto}
+                          handleDelete={handleDeletePhoto}
                           cover={cover}
                         />
                       </PhotoCardContainer>

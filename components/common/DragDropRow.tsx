@@ -28,8 +28,8 @@ export const ItemCardContainer = styled.div`
 export default function DragDropRow({
   items,
   setItems,
-  handleSetCover,
-  handleDeletePhoto,
+  onSetCover,
+  onRemove,
   cover,
 }) {
   const onDragEnd = (result) => {
@@ -59,8 +59,8 @@ export default function DragDropRow({
                       >
                         <ImageCard
                           image={item}
-                          handleSetCover={handleSetCover}
-                          handleDelete={handleDeletePhoto}
+                          onSetCover={onSetCover}
+                          onRemove={onRemove}
                           cover={cover}
                         />
                       </ItemCardContainer>

@@ -10,6 +10,17 @@ export type Album = {
   photosURLs?: string[];
 };
 
+export type Collection = {
+  title: string;
+  id: string;
+  description: string;
+  createdAt: Date;
+  cover: any;
+  albums: string[];
+  coverURL?: string;
+  photosURLs?: string[];
+};
+
 export type FetchImagesOptions = {
   orderByField?: string;
   orderDirection?: 'asc' | 'desc';
