@@ -4,8 +4,8 @@ import styled, { css } from 'styled-components';
 
 export const NavbarContainer = styled.nav<{ isOpen: boolean }>`
   background-color: ${(props) => props.theme.tpBackground};
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   position: fixed;
   top: 0;
   left: 0;
@@ -16,7 +16,7 @@ export const NavbarContainer = styled.nav<{ isOpen: boolean }>`
   justify-content: space-between;
   padding: 1rem 1rem;
   z-index: 5;
-  border-bottom: 1px solid ${(props) => props.theme.lightBorder};
+  border-bottom: 1px solid ${(props) => props.theme.border};
   max-height: ${({ isOpen }) => (isOpen ? '250px' : '70px')};
 
   @media (max-width: 768px) {

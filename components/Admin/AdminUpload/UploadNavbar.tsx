@@ -5,7 +5,7 @@ import StyledButton from '../../common/StyledButton';
 export const UploadNavbarContainer = styled.div`
   width: 100%;
   background-color: ${(props) => props.theme.secondary};
-  height: 3rem;
+  height: 4rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -26,10 +26,10 @@ export default function UploadNavbar({ onAddClick, onRemoveClick }) {
     <UploadNavbarContainer>
       <ButtonsWrapper>
         <StyledButton variant="neutral" onClick={onAddClick} type="button">
-          <FaPlus /> Add
+          <FaPlus size={12} /> Add
         </StyledButton>
         <StyledButton variant="neutral" onClick={onRemoveClick} type="button">
-          <FaMinus /> Remove
+          <FaMinus size={12} /> Remove
         </StyledButton>
       </ButtonsWrapper>
       <StyledButton variant="primary" type="submit">

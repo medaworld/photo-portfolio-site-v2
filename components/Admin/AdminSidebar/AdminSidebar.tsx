@@ -12,7 +12,7 @@ import {
   ToggleButton,
 } from './AdminSidebarStyles';
 import { RxGrid } from 'react-icons/rx';
-import { PiUploadSimple, PiImageSquareBold } from 'react-icons/pi';
+import { PiUploadSimpleBold, PiImageSquareBold } from 'react-icons/pi';
 import { BiPhotoAlbum, BiCollection, BiLogOut } from 'react-icons/bi';
 
 export default function AdminSidebar() {
@@ -63,7 +63,7 @@ export default function AdminSidebar() {
     <SidebarContainer isSidebarOpen={isSidebarOpen}>
       <SidebarMenu>
         {renderLink('/secure/admin/dashboard', 'Dashboard', <RxGrid />)}
-        {renderLink('/secure/admin/upload', 'Upload', <PiUploadSimple />)}
+        {renderLink('/secure/admin/upload', 'Upload', <PiUploadSimpleBold />)}
         {renderLink('/secure/admin/images', 'Images', <PiImageSquareBold />)}
         {renderLink('/secure/admin/albums', 'Albums', <BiPhotoAlbum />)}
         {renderLink(

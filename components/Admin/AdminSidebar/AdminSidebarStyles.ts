@@ -1,12 +1,12 @@
 import { styled } from 'styled-components';
 
 export const SidebarContainer = styled.div<{ isSidebarOpen: boolean }>`
-  background-color: ${(props) => props.theme.footer};
   position: relative;
   display: flex;
-  padding: 50px 15px;
-  width: ${(props) => (props.isSidebarOpen ? '250px' : '0px')};
+  width: ${(props) => (props.isSidebarOpen ? '300px' : '30px')};
   transition: width 0.3s ease-in-out;
+  border-right: 1px solid ${(props) => props.theme.border};
+  padding-left: ${(props) => (props.isSidebarOpen ? '15px' : '0')};
 
   div {
     transition: opacity 0.2s ease;
@@ -22,6 +22,8 @@ export const SidebarMenu = styled.div`
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  width: 100%;
+  padding: 50px 0;
 `;
 
 export const ActiveSidebarLink = styled.div`
@@ -34,7 +36,6 @@ export const ActiveSidebarLink = styled.div`
 `;
 
 export const SidebarLinkWrapper = styled.div`
-  color: ${(props) => props.theme.dark};
   cursor: pointer;
   text-decoration: none;
   padding: 5px 10px;
@@ -66,21 +67,17 @@ export const LogoutButton = styled.button`
 `;
 
 export const ToggleButton = styled.button<{ isSidebarOpen: boolean }>`
-  background-color: ${(props) => props.theme.footer};
+  background-color: transparent;
   color: ${(props) => props.theme.primary};
   border: none;
   font: inherit;
   font-size: 24px;
   cursor: pointer;
-  position: absolute;
-  right: 0;
-  top: 0;
-  padding: 0;
-  width: 25px;
+  padding: 0 10px;
   height: 100%;
-  transition: color 0.3s ease;
+  transition: opacity 0.3s ease;
 
   &:hover {
-    color: ${(props) => props.theme.hover};
+    opacity: 0.5;
   }
 `;

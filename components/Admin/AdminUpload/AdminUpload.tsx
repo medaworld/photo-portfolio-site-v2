@@ -1,7 +1,8 @@
-import { RefObject, useRef } from 'react';
+import { RefObject, useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import {
   AdminUploadContainer,
+  AdminUploadInner,
   DragAndDropSection,
   ImageContainer,
   UploadSection,
@@ -36,53 +37,59 @@ export default function AdminUpload() {
 
   return (
     <AdminUploadContainer onSubmit={onSubmitClick}>
-      <UploadNavbar onAddClick={onAddClick} onRemoveClick={onRemoveClick} />
-      <DragAndDropSection {...getRootProps()}>
-        <input
-          {...getInputProps()}
-          hidden
-          type="file"
-          name="image"
-          ref={inputRef}
-          multiple
-          onChange={onFileChange}
-          accept="image/jpeg, image/png, image/jpg"
-        />
-        {files.length === 0 ? (
-          <UploadSection>
-            <p>Drag & drop photos and videos here</p>
-            <p>or</p>
-            <StyledButton variant="neutral" onClick={onAddClick} type="button">
-              Choose photos to upload
-            </StyledButton>
-          </UploadSection>
-        ) : (
-          <>
-            <PreviewGrid
-              files={files}
-              setFiles={setFiles}
-              toggleSelectedFile={toggleSelectedFile}
-              removeFile={removeFile}
-              viewFile={viewFile}
-              selectedFiles={selectedFiles}
-            />
-            <CustomModal modalIsOpen={modalIsOpen} closeModal={closeModal}>
-              {modalImage && (
-                <ImageContainer>
-                  <Image
-                    src={URL.createObjectURL(modalImage)}
-                    alt={''}
-                    width={500}
-                    height={500}
-                    className={'image'}
-                    layout="responsive"
-                  />
-                </ImageContainer>
-              )}
-            </CustomModal>
-          </>
-        )}
-      </DragAndDropSection>
+      <AdminUploadInner>
+        <UploadNavbar onAddClick={onAddClick} onRemoveClick={onRemoveClick} />
+        <DragAndDropSection {...getRootProps()}>
+          <input
+            {...getInputProps()}
+            hidden
+            type="file"
+            name="image"
+            ref={inputRef}
+            multiple
+            onChange={onFileChange}
+            accept="image/jpeg, image/png, image/jpg"
+          />
+          {files.length === 0 ? (
+            <UploadSection>
+              <p>Drag & drop photos and videos here</p>
+              <p>or</p>
+              <StyledButton
+                variant="neutral"
+                onClick={onAddClick}
+                type="button"
+              >
+                Choose photos to upload
+              </StyledButton>
+            </UploadSection>
+          ) : (
+            <>
+              <PreviewGrid
+                files={files}
+                setFiles={setFiles}
+                toggleSelectedFile={toggleSelectedFile}
+                removeFile={removeFile}
+                viewFile={viewFile}
+                selectedFiles={selectedFiles}
+              />
+              <CustomModal modalIsOpen={modalIsOpen} closeModal={closeModal}>
+                {modalImage && (
+                  <ImageContainer>
+                    <Image
+                      src={URL.createObjectURL(modalImage)}
+                      alt={''}
+                      width={500}
+                      height={500}
+                      className={'image'}
+                      layout="responsive"
+                    />
+                  </ImageContainer>
+                )}
+              </CustomModal>
+            </>
+          )}
+        </DragAndDropSection>
+      </AdminUploadInner>
     </AdminUploadContainer>
   );
 }

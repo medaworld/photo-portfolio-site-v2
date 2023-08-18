@@ -6,7 +6,7 @@ import {
   AdminImageLibraryInner,
 } from './AdminImageLibraryStyles';
 
-import BottomPanel from './BottomPanel';
+import BottomPanel from '../../common/BottomPanel';
 import renderImagesGroup from './ImagesGroup';
 import { useImageEdit } from '../../../hooks/useImageEdit';
 
@@ -49,6 +49,7 @@ export default function AdminPhotoLibrary({ imagesData }) {
           editSelectedImages={editSelectedImages}
           addToAlbum={addToAlbum}
           deleteSelectedImages={deleteSelectedImages}
+          type={'images'}
         />
       )}
       <CustomModal modalIsOpen={modalIsOpen} closeModal={closeModal}>

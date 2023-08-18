@@ -1,16 +1,27 @@
 import { styled } from 'styled-components';
+import { size } from '../../../utils/breakpoints';
 
 export const AdminUploadContainer = styled.form`
   width: 100%;
+  background-color: #333;
+`;
+
+export const AdminUploadInner = styled.div`
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
+  height: calc(100vh - 110px);
+
+  @media (max-width: ${size.mobileL}) {
+    height: calc(100vh - 170px);
+  }
 `;
 
 export const DragAndDropSection = styled.div`
   padding: 20px;
   width: 100%;
-  height: calc(100vh - 165px);
-  overflow: scroll;
+  height: calc(150%);
   color: #fff;
-  background-color: #333;
   display: flex;
   justify-content: center;
   align-items: center;

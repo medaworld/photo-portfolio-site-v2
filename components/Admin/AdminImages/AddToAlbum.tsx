@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import { firestore } from '../../../lib/firebase';
 import {
-  Timestamp,
-  addDoc,
   arrayRemove,
   arrayUnion,
   collection,

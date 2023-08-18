@@ -2,12 +2,12 @@ import { styled } from 'styled-components';
 
 export const FooterContainer = styled.footer`
   width: 100%;
+  border-top: 1px solid ${(props) => props.theme.border};
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: ${(props) => props.theme.lightBorder};
   padding: 1rem;
   z-index: 5;
 `;
@@ -30,7 +30,6 @@ export const FooterItem = styled.li`
   }
 
   a {
-    color: ${(props) => props.theme.dark};
     text-decoration: none;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -63,7 +62,6 @@ export const FooterText = styled.p`
 `;
 
 export const FooterLink = styled.a`
-  color: ${(props) => props.theme.dark};
   text-decoration: underline;
 
   &:hover {

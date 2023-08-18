@@ -1,11 +1,45 @@
 import { MdEdit, MdPhotoAlbum, MdDelete } from 'react-icons/md';
-import StyledButton from '../../common/StyledButton';
-import {
-  BottomActions,
-  BottomPanelContainer,
-  ImagePreview,
-  TopActions,
-} from './BottomPanelStyles';
+import StyledButton from './StyledButton';
+import { styled } from 'styled-components';
+
+const BottomPanelContainer = styled.div`
+  position: sticky;
+  bottom: 0;
+  background-color: ${(props) => props.theme.tpBackground};
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid ${(props) => props.theme.lightBorder};
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
+const TopActions = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+`;
+
+const BottomActions = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+`;
+
+const ImagePreview = styled.div`
+  width: 40px;
+  height: 40px;
+  overflow: hidden;
+  border-radius: 5px;
+  margin-right: 8px;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+`;
 
 export default function BottomPanel({
   selectedImages,
@@ -14,6 +48,7 @@ export default function BottomPanel({
   editSelectedImages,
   addToAlbum,
   deleteSelectedImages,
+  type,
 }) {
   return (
     <BottomPanelContainer>
@@ -69,7 +104,7 @@ export default function BottomPanel({
           type="button"
           onClick={deleteSelectedImages}
         >
-          <MdDelete /> Delete
+          <MdDelete /> {type === 'upload' ? 'Remove' : 'Delete'}
         </StyledButton>
       </BottomActions>
     </BottomPanelContainer>

@@ -160,7 +160,9 @@ export const useImageUpload = ({ inputRef }) => {
     onRemoveClick,
     onSubmitClick,
     selectedFiles,
+    setSelectedFiles,
     modalIsOpen,
+    setModalIsOpen,
     modalImage,
   };
 };

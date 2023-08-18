@@ -13,6 +13,7 @@ import {
   LoginForm,
   LoginInput,
 } from '../../../components/Admin/AdminLogin/AdminLoginStyles';
+import StyledInput from '../../../components/common/StyledInput';
 
 export default function AdminLogin() {
   const [enteredEmail, setEnteredEmail] = useState('');
@@ -60,12 +61,14 @@ export default function AdminLogin() {
   return (
     <AdminLoginContainer>
       <LoginForm onSubmit={handleSubmit}>
-        <LoginInput
+        <StyledInput
+          variant="primary"
           type="text"
           onChange={(e) => setEnteredEmail(e.target.value)}
           placeholder="Email"
         />
-        <LoginInput
+        <StyledInput
+          variant="primary"
           type="password"
           onChange={(e) => setEnteredPassword(e.target.value)}
           placeholder="Password"
