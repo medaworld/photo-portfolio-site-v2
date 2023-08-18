@@ -3,7 +3,6 @@ import { size } from '../../../../utils/breakpoints';
 
 export const AdminCollectionsLibraryContainer = styled.div`
   width: 100%;
-  background-color: ${(props) => props.theme.backgroundSecondary};
   padding: 1rem;
   height: calc(100vh - 110px);
   overflow: scroll;

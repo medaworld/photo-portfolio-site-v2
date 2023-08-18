@@ -3,10 +3,10 @@ import { deleteImages, fetchImages } from '../utils/firebaseUtils';
 import { months } from '../utils/dateUtils';
 import { NotificationContext } from '../context/notification/NotificationContext';
 
-export function useImageEdit(imagesData) {
+export function useImageLibrary(images) {
   const notificationCtx = useContext(NotificationContext);
-  const [allImages, setAllImages] = useState(imagesData.images);
-  const [lastVisible, setLastVisible] = useState(imagesData.lastVisible);
+  const [allImages, setAllImages] = useState(images.images);
+  const [lastVisible, setLastVisible] = useState(images.lastVisible);
   const [selectedImages, setSelectedImages] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [editIsOpen, setEditIsOpen] = useState(false);
@@ -159,6 +159,7 @@ export function useImageEdit(imagesData) {
     editIsOpen,
     addToAlbumIsOpen,
     loadMoreRef,
+    groupedImages,
     toggleSelectImage,
     selectAllFromGroup,
     editSelectedImages,
@@ -167,6 +168,5 @@ export function useImageEdit(imagesData) {
     closeModal,
     handleClearSelectedImages,
     handleRefreshImages,
-    groupedImages,
   };
 }

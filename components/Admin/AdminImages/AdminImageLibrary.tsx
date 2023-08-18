@@ -5,10 +5,9 @@ import {
   AdminImageLibraryContainer,
   AdminImageLibraryInner,
 } from './AdminImageLibraryStyles';
-
-import BottomPanel from '../../common/BottomPanel';
+import BottomPanel from './BottomPanel';
 import renderImagesGroup from './ImagesGroup';
-import { useImageEdit } from '../../../hooks/useImageEdit';
+import { useImageLibrary } from '../../../hooks/useImageLibrary';
 
 export default function AdminPhotoLibrary({ images }) {
   const {
@@ -27,7 +26,7 @@ export default function AdminPhotoLibrary({ images }) {
     closeModal,
     handleClearSelectedImages,
     handleRefreshImages,
-  } = useImageEdit(images);
+  } = useImageLibrary(images);
 
   return (
     <AdminImageLibraryContainer>

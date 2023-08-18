@@ -1,9 +1,7 @@
 import { RefObject, useRef } from 'react';
 import Image from 'next/image';
-
 import { useDropzone } from 'react-dropzone';
 import { useImageUpload } from '../../../hooks/useImageUpload';
-
 import {
   AdminUploadContainer,
   AdminUploadInner,

@@ -1,5 +1,5 @@
 import { MdEdit, MdPhotoAlbum, MdDelete } from 'react-icons/md';
-import StyledButton from './StyledButton';
+import StyledButton from '../../common/StyledButton';
 import { styled } from 'styled-components';
 
 const BottomPanelContainer = styled.div`
