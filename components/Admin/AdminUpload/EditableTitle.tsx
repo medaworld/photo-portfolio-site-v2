@@ -36,6 +36,6 @@ export default function EditableTitle({ file, onSave }) {
       autoFocus
     />
   ) : (
-    <FileTitle onClick={() => setIsEditing(true)}>{name}</FileTitle>
+    <FileTitle onClick={() => setIsEditing(true)}>{file.title}</FileTitle>
   );
 }

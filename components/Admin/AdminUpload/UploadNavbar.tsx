@@ -4,7 +4,7 @@ import StyledButton from '../../common/StyledButton';
 
 export const UploadNavbarContainer = styled.div`
   width: 100%;
-  background-color: ${(props) => props.theme.secondary};
+  background-color: #444;
   height: 4rem;
   display: flex;
   justify-content: space-between;

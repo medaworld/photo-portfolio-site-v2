@@ -58,6 +58,7 @@ export default function AdminUpload() {
                 variant="neutral"
                 onClick={onAddClick}
                 type="button"
+                style={{ padding: '10px' }}
               >
                 Choose photos to upload
               </StyledButton>
