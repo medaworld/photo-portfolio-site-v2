@@ -1,6 +1,6 @@
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { styled } from 'styled-components';
-import ImageCard from './ImageCard';
+import ImageCard from '../../common/ImageCard';
 
 export const ItemsRow = styled.div`
   display: flex;

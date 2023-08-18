@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import ImageCard from './ImageCard';
+import ImageCard from '../../common/ImageCard';
 
 export const InfiniteItemsContainer = styled.div`
   display: flex;

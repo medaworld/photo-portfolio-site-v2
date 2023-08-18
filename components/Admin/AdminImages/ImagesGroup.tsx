@@ -1,4 +1,4 @@
-import ResponsiveImage from '../../common/ResponsiveImage';
+import ImageCard from '../../common/ImageCard';
 import StyledButton from '../../common/StyledButton';
 import { ImageGroup, ImageWrapper } from './ImagesGroupStyles';
 
@@ -25,7 +25,7 @@ export default function renderImagesGroup(
             onClick={() => toggleSelectImage(image.id)}
             isSelected={selectedImages.includes(image.id)}
           >
-            <ResponsiveImage src={image.url} alt={image.description} />
+            <ImageCard image={image} />
           </ImageWrapper>
         ))}
       </ImageGroup>

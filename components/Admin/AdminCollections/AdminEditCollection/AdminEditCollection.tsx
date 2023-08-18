@@ -1,8 +1,8 @@
 import StyledButton from '../../../common/StyledButton';
-import InfiniteItemsBox from '../../../common/InfiniteItemsBox';
+import InfiniteItemsBox from '../InfiniteItemsBox';
 import BackLink from '../../../common/BackLink';
-import CoverCard from '../../../common/CoverCard';
-import DragDropRow from '../../../common/DragDropRow';
+import CoverCard from './CoverCard';
+import DragDropRow from '../DragDropRow';
 import {
   AdminEditCollectionsContainer,
   Buttons,

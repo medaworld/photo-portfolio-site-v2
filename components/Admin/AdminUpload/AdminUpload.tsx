@@ -82,7 +82,6 @@ export default function AdminUpload() {
                       width={500}
                       height={500}
                       className={'image'}
-                      layout="responsive"
                     />
                   </ImageContainer>
                 )}

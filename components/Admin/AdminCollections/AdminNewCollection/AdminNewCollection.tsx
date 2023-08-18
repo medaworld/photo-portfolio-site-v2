@@ -4,8 +4,8 @@ import BackLink from '../../../common/BackLink';
 import StyledInput from '../../../common/StyledInput';
 import StyledTextArea from '../../../common/StyledTextArea';
 import StyledButton from '../../../common/StyledButton';
-import DragDropRow from '../../../common/DragDropRow';
-import InfiniteImagesBox from '../../../common/InfiniteItemsBox';
+import DragDropRow from '../DragDropRow';
+import InfiniteImagesBox from '../InfiniteItemsBox';
 
 import {
   AdminNewAlbumContainer,
