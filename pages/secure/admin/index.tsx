@@ -1,8 +1,11 @@
 import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import 'firebase/auth';
-import { NotificationContext } from '../../../context/notification/NotificationContext';
 import { useSession, signIn } from 'next-auth/react';
+
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '../../api/auth/[...nextauth]';
+import { GetServerSideProps } from 'next';
+import { NotificationContext } from '../../../context/notification/NotificationContext';
 import {
   AdminLoginContainer,
   ErrorText,
@@ -11,17 +14,13 @@ import {
   LoginInput,
 } from '../../../components/Admin/AdminLogin/AdminLoginStyles';
 
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '../../api/auth/[...nextauth]';
-import { GetServerSideProps } from 'next';
-
 export default function AdminLogin() {
-  const notificationCtx = useContext(NotificationContext);
   const [enteredEmail, setEnteredEmail] = useState('');
   const [enteredPassword, setEnteredPassword] = useState('');
   const [error, setError] = useState(null);
   const { data: session } = useSession();
   const router = useRouter();
+  const notificationCtx = useContext(NotificationContext);
 
   useEffect(() => {
     if (session) {

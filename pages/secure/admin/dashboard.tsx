@@ -1,15 +1,24 @@
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { fetchCount } from '../../../utils/firebaseUtils';
 import { GetServerSideProps } from 'next';
 import { authOptions } from '../../api/auth/[...nextauth]';
 import { getServerSession } from 'next-auth/next';
 import { useSession } from 'next-auth/react';
-import LoadingScreen from '../../../components/Loading/Loading';
 import Link from 'next/link';
 
-import { DashboardCard } from '../../../components/Admin/AdminDashboard/AdminDashboardStyles';
+import { fetchCount } from '../../../utils/firebaseUtils';
+import LoadingScreen from '../../../components/Loading/Loading';
+
 import AdminLayout from '../../../components/Admin/AdminLayout';
+import { styled } from 'styled-components';
+
+export const DashboardCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: calc(100vh - 110px);
+  padding: 1rem;
+`;
 
 export default function AdminDashboard({
   imageCount,

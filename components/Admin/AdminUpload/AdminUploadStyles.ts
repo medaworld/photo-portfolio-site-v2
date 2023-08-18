@@ -27,9 +27,10 @@ export const ImageContainer = styled.div`
   max-height: 100%;
 
   img {
+    display: flex;
     object-fit: contain;
-    max-width: 100%;
-    max-height: 100%;
+    max-width: 70vw;
+    max-height: 70vh;
     width: auto;
     height: auto;
   }

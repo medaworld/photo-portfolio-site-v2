@@ -40,7 +40,7 @@ const getCustomStyles = (theme) => ({
     borderRadius: '5px',
     maxWidth: '80%',
     maxHeight: '80%',
-    padding: '1rem',
+    padding: '5px',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',

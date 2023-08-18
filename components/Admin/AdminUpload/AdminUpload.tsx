@@ -70,8 +70,8 @@ export default function AdminUpload() {
                   <Image
                     src={URL.createObjectURL(modalImage)}
                     alt={''}
-                    width={700}
-                    height={700}
+                    width={500}
+                    height={500}
                     className={'image'}
                     layout="responsive"
                   />
