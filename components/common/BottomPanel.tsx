@@ -8,7 +8,7 @@ const BottomPanelContainer = styled.div`
   background-color: ${(props) => props.theme.tpBackground};
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border-top: 1px solid ${(props) => props.theme.lightBorder};
+  border-top: 1px solid ${(props) => props.theme.border};
   padding: 1rem;
   display: flex;
   flex-direction: column;
@@ -48,7 +48,6 @@ export default function BottomPanel({
   editSelectedImages,
   addToAlbum,
   deleteSelectedImages,
-  type,
 }) {
   return (
     <BottomPanelContainer>
@@ -104,7 +103,7 @@ export default function BottomPanel({
           type="button"
           onClick={deleteSelectedImages}
         >
-          <MdDelete /> {type === 'upload' ? 'Remove' : 'Delete'}
+          <MdDelete /> Delete
         </StyledButton>
       </BottomActions>
     </BottomPanelContainer>

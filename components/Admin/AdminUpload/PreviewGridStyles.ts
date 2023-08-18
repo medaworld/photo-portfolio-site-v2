@@ -33,7 +33,7 @@ export const Preview = styled.div<{ selected: boolean }>`
     props.selected &&
     `
     img {
-      border: 3px solid #ff50a8;
+      border: 3px solid #ff50aa;
     }
    
   `}

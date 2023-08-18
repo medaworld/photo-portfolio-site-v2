@@ -13,7 +13,7 @@ export const ImageWrapper = styled.div<{ isSelected }>`
   cursor: pointer;
 
   img {
-    outline: ${({ isSelected }) => (isSelected ? '3px solid #ff0000' : 'none')};
+    outline: ${({ isSelected }) => (isSelected ? '3px solid #ff50aa' : 'none')};
   }
   &:hover {
     opacity: 0.8;

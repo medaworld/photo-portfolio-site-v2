@@ -28,7 +28,7 @@ export default function AdminPhotos({ images }) {
 
   return (
     <AdminLayout>
-      <AdminPhotoLibrary imagesData={images} />
+      <AdminPhotoLibrary images={images} />
     </AdminLayout>
   );
 }

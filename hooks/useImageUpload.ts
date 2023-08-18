@@ -1,15 +1,8 @@
 import { useCallback, useState, useContext } from 'react';
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import {
-  addDoc,
-  collection,
-  serverTimestamp,
-  updateDoc,
-} from 'firebase/firestore';
 import { NotificationContext } from '../context/notification/NotificationContext';
 import { compressImage } from '../utils/imageUtils';
-import { firestore, storage } from '../lib/firebase';
 import { extractFileNameWithoutExt } from '../utils/stringUtils';
+import { addImage } from '../utils/firebaseUtils';
 
 export const useImageUpload = ({ inputRef }) => {
   const notificationCtx = useContext(NotificationContext);
@@ -92,21 +85,21 @@ export const useImageUpload = ({ inputRef }) => {
     });
   };
 
-  const onAddClick = () => {
+  const addFiles = () => {
     if (inputRef.current) {
       inputRef.current.click();
     }
   };
 
-  const onRemoveClick = () => {
+  const removeFiles = () => {
     setFiles((prevFiles) =>
       prevFiles.filter((file) => !selectedFiles.includes(file))
     );
     setSelectedFiles([]);
   };
 
-  const onSubmitClick = async (e) => {
-    e.preventDefault();
+  const submitHandler = async (event: any) => {
+    event.preventDefault();
     notificationCtx.showNotification({
       title: 'Uploading...',
       message: 'Please wait. Uploading',
@@ -115,22 +108,8 @@ export const useImageUpload = ({ inputRef }) => {
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
-
-      const docRef = await addDoc(collection(firestore, 'images'), {
-        title: file.title,
-        description: file.description,
-        uploadedAt: serverTimestamp(),
-      });
-
-      const storageRef = ref(storage, `images/${docRef.id}`);
-
       try {
-        await uploadBytes(storageRef, file.blob);
-
-        const downloadURL = await getDownloadURL(storageRef);
-
-        await updateDoc(docRef, { url: downloadURL });
-
+        await addImage(file);
         setFiles((prevFiles) => prevFiles.filter((f) => f !== file));
       } catch (error) {
         console.error(`Failed to upload image ${i + 1}:`, error);
@@ -147,22 +126,21 @@ export const useImageUpload = ({ inputRef }) => {
       status: 'success',
     });
   };
+
   return {
     files,
+    selectedFiles,
+    modalIsOpen,
+    modalImage,
     setFiles,
     onDrop,
-    removeFile,
     viewFile,
     closeModal,
     toggleSelectedFile,
     onFileChange,
-    onAddClick,
-    onRemoveClick,
-    onSubmitClick,
-    selectedFiles,
-    setSelectedFiles,
-    modalIsOpen,
-    setModalIsOpen,
-    modalImage,
+    addFiles,
+    removeFile,
+    removeFiles,
+    submitHandler,
   };
 };

@@ -10,7 +10,7 @@ import BottomPanel from '../../common/BottomPanel';
 import renderImagesGroup from './ImagesGroup';
 import { useImageEdit } from '../../../hooks/useImageEdit';
 
-export default function AdminPhotoLibrary({ imagesData }) {
+export default function AdminPhotoLibrary({ images }) {
   const {
     allImages,
     selectedImages,
@@ -27,7 +27,7 @@ export default function AdminPhotoLibrary({ imagesData }) {
     closeModal,
     handleClearSelectedImages,
     handleRefreshImages,
-  } = useImageEdit(imagesData);
+  } = useImageEdit(images);
 
   return (
     <AdminImageLibraryContainer>
@@ -49,7 +49,6 @@ export default function AdminPhotoLibrary({ imagesData }) {
           editSelectedImages={editSelectedImages}
           addToAlbum={addToAlbum}
           deleteSelectedImages={deleteSelectedImages}
-          type={'images'}
         />
       )}
       <CustomModal modalIsOpen={modalIsOpen} closeModal={closeModal}>

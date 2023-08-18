@@ -1,5 +1,9 @@
-import { RefObject, useRef, useState } from 'react';
+import { RefObject, useRef } from 'react';
+import Image from 'next/image';
+
 import { useDropzone } from 'react-dropzone';
+import { useImageUpload } from '../../../hooks/useImageUpload';
+
 import {
   AdminUploadContainer,
   AdminUploadInner,
@@ -9,36 +13,34 @@ import {
 } from './AdminUploadStyles';
 import UploadNavbar from './UploadNavbar';
 import PreviewGrid from './PreviewGrid';
-import { useImageUpload } from '../../../hooks/useImageUpload';
 import StyledButton from '../../common/StyledButton';
 import CustomModal from '../../common/CustomModal';
-import Image from 'next/image';
 
 export default function AdminUpload() {
   const inputRef: RefObject<HTMLInputElement> = useRef(null);
   const {
     files,
-    setFiles,
     selectedFiles,
     modalIsOpen,
     modalImage,
+    setFiles,
     onDrop,
-    removeFile,
     viewFile,
     closeModal,
     toggleSelectedFile,
     onFileChange,
-    onAddClick,
-    onRemoveClick,
-    onSubmitClick,
+    addFiles,
+    removeFile,
+    removeFiles,
+    submitHandler,
   } = useImageUpload({ inputRef });
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   return (
-    <AdminUploadContainer onSubmit={onSubmitClick}>
+    <AdminUploadContainer onSubmit={submitHandler}>
       <AdminUploadInner>
-        <UploadNavbar onAddClick={onAddClick} onRemoveClick={onRemoveClick} />
+        <UploadNavbar onAddClick={addFiles} onRemoveClick={removeFiles} />
         <DragAndDropSection {...getRootProps()}>
           <input
             {...getInputProps()}
@@ -56,7 +58,7 @@ export default function AdminUpload() {
               <p>or</p>
               <StyledButton
                 variant="neutral"
-                onClick={onAddClick}
+                onClick={addFiles}
                 type="button"
                 style={{ padding: '10px' }}
               >

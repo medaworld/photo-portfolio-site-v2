@@ -14,7 +14,7 @@ export function useImageEdit(imagesData) {
 
   const loadMoreRef = useRef(null);
 
-  // Infinite scroll load
+  // INFINITE SCROLL
   useEffect(() => {
     const fetchMoreImages = async () => {
       if (lastVisible) {
@@ -51,7 +51,7 @@ export function useImageEdit(imagesData) {
   }, [lastVisible]);
 
   // TOGGLE SELECT
-  function toggleSelectImage(imageId) {
+  function toggleSelectImage(imageId: string) {
     if (selectedImages.includes(imageId)) {
       setSelectedImages((prev) => prev.filter((id) => id !== imageId));
     } else {
@@ -61,7 +61,7 @@ export function useImageEdit(imagesData) {
 
   // SELECT ALL BY GROUP
   function selectAllFromGroup(group) {
-    const newSelectedImages = group.map((image) => image.id);
+    const newSelectedImages = group.map((image: { id: string }) => image.id);
     setSelectedImages((prev) => [...new Set([...prev, ...newSelectedImages])]);
   }
 

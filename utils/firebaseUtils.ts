@@ -9,12 +9,18 @@ import {
   limit,
   orderBy,
   query,
+  serverTimestamp,
   startAfter,
   updateDoc,
   where,
   writeBatch,
 } from 'firebase/firestore';
-import { ref, getDownloadURL, deleteObject } from 'firebase/storage';
+import {
+  ref,
+  getDownloadURL,
+  deleteObject,
+  uploadBytes,
+} from 'firebase/storage';
 import { firestore, storage } from '../lib/firebase';
 import { Album, Collection, FetchImagesOptions } from '../types/firebase';
 
@@ -215,6 +221,23 @@ export async function fetchImages({
     images,
     lastVisible: lastVisible,
   };
+}
+
+// ADD IMAGE
+export async function addImage(file) {
+  const docRef = await addDoc(collection(firestore, 'images'), {
+    title: file.title,
+    description: file.description,
+    uploadedAt: serverTimestamp(),
+  });
+
+  const storageRef = ref(storage, `images/${docRef.id}`);
+
+  await uploadBytes(storageRef, file.blob);
+
+  const downloadURL = await getDownloadURL(storageRef);
+
+  await updateDoc(docRef, { url: downloadURL });
 }
 
 // UPDATE IMAGES
