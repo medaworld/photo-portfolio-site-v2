@@ -1,4 +1,3 @@
-// useImageUpload.tsx
 import { useCallback, useState, useContext } from 'react';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import {
@@ -10,13 +9,14 @@ import {
 import { NotificationContext } from '../context/notification/NotificationContext';
 import { compressImage } from '../utils/imageUtils';
 import { firestore, storage } from '../lib/firebase';
+import { extractFileNameWithoutExt } from '../utils/stringUtils';
 
 export const useImageUpload = ({ inputRef }) => {
   const notificationCtx = useContext(NotificationContext);
   const [files, setFiles] = useState([]);
+  const [selectedFiles, setSelectedFiles] = useState([]);
   const [modalImage, setModalImage] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [selectedFiles, setSelectedFiles] = useState([]);
 
   const onDrop = useCallback(
     async (acceptedFiles) => {
@@ -30,7 +30,14 @@ export const useImageUpload = ({ inputRef }) => {
         const compressedFiles = await Promise.all(
           acceptedFiles.map((file) => compressImage(file))
         );
-        setFiles((prev) => [...prev, ...compressedFiles]);
+
+        const fileObjects = compressedFiles.map((file) => ({
+          blob: file,
+          title: extractFileNameWithoutExt(file.name),
+          description: '',
+        }));
+
+        setFiles((prev) => [...prev, ...fileObjects]);
         if (inputRef.current) {
           inputRef.current.value = '';
         }
@@ -51,13 +58,20 @@ export const useImageUpload = ({ inputRef }) => {
     [inputRef, notificationCtx]
   );
 
+  const onFileChange = async (event) => {
+    if (event.target.files && event.target.files.length > 0) {
+      const acceptedFiles = Object.values(event.target.files);
+      onDrop(acceptedFiles);
+    }
+  };
+
   const removeFile = (file) => () => {
     setFiles((prev) => prev.filter((f) => f !== file));
     setSelectedFiles((prev) => prev.filter((f) => f !== file));
   };
 
   const viewFile = (file: any) => () => {
-    setModalImage(file);
+    setModalImage(file.blob);
     setModalIsOpen(true);
   };
 
@@ -76,13 +90,6 @@ export const useImageUpload = ({ inputRef }) => {
         return [...prevSelected, file];
       }
     });
-  };
-
-  const onFileChange = async (event) => {
-    if (event.target.files && event.target.files.length > 0) {
-      const acceptedFiles = Object.values(event.target.files);
-      onDrop(acceptedFiles);
-    }
   };
 
   const onAddClick = () => {
@@ -110,13 +117,15 @@ export const useImageUpload = ({ inputRef }) => {
       const file = files[i];
 
       const docRef = await addDoc(collection(firestore, 'images'), {
+        title: file.title,
+        description: file.description,
         uploadedAt: serverTimestamp(),
       });
 
       const storageRef = ref(storage, `images/${docRef.id}`);
 
       try {
-        await uploadBytes(storageRef, file);
+        await uploadBytes(storageRef, file.blob);
 
         const downloadURL = await getDownloadURL(storageRef);
 
@@ -140,6 +149,7 @@ export const useImageUpload = ({ inputRef }) => {
   };
   return {
     files,
+    setFiles,
     onDrop,
     removeFile,
     viewFile,

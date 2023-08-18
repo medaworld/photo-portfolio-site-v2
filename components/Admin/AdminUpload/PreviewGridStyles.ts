@@ -18,7 +18,6 @@ export const Preview = styled.div<{ selected: boolean }>`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* text-align: center; */
   padding: 5px;
 
   &:hover {
@@ -92,27 +91,4 @@ export const ViewButton = styled.button`
     opacity: 0.9;
     background-color: black;
   }
-`;
-
-export const FileName = styled.span`
-  display: block;
-  font-size: 10px;
-  font-family: Arial, Helvetica, sans-serif;
-  font-weight: 600;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  width: 90%;
-  margin: 5px auto 0;
-`;
-
-export const FileDescription = styled.span`
-  display: block;
-  font-size: 10px;
-
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  width: 90%;
-  margin: 5px auto 0;
 `;

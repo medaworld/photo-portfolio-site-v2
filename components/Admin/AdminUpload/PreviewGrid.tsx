@@ -6,18 +6,34 @@ import {
   PreviewImage,
   CloseButton,
   ViewButton,
-  FileName,
   ImageWrapper,
   Thumbnail,
 } from './PreviewGridStyles';
+import EditableTitle from './EditableTitle';
+import EditableDescription from './EditableTextArea';
 
 export default function PreviewGrid({
   files,
+  setFiles,
   toggleSelectedFile,
   removeFile,
   viewFile,
   selectedFiles,
 }) {
+  const updateFileName = (file, newName) => {
+    const updatedFiles = files.map((f) =>
+      f === file ? { ...f, title: newName } : f
+    );
+    setFiles(updatedFiles);
+  };
+
+  const updateFileDescription = (file, newDesc) => {
+    const updatedFiles = files.map((f) =>
+      f === file ? { ...f, description: newDesc } : f
+    );
+    setFiles(updatedFiles);
+  };
+
   return (
     <PreviewGridContainer>
       {files.map((file) => (
@@ -29,8 +45,8 @@ export default function PreviewGrid({
           <ImageWrapper>
             <Thumbnail>
               <PreviewImage
-                src={URL.createObjectURL(file)}
-                alt={file.name}
+                src={URL.createObjectURL(file.blob)}
+                alt={file.title}
               ></PreviewImage>
               <CloseButton onClick={removeFile(file)} type="button">
                 <IoMdCloseCircle />
@@ -40,7 +56,8 @@ export default function PreviewGrid({
               </ViewButton>
             </Thumbnail>
           </ImageWrapper>
-          <FileName>{file.name}</FileName>
+          <EditableTitle file={file} onSave={updateFileName} />
+          <EditableDescription file={file} onSave={updateFileDescription} />
         </Preview>
       ))}
     </PreviewGridContainer>

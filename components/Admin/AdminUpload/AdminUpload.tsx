@@ -17,6 +17,7 @@ export default function AdminUpload() {
   const inputRef: RefObject<HTMLInputElement> = useRef(null);
   const {
     files,
+    setFiles,
     selectedFiles,
     modalIsOpen,
     modalImage,
@@ -59,6 +60,7 @@ export default function AdminUpload() {
           <>
             <PreviewGrid
               files={files}
+              setFiles={setFiles}
               toggleSelectedFile={toggleSelectedFile}
               removeFile={removeFile}
               viewFile={viewFile}
