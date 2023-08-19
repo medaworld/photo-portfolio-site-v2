@@ -16,7 +16,7 @@ export type Collection = {
   description: string;
   createdAt: Date;
   cover: any;
-  albums: string[];
+  albums: any[];
   coverURL?: string;
   photosURLs?: string[];
 };

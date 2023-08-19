@@ -2,7 +2,7 @@ import { useState, useEffect, useContext, useRef } from 'react';
 import { NotificationContext } from '../context/notification/NotificationContext';
 import { addAlbum, addCollection, fetchImages } from '../utils/firebaseUtils';
 import { useRouter } from 'next/router';
-import { capitalizeFirstLetter } from '../utils/stringUtils';
+import { capitalizeFirstLetter, titleToPath } from '../utils/stringUtils';
 
 export function useCollectionAdd(items, type) {
   const notificationCtx = useContext(NotificationContext);
@@ -111,6 +111,7 @@ export function useCollectionAdd(items, type) {
       if (type === 'collection') {
         collectionData = {
           title: enteredTitle,
+          pathTitle: titleToPath(enteredTitle),
           description: enteredDescription,
           cover: cover.id,
           albums: selectedItemsIds,
@@ -119,6 +120,7 @@ export function useCollectionAdd(items, type) {
       } else {
         collectionData = {
           title: enteredTitle,
+          pathTitle: titleToPath(enteredTitle),
           description: enteredDescription,
           dateTaken: enteredDate,
           cover: cover.id,

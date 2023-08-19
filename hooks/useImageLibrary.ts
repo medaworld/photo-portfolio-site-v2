@@ -18,7 +18,6 @@ export function useImageLibrary(images) {
   useEffect(() => {
     const fetchMoreImages = async () => {
       if (lastVisible) {
-        console.log(lastVisible);
         const newImages = await fetchImages({ lastVisible: lastVisible });
         setAllImages((prevImages) => [
           ...prevImages,

@@ -23,7 +23,6 @@ import {
 } from 'firebase/storage';
 import { firestore, storage } from '../lib/firebase';
 import { Album, Collection, FetchImagesOptions } from '../types/firebase';
-import { titleToPath } from './stringUtils';
 
 // FETCH COUNT
 export async function fetchCount(collectionName: string) {
@@ -327,12 +326,10 @@ export async function fetchAlbumsWithPath() {
 
       if (!collectionSnapshot.empty) {
         const collectionDocData = collectionSnapshot.docs[0].data();
-        collectionTitle = collectionDocData.title;
+        collectionTitle = collectionDocData.pathTitle;
       }
 
-      const path = `/work/${titleToPath(collectionTitle)}/${titleToPath(
-        docData.title
-      )}`;
+      const path = `/work/${collectionTitle}/${docData.pathTitle}`;
 
       return {
         id: docData.id,
@@ -434,6 +431,7 @@ export async function fetchCollections() {
         id: docData.id,
         cover: coverURL,
         title: docData.title,
+        pathTitle: docData.pathTitle,
         albums: docData.albums,
         count: docData.albums ? docData.albums.length : 0,
       };
@@ -490,6 +488,21 @@ export async function fetchCollectionData(
   }
 
   throw new Error(`Collection with ID ${collectionId} not found.`);
+}
+
+export async function fetchCollectionDataByTitle(
+  pathTitle: string
+): Promise<Collection> {
+  const collectionsRef = collection(firestore, 'collections');
+  const q = query(collectionsRef, where('pathTitle', '==', pathTitle));
+  const querySnapshot = await getDocs(q);
+
+  if (!querySnapshot.empty) {
+    const collectionId = querySnapshot.docs[0].id;
+    return await fetchCollectionData(collectionId); // reusing your existing function
+  }
+
+  throw new Error(`Collection with title ${pathTitle} not found.`);
 }
 
 // ADD COLLECTION

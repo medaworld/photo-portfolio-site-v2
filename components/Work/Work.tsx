@@ -8,10 +8,6 @@ const WorkContainer = styled.div`
 `;
 
 export default function WorkContent({ sidebarList, gridItems }) {
-  const sections = gridItems.map((listItem) => {
-    return listItem.image;
-  });
-
   return (
     <WorkContainer>
       <Sidebar options={sidebarList} />

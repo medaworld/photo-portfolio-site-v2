@@ -8,7 +8,7 @@ import {
   updateAlbum,
   updateCollection,
 } from '../utils/firebaseUtils';
-import { capitalizeFirstLetter } from '../utils/stringUtils';
+import { capitalizeFirstLetter, titleToPath } from '../utils/stringUtils';
 import { NotificationContext } from '../context/notification/NotificationContext';
 
 export default function useCollectionEdit(collection, type) {
@@ -76,6 +76,7 @@ export default function useCollectionEdit(collection, type) {
       if (type === 'collection') {
         collectionData = {
           title: enteredTitle,
+          pathTitle: titleToPath(enteredTitle),
           description: enteredDescription,
           cover: cover.id,
           albums: itemsData,
@@ -85,6 +86,7 @@ export default function useCollectionEdit(collection, type) {
       } else {
         collectionData = {
           title: enteredTitle,
+          pathTitle: titleToPath(enteredTitle),
           description: enteredDescription,
           dateTaken: enteredDate,
           cover: cover.id,

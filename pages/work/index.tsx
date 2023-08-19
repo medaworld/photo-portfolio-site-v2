@@ -23,15 +23,15 @@ export async function getServerSideProps(context: any) {
 
     const collectionsWithPaths = collections.map((collection) => ({
       ...collection,
-      path: `/work/${titleToPath(collection.title)}`,
+      path: `/work/${collection.pathTitle}`,
     }));
     return {
       props: { collections: collectionsWithPaths, albums },
     };
   } catch (err) {
-    console.error('Failed to fetch categories:', err);
+    console.error('Failed to fetch:', err);
     return {
-      props: { error: 'Failed to load categories, please try again later.' },
+      props: { error: 'Failed to load, please try again later.' },
     };
   }
 }
