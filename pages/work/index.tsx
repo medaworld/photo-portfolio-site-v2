@@ -4,13 +4,12 @@ import {
   fetchAlbumsWithPath,
   fetchCollections,
 } from '../../utils/firebaseUtils';
-import { titleToPath } from '../../utils/stringUtils';
 
 const MainContentContainer = styled.div``;
 
 export default function Work({ albums, collections }) {
   return (
-    <MainContentContainer id="main-content">
+    <MainContentContainer>
       <WorkContent sidebarList={collections} gridItems={albums} />
     </MainContentContainer>
   );

@@ -18,7 +18,7 @@ const GridContainer = styled.div`
   column-count: 2;
   -webkit-column-count: 2;
   -moz-column-count: 2;
-  column-gap: 50px;
+  column-gap: 10px;
   -webkit-column-gap: 10px;
   column-width: 50%;
   padding: 30px 0;
@@ -92,7 +92,7 @@ export default function ImageGrid({ gridItems, crumbData }) {
 
   return (
     <>
-      {crumbData && <Breadcrumb paths={breadcrumbs} />}
+      <Breadcrumb paths={breadcrumbs} />
       <Container>
         <GridContainer>
           {gridItems.map((item, index: Key) => (

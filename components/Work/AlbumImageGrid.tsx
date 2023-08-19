@@ -58,9 +58,20 @@ export const ModalImageContainer = styled.div`
   }
 `;
 
+export const LoadingText = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  height: 100px;
+  position: absolute;
+`;
+
 export default function AlbumImageGrid({ gridItems, crumbData }) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalImage, setModalImage] = useState(null);
+  const [modalImageLoaded, setModalImageLoaded] = useState(false);
+
   const [loadedImages, setLoadedImages] = useState(
     Array(gridItems.length).fill(false)
   );
@@ -87,6 +98,7 @@ export default function AlbumImageGrid({ gridItems, crumbData }) {
   function viewHandler(image: any) {
     setModalImage(image);
     setModalIsOpen(true);
+    setModalImageLoaded(false);
   }
 
   let breadcrumbs = [{ name: 'Work', url: '/work' }];
@@ -117,11 +129,13 @@ export default function AlbumImageGrid({ gridItems, crumbData }) {
           ))}
         </GridContainer>
         <CustomModal modalIsOpen={modalIsOpen} closeModal={closeModal}>
+          {!modalImageLoaded && <LoadingText>Loading...</LoadingText>}
           {modalImage && (
             <ModalImageContainer>
               <Image
                 src={modalImage}
-                alt={''}
+                alt={'Modal Image'}
+                onLoad={() => setModalImageLoaded(true)}
                 width={500}
                 height={500}
                 className={'image'}
