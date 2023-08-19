@@ -51,13 +51,13 @@ export const CoverTitle = styled.div`
   font-family: 'Raleway';
   font-weight: 100;
   color: #fff;
-  opacity: 0;
+  opacity: 45%;
   transition: all 0.3s ease;
   z-index: 1;
   overflow: hidden;
 
   &:hover {
-    opacity: 50%;
+    opacity: 0%;
   }
 
   @media (max-width: ${size.tablet}) {
@@ -66,6 +66,10 @@ export const CoverTitle = styled.div`
 `;
 
 export default function ImageGrid({ gridItems, crumbData }) {
+  const evenItems = gridItems.filter((_, index) => index % 2 === 0);
+  const oddItems = gridItems.filter((_, index) => index % 2 !== 0);
+  const orderedItems = [...evenItems, ...oddItems];
+
   const [loadedImages, setLoadedImages] = useState(
     Array(gridItems.length).fill(false)
   );
@@ -92,10 +96,10 @@ export default function ImageGrid({ gridItems, crumbData }) {
 
   return (
     <>
-      <Breadcrumb paths={breadcrumbs} />
+      {crumbData && <Breadcrumb paths={breadcrumbs} />}
       <Container>
         <GridContainer>
-          {gridItems.map((item, index: Key) => (
+          {orderedItems.map((item, index: Key) => (
             <Link key={index} href={item.path}>
               <ImageContainer loaded={loadedImages[index]}>
                 <CoverTitle>{item.title}</CoverTitle>

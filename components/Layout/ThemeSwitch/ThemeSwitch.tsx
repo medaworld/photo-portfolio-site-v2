@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { FiSun, FiMoon } from 'react-icons/fi';
-import { ThemeStateContext } from '../../context/themeState/ThemeStateContext';
+import { ThemeStateContext } from '../../../context/themeState/ThemeStateContext';
 
 const SwitchButton = styled.button`
   background: none;

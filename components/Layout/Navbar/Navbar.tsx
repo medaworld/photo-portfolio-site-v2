@@ -13,7 +13,7 @@ import {
 import Logo from '../../common/Logo';
 import SocialMediaIcon from '../../common/SocialMediaIcon';
 import Link from 'next/link';
-import ThemeSwitch from '../../ThemeSwitch/ThemeSwitch';
+import ThemeSwitch from '../ThemeSwitch/ThemeSwitch';
 import { useTheme } from 'styled-components';
 
 const Navbar = ({ showMain }) => {
