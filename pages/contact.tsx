@@ -2,6 +2,7 @@ import { styled } from 'styled-components';
 import { useContext, useRef, useState } from 'react';
 import { sendForm } from 'emailjs-com';
 import { NotificationContext } from '../context/notification/NotificationContext';
+import StyledButton from '../components/common/StyledButton';
 
 export const ContactContainer = styled.div`
   display: flex;
@@ -35,8 +36,7 @@ const Input = styled.input<{ invalid: boolean }>`
   padding: 10px;
   border-radius: 5px;
   font-family: 'Open sans';
-  border: 1px solid ${(p) => (p.invalid ? p.theme.error : p.theme.formBorder)};
-  background-color: ${(props) => props.theme.background};
+  border: 1px solid ${(p) => (p.invalid ? p.theme.error : p.theme.border)};
 `;
 
 const Textarea = styled.textarea<{ invalid: boolean }>`
@@ -46,22 +46,7 @@ const Textarea = styled.textarea<{ invalid: boolean }>`
   font-family: 'Open sans';
   resize: none;
   height: 120px;
-  border: 1px solid ${(p) => (p.invalid ? p.theme.error : p.theme.formBorder)};
-  background-color: ${(props) => props.theme.background};
-`;
-
-const Button = styled.button`
-  padding: 10px 20px;
-  background-color: ${(props) => props.theme.dark};
-  color: ${(props) => props.theme.background};
-  border: none;
-  border-radius: 5px;
-  font-family: 'Open sans';
-  cursor: pointer;
-
-  &:hover {
-    opacity: 0.9;
-  }
+  border: 1px solid ${(p) => (p.invalid ? p.theme.error : p.theme.border)};
 `;
 
 export default function Contact() {
@@ -204,7 +189,9 @@ export default function Contact() {
           onChange={messageChangeHandler}
           invalid={invalidMessage}
         ></Textarea>
-        <Button type="submit">Send Message</Button>
+        <StyledButton variant="neutral" type="submit">
+          Send Message
+        </StyledButton>
       </Form>
     </ContactContainer>
   );

@@ -98,7 +98,7 @@ export default function ImageGrid({ gridItems, crumbData }) {
       {crumbData && <Breadcrumb paths={breadcrumbs} />}
       <GridContainer>
         {gridItems.map((item, index: Key) => (
-          <Link key={index} href={''}>
+          <Link key={index} href={item.path}>
             <ImageContainer loaded={loadedImages[index]}>
               <CoverTitle>{item.title}</CoverTitle>
               <Image

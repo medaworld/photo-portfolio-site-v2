@@ -23,6 +23,7 @@ import {
 } from 'firebase/storage';
 import { firestore, storage } from '../lib/firebase';
 import { Album, Collection, FetchImagesOptions } from '../types/firebase';
+import { titleToPath } from './stringUtils';
 
 // FETCH COUNT
 export async function fetchCount(collectionName: string) {
@@ -290,6 +291,55 @@ export async function fetchAlbums() {
         title: docData.title,
         photos: docData.photos,
         count: docData.photos ? docData.photos.length : 0,
+      };
+    })
+  );
+
+  return albums;
+}
+
+// FETCH ALBUMS WITH PATH
+export async function fetchAlbumsWithPath() {
+  const albumsRef = query(
+    collection(firestore, 'albums'),
+    orderBy('createdAt', 'desc')
+  );
+
+  const snapshot = await getDocs(albumsRef);
+
+  const albums = await Promise.all(
+    snapshot.docs.map(async (docSnapshot) => {
+      const docData = docSnapshot.data();
+
+      let coverImageUrl = null;
+      if (docData.cover) {
+        coverImageUrl = await fetchImageUrl(docData.cover);
+      }
+
+      const collectionRef = collection(firestore, 'collections');
+      const collectionQuery = query(
+        collectionRef,
+        where('albums', 'array-contains', docData.id)
+      );
+      const collectionSnapshot = await getDocs(collectionQuery);
+
+      let collectionTitle = '';
+
+      if (!collectionSnapshot.empty) {
+        const collectionDocData = collectionSnapshot.docs[0].data();
+        collectionTitle = collectionDocData.title;
+      }
+
+      const path = `/work/${titleToPath(collectionTitle)}/${titleToPath(
+        docData.title
+      )}`;
+
+      return {
+        id: docData.id,
+        cover: coverImageUrl,
+        title: docData.title,
+        photos: docData.photos,
+        path: path,
       };
     })
   );

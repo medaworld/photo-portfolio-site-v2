@@ -2,7 +2,7 @@ import { styled } from 'styled-components';
 import { slideshowImages } from '../utils/dummyData';
 import Slideshow from '../components/Slideshow/Slideshow';
 import WorkContent from '../components/Work/Work';
-import { fetchAlbums, fetchCollections } from '../utils/firebaseUtils';
+import { fetchAlbumsWithPath, fetchCollections } from '../utils/firebaseUtils';
 import useLanding from '../hooks/useLanding';
 import { titleToPath } from '../utils/stringUtils';
 
@@ -26,7 +26,7 @@ export default function Home({ albums, collections }) {
 export async function getServerSideProps(context: any) {
   try {
     const collections = await fetchCollections();
-    const albums = await fetchAlbums();
+    const albums = await fetchAlbumsWithPath();
 
     const collectionsWithPaths = collections.map((collection) => ({
       ...collection,
