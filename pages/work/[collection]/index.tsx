@@ -5,11 +5,11 @@ import {
   fetchCollections,
 } from '../../../utils/firebaseUtils';
 
-const MainContentContainer = styled.div<{ showMain: boolean }>``;
+const MainContentContainer = styled.div``;
 
 export default function Work({ albums, crumbData }) {
   return (
-    <MainContentContainer showMain={true} id="main-content">
+    <MainContentContainer id="main-content">
       <WorkContent sidebarList={albums} gridItems={albums} />
     </MainContentContainer>
   );

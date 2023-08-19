@@ -337,6 +337,8 @@ export async function fetchAlbumsWithPath() {
         title: docData.title,
         photos: docData.photos,
         path: path,
+        pathTitle: docData.pathTitle,
+        collection: collectionTitle,
       };
     })
   );
@@ -378,6 +380,19 @@ export async function fetchAlbumData(albumId: string): Promise<Album> {
   }
 
   throw new Error(`Album with ID ${albumId} not found.`);
+}
+
+export async function fetchAlbumDataByTitle(pathTitle: string): Promise<Album> {
+  const collectionsRef = collection(firestore, 'albums');
+  const q = query(collectionsRef, where('pathTitle', '==', pathTitle));
+  const querySnapshot = await getDocs(q);
+
+  if (!querySnapshot.empty) {
+    const albumId = querySnapshot.docs[0].id;
+    return await fetchAlbumData(albumId);
+  }
+
+  throw new Error(`Collection with title ${pathTitle} not found.`);
 }
 
 // ADD ALBUM
@@ -499,7 +514,7 @@ export async function fetchCollectionDataByTitle(
 
   if (!querySnapshot.empty) {
     const collectionId = querySnapshot.docs[0].id;
-    return await fetchCollectionData(collectionId); // reusing your existing function
+    return await fetchCollectionData(collectionId);
   }
 
   throw new Error(`Collection with title ${pathTitle} not found.`);
@@ -530,12 +545,4 @@ export async function deleteCollection(collectionId) {
   await deleteDoc(collectionRef);
 
   console.log('Album deleted successfully.');
-}
-
-// FETCH CATEGORIES
-export async function fetchCategories(db) {
-  const categoriesCol = collection(db, 'categories');
-  const categorySnapshot = await getDocs(categoriesCol);
-  const categoryList = categorySnapshot.docs.map((doc) => doc.data());
-  return categoryList;
 }

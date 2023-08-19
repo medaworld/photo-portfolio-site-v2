@@ -3,12 +3,12 @@ import { styled } from 'styled-components';
 import React from 'react';
 import Image from 'next/image';
 import Breadcrumb from '../common/Breadcrumb';
-import Link from 'next/link';
-import { size } from '../../utils/breakpoints';
+import CustomModal from '../common/CustomModal';
 
 const Container = styled.div`
   min-height: 100vh;
   padding: 0 1.5rem;
+  padding-top: 55px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -36,37 +36,33 @@ const ImageContainer = styled.div<{ loaded: boolean }>`
     width: 100% !important;
     position: relative !important;
     height: unset !important;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    &:hover {
+      opacity: 0.5;
+    }
   }
 `;
 
-export const CoverTitle = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  font-size: 40px;
-  background-color: black;
-  font-family: 'Raleway';
-  font-weight: 100;
-  color: #fff;
-  opacity: 0;
-  transition: all 0.3s ease;
-  z-index: 1;
-  overflow: hidden;
+export const ModalImageContainer = styled.div`
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
 
-  &:hover {
-    opacity: 50%;
-  }
-
-  @media (max-width: ${size.tablet}) {
-    font-size: 20px;
+  img {
+    display: flex;
+    object-fit: contain;
+    max-width: 75vw;
+    max-height: 75vh;
+    width: auto;
+    height: auto;
   }
 `;
 
-export default function ImageGrid({ gridItems, crumbData }) {
+export default function AlbumImageGrid({ gridItems, crumbData }) {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalImage, setModalImage] = useState(null);
   const [loadedImages, setLoadedImages] = useState(
     Array(gridItems.length).fill(false)
   );
@@ -74,7 +70,7 @@ export default function ImageGrid({ gridItems, crumbData }) {
   useEffect(() => {
     gridItems.forEach((item: any, index: Key) => {
       const img = new window.Image();
-      img.src = item.cover;
+      img.src = item.url;
       img.onload = () => {
         setLoadedImages((prevLoadedImages) => {
           const newLoadedImages = [...prevLoadedImages];
@@ -84,6 +80,16 @@ export default function ImageGrid({ gridItems, crumbData }) {
       };
     });
   }, [gridItems]);
+
+  function closeModal() {
+    setModalImage(null);
+    setModalIsOpen(false);
+  }
+
+  function viewHandler(image: any) {
+    setModalImage(image);
+    setModalIsOpen(true);
+  }
 
   let breadcrumbs = [{ name: 'Work', url: '/work' }];
 
@@ -96,20 +102,34 @@ export default function ImageGrid({ gridItems, crumbData }) {
       {crumbData && <Breadcrumb paths={breadcrumbs} />}
       <GridContainer>
         {gridItems.map((item, index: Key) => (
-          <Link key={index} href={item.path}>
-            <ImageContainer loaded={loadedImages[index]}>
-              <CoverTitle>{item.title}</CoverTitle>
-              <Image
-                src={item.cover}
-                alt={item.title || 'image description'}
-                className={'image'}
-                width={item.width || 400}
-                height={item.height || 400}
-              />
-            </ImageContainer>
-          </Link>
+          <ImageContainer
+            loaded={loadedImages[index]}
+            key={index}
+            onClick={() => viewHandler(item.url)}
+          >
+            <Image
+              src={item.url}
+              alt={item.id || 'Photo'}
+              className={'image'}
+              width={item.width || 400}
+              height={item.height || 400}
+            />
+          </ImageContainer>
         ))}
       </GridContainer>
+      <CustomModal modalIsOpen={modalIsOpen} closeModal={closeModal}>
+        {modalImage && (
+          <ModalImageContainer>
+            <Image
+              src={modalImage}
+              alt={''}
+              width={500}
+              height={500}
+              className={'image'}
+            />
+          </ModalImageContainer>
+        )}
+      </CustomModal>
     </Container>
   );
 }
