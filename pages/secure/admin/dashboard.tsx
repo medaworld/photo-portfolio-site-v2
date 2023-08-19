@@ -7,7 +7,7 @@ import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 
 import { fetchCount } from '../../../utils/firebaseUtils';
-import LoadingScreen from '../../../components/Loading/Loading';
+import LoadingScreen from '../../../components/common/Loading';
 
 import AdminLayout from '../../../components/Admin/AdminLayout';
 import { styled } from 'styled-components';

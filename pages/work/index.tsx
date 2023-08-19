@@ -1,22 +1,21 @@
 import { styled } from 'styled-components';
 import WorkContent from '../../components/Work/Work';
-import { collection, getDocs, orderBy, query } from 'firebase/firestore';
-import { firestore } from '../../lib/firebase';
 
-const MainContentContainer = styled.div`
-  background-color: white;
-`;
+import { fetchAlbums, fetchCollections } from '../../utils/firebaseUtils';
 
-export default function Work({ categories }) {
-  const list = categories.map((category) => {
+const MainContentContainer = styled.div``;
+
+export default function Work({ collections, albums }) {
+  const list = albums.map((album) => {
     return {
-      image: category.coverImg,
+      image: album.cover,
       option: {
-        name: category.category,
-        path: `/work/${category.category_lower}`,
+        name: album.title,
+        path: `/work/${album.title}`,
       },
     };
   });
+  console.log(albums);
 
   return (
     <MainContentContainer id="main-content">
@@ -27,27 +26,16 @@ export default function Work({ categories }) {
 
 export async function getStaticProps() {
   try {
-    const categoriesCollection = query(
-      collection(firestore, 'categories'),
-      orderBy('category', 'asc')
-    );
-    const querySnapshot = await getDocs(categoriesCollection);
-
-    const categories = querySnapshot.docs.map((doc) => ({
-      category: doc.data().category,
-      category_lower: doc.data().category_lower,
-      id: doc.data().id,
-      coverImg: doc.data().coverImg,
-    }));
-
+    const collections = await fetchCollections();
+    const albums = await fetchAlbums();
     return {
-      props: { categories },
+      props: { collections, albums },
       revalidate: 60,
     };
   } catch (err) {
-    console.error('Failed to fetch categories:', err);
+    console.error('Failed to fetch collections:', err);
     return {
-      props: { error: 'Failed to load categories, please try again later.' },
+      props: { error: 'Failed to load collections, please try again later.' },
       revalidate: 60,
     };
   }

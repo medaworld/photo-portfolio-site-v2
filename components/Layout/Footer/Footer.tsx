@@ -8,8 +8,8 @@ import {
   WarningFooter,
   FooterToTop,
 } from './FooterStyle';
-import { NavLinkList } from '../../utils/dummyData';
-import SocialMediaIcon from '../common/SocialMediaIcon';
+import { NavLinkList } from '../../../utils/dummyData';
+import SocialMediaIcon from '../../common/SocialMediaIcon';
 
 const Footer = () => {
   const scrollToSection = (sectionId: string) => {

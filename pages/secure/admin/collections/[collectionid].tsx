@@ -4,7 +4,7 @@ import { authOptions } from '../../../api/auth/[...nextauth]';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
-import LoadingScreen from '../../../../components/Loading/Loading';
+import LoadingScreen from '../../../../components/common/Loading';
 import { fetchCollectionData } from '../../../../utils/firebaseUtils';
 import AdminLayout from '../../../../components/Admin/AdminLayout';
 import AdminEditCollection from '../../../../components/Admin/AdminCollections/AdminEditCollection/AdminEditCollection';

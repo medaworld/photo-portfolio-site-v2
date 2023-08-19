@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 import Logo from '../common/Logo';
 import { DarkOverShadow } from '../common/DarkOverShadow';
-import ImageCarousel from '../ImageCarousel/ImageCarousel';
+import ImageCarousel from './ImageCarousel';
 import { useCallback, useContext } from 'react';
 import { GlobalStateContext } from '../../context/globalState/GlobalStateContext';
 
@@ -38,7 +38,7 @@ const SlideshowContent = styled.div`
   font-size: 28px;
   font-family: 'Raleway';
   font-weight: 100;
-  color: ${(props) => props.theme.light};
+  color: white;
   display: flex;
   align-items: center;
   pointer-events: visible;

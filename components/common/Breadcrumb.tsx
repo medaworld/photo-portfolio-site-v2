@@ -3,13 +3,12 @@ import React from 'react';
 import styled from 'styled-components';
 
 const BreadcrumbNav = styled.nav`
-  padding: 5px 0 5px 1rem;
-
+  padding: 5px 1rem;
   position: fixed;
   font-family: 'Raleway';
   font-weight: 400;
   font-size: 14px;
-  background-color: ${(props) => props.theme.tplight};
+  background-color: ${(props) => props.theme.tpBackground};
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
   z-index: 3;

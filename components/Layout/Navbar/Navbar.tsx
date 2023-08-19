@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { NavLinkList } from '../../utils/dummyData';
+import { NavLinkList } from '../../../utils/dummyData';
 import {
   HamburgerBar,
   HamburgerMenu,
@@ -10,10 +10,10 @@ import {
   Links,
 } from './NavbarStyles';
 
-import Logo from '../common/Logo';
-import SocialMediaIcon from '../common/SocialMediaIcon';
+import Logo from '../../common/Logo';
+import SocialMediaIcon from '../../common/SocialMediaIcon';
 import Link from 'next/link';
-import ThemeSwitch from '../ThemeSwitch/ThemeSwitch';
+import ThemeSwitch from '../../ThemeSwitch/ThemeSwitch';
 import { useTheme } from 'styled-components';
 
 const Navbar = ({ showMain }) => {

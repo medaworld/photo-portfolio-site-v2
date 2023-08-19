@@ -268,7 +268,10 @@ export async function deleteImages(selectedImages) {
 
 // FETCH ALBUMS
 export async function fetchAlbums() {
-  const albumsRef = collection(firestore, 'albums');
+  const albumsRef = query(
+    collection(firestore, 'albums'),
+    orderBy('createdAt', 'desc')
+  );
 
   const snapshot = await getDocs(albumsRef);
 
@@ -361,7 +364,10 @@ export async function deleteAlbum(albumId) {
 
 // FETCH COLLECTIONS
 export async function fetchCollections() {
-  const collectionsRef = collection(firestore, 'collections');
+  const collectionsRef = query(
+    collection(firestore, 'collections'),
+    orderBy('createdAt', 'asc')
+  );
 
   const snapshot = await getDocs(collectionsRef);
 

@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { styled } from 'styled-components';
-import Breadcrumb from '../common/Breadcrumb';
 import { size } from '../../utils/breakpoints';
 
 const CollapseButton = styled.div`
@@ -11,7 +10,7 @@ const CollapseButton = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${(props) => props.theme.tplight};
+  background-color: ${(props) => props.theme.tpBackground};
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
   font-family: 'Raleway';
@@ -57,7 +56,7 @@ const Menu = styled.ul<{ collapsed: boolean }>`
   li {
     width: fit-content;
     padding: 0 8px;
-    background-color: ${(props) => props.theme.tplight};
+    background-color: ${(props) => props.theme.tpBackground};
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
     margin-bottom: 10px;
@@ -74,28 +73,15 @@ const Menu = styled.ul<{ collapsed: boolean }>`
 `;
 
 interface SidebarProps {
-  name: string;
+  title: string;
   path: string;
 }
 
-export default function Sidebar({
-  options,
-  crumbData,
-}: {
-  options?: SidebarProps[];
-  crumbData?: { name: string; url: string }[];
-}) {
+export default function Sidebar({ options }: { options?: SidebarProps[] }) {
   const [collapsed, setCollapsed] = useState(false);
-
-  let breadcrumbs = [{ name: 'Work', url: '/work' }];
-
-  if (crumbData) {
-    breadcrumbs = breadcrumbs.concat(crumbData);
-  }
 
   return (
     <>
-      <Breadcrumb paths={breadcrumbs} />
       <CollapseButton onClick={() => setCollapsed(!collapsed)}>
         <CollapseIcon>{collapsed ? '»' : '«'}</CollapseIcon>
       </CollapseButton>
@@ -105,7 +91,7 @@ export default function Sidebar({
             options.map((option, index) => {
               return (
                 <li key={index}>
-                  <Link href={option.path}>{option.name}</Link>
+                  <Link href={option.path}>{option.title}</Link>
                 </li>
               );
             })}

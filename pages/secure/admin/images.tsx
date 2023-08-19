@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import { fetchImages } from '../../../utils/firebaseUtils';
-import LoadingScreen from '../../../components/Loading/Loading';
+import LoadingScreen from '../../../components/common/Loading';
 import AdminPhotoLibrary from '../../../components/Admin/AdminImages/AdminImageLibrary';
 import AdminLayout from '../../../components/Admin/AdminLayout';
 

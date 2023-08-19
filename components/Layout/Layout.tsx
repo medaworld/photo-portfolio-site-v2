@@ -1,9 +1,9 @@
 import { styled } from 'styled-components';
-import Footer from '../Footer/Footer';
-import Navbar from '../Navbar/Navbar';
+import Footer from './Footer/Footer';
+import Navbar from './Navbar/Navbar';
 import { useContext } from 'react';
 import { GlobalStateContext } from '../../context/globalState/GlobalStateContext';
-import Notification from '../Notification/Notification';
+import Notification from '../common/Notification';
 import { NotificationContext } from '../../context/notification/NotificationContext';
 
 const LayoutMain = styled.main`
