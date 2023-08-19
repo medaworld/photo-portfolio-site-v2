@@ -7,11 +7,19 @@ const WorkContainer = styled.div`
   padding-top: 55px;
 `;
 
-export default function WorkContent({ sidebarList, gridItems }) {
+export default function WorkContent({
+  sidebarList,
+  gridItems,
+  crumbData,
+}: {
+  sidebarList: any;
+  gridItems: any;
+  crumbData?: any;
+}) {
   return (
     <WorkContainer>
       <Sidebar options={sidebarList} />
-      <ImageGrid gridItems={gridItems} crumbData={undefined} />
+      <ImageGrid gridItems={gridItems} crumbData={crumbData} />
     </WorkContainer>
   );
 }

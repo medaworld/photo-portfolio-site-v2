@@ -1,20 +1,16 @@
 import { styled } from 'styled-components';
-
 import {
   fetchAlbumDataByTitle,
   fetchAlbumsWithPath,
 } from '../../../../utils/firebaseUtils';
-import WorkContent from '../../../../components/Work/Work';
 import AlbumImageGrid from '../../../../components/Work/AlbumImageGrid';
 
 const MainContentContainer = styled.div<{ showMain: boolean }>``;
 
-export default function Work({ album }) {
-  console.log(album);
-
+export default function Work({ album, crumbData }) {
   return (
     <MainContentContainer showMain={true} id="main-content">
-      <AlbumImageGrid gridItems={album.photos} crumbData={undefined} />
+      <AlbumImageGrid gridItems={album.photos} crumbData={crumbData} />
     </MainContentContainer>
   );
 }
@@ -48,8 +44,19 @@ export async function getStaticProps(context: { params: any }) {
 
   try {
     const album = await fetchAlbumDataByTitle(albumTitle);
+
+    const crumbData = [
+      {
+        name: album.collection,
+        url: `/work/${album.collectionPath}`,
+      },
+      {
+        name: album.title,
+        url: `/work/${album.collectionPath}/${album.pathTitle}`,
+      },
+    ];
     return {
-      props: { album },
+      props: { album, crumbData },
     };
   } catch (err) {
     console.error('Failed to fetch categories:', err);

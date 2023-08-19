@@ -7,7 +7,6 @@ import Link from 'next/link';
 import { size } from '../../utils/breakpoints';
 
 const Container = styled.div`
-  min-height: 100vh;
   padding: 0 1.5rem;
   display: flex;
   justify-content: center;
@@ -92,24 +91,26 @@ export default function ImageGrid({ gridItems, crumbData }) {
   }
 
   return (
-    <Container>
+    <>
       {crumbData && <Breadcrumb paths={breadcrumbs} />}
-      <GridContainer>
-        {gridItems.map((item, index: Key) => (
-          <Link key={index} href={item.path}>
-            <ImageContainer loaded={loadedImages[index]}>
-              <CoverTitle>{item.title}</CoverTitle>
-              <Image
-                src={item.cover}
-                alt={item.title || 'image description'}
-                className={'image'}
-                width={item.width || 400}
-                height={item.height || 400}
-              />
-            </ImageContainer>
-          </Link>
-        ))}
-      </GridContainer>
-    </Container>
+      <Container>
+        <GridContainer>
+          {gridItems.map((item, index: Key) => (
+            <Link key={index} href={item.path}>
+              <ImageContainer loaded={loadedImages[index]}>
+                <CoverTitle>{item.title}</CoverTitle>
+                <Image
+                  src={item.cover}
+                  alt={item.title || 'image description'}
+                  className={'image'}
+                  width={item.width || 400}
+                  height={item.height || 400}
+                />
+              </ImageContainer>
+            </Link>
+          ))}
+        </GridContainer>
+      </Container>
+    </>
   );
 }

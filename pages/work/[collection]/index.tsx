@@ -10,7 +10,11 @@ const MainContentContainer = styled.div``;
 export default function Work({ albums, crumbData }) {
   return (
     <MainContentContainer id="main-content">
-      <WorkContent sidebarList={albums} gridItems={albums} />
+      <WorkContent
+        sidebarList={albums}
+        gridItems={albums}
+        crumbData={crumbData}
+      />
     </MainContentContainer>
   );
 }
@@ -46,8 +50,16 @@ export async function getStaticProps(context: { params: any }) {
       ...album,
       path: `/work/${collectionTitle}/${album.pathTitle}`,
     }));
+
+    const crumbData = [
+      {
+        name: collection.title,
+        url: `/work/${collection.pathTitle}`,
+      },
+    ];
+
     return {
-      props: { albums },
+      props: { albums, crumbData },
       revalidate: 60,
     };
   } catch (err) {

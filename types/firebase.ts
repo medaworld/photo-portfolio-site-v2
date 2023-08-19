@@ -1,5 +1,6 @@
 export type Album = {
   title: string;
+  pathTitle: string;
   id: string;
   description: string;
   createdAt: Date;
@@ -8,10 +9,13 @@ export type Album = {
   dateTaken?: Date;
   coverURL?: string;
   photosURLs?: string[];
+  collection?: string;
+  collectionPath?: string;
 };
 
 export type Collection = {
   title: string;
+  pathTitle: string;
   id: string;
   description: string;
   createdAt: Date;

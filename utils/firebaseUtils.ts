@@ -382,14 +382,29 @@ export async function fetchAlbumData(albumId: string): Promise<Album> {
   throw new Error(`Album with ID ${albumId} not found.`);
 }
 
+// FETCH ALBUM BY TITLE
 export async function fetchAlbumDataByTitle(pathTitle: string): Promise<Album> {
-  const collectionsRef = collection(firestore, 'albums');
-  const q = query(collectionsRef, where('pathTitle', '==', pathTitle));
+  const albumRef = collection(firestore, 'albums');
+  const q = query(albumRef, where('pathTitle', '==', pathTitle));
   const querySnapshot = await getDocs(q);
 
   if (!querySnapshot.empty) {
     const albumId = querySnapshot.docs[0].id;
-    return await fetchAlbumData(albumId);
+    const albumData = await fetchAlbumData(albumId);
+
+    const collectionRef = collection(firestore, 'collections');
+    const collectionQuery = query(
+      collectionRef,
+      where('albums', 'array-contains', albumId)
+    );
+    const collectionSnapshot = await getDocs(collectionQuery);
+    const collectionDocData = collectionSnapshot.docs[0].data();
+
+    return {
+      ...albumData,
+      collection: collectionDocData.title,
+      collectionPath: collectionDocData.pathTitle,
+    };
   }
 
   throw new Error(`Collection with title ${pathTitle} not found.`);
@@ -505,6 +520,7 @@ export async function fetchCollectionData(
   throw new Error(`Collection with ID ${collectionId} not found.`);
 }
 
+// FETCH COLLECTION BY TITLE
 export async function fetchCollectionDataByTitle(
   pathTitle: string
 ): Promise<Collection> {

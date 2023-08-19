@@ -6,9 +6,7 @@ import Breadcrumb from '../common/Breadcrumb';
 import CustomModal from '../common/CustomModal';
 
 const Container = styled.div`
-  min-height: 100vh;
   padding: 0 1.5rem;
-  padding-top: 55px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -98,38 +96,40 @@ export default function AlbumImageGrid({ gridItems, crumbData }) {
   }
 
   return (
-    <Container>
+    <div style={{ paddingTop: '55px' }}>
       {crumbData && <Breadcrumb paths={breadcrumbs} />}
-      <GridContainer>
-        {gridItems.map((item, index: Key) => (
-          <ImageContainer
-            loaded={loadedImages[index]}
-            key={index}
-            onClick={() => viewHandler(item.url)}
-          >
-            <Image
-              src={item.url}
-              alt={item.id || 'Photo'}
-              className={'image'}
-              width={item.width || 400}
-              height={item.height || 400}
-            />
-          </ImageContainer>
-        ))}
-      </GridContainer>
-      <CustomModal modalIsOpen={modalIsOpen} closeModal={closeModal}>
-        {modalImage && (
-          <ModalImageContainer>
-            <Image
-              src={modalImage}
-              alt={''}
-              width={500}
-              height={500}
-              className={'image'}
-            />
-          </ModalImageContainer>
-        )}
-      </CustomModal>
-    </Container>
+      <Container>
+        <GridContainer>
+          {gridItems.map((item, index: Key) => (
+            <ImageContainer
+              loaded={loadedImages[index]}
+              key={index}
+              onClick={() => viewHandler(item.url)}
+            >
+              <Image
+                src={item.url}
+                alt={item.id || 'Photo'}
+                className={'image'}
+                width={item.width || 400}
+                height={item.height || 400}
+              />
+            </ImageContainer>
+          ))}
+        </GridContainer>
+        <CustomModal modalIsOpen={modalIsOpen} closeModal={closeModal}>
+          {modalImage && (
+            <ModalImageContainer>
+              <Image
+                src={modalImage}
+                alt={''}
+                width={500}
+                height={500}
+                className={'image'}
+              />
+            </ModalImageContainer>
+          )}
+        </CustomModal>
+      </Container>
+    </div>
   );
 }
