@@ -10,6 +10,7 @@ import {
 } from './FooterStyle';
 import { NavLinkList } from '../../../utils/dummyData';
 import SocialMediaIcon from '../../common/SocialMediaIcon';
+import Link from 'next/link';
 
 const Footer = () => {
   const scrollToSection = (sectionId: string) => {
@@ -32,13 +33,7 @@ const Footer = () => {
           {NavLinkList.map((navLink, key) => {
             return (
               <FooterItem key={key}>
-                <a
-                  onClick={() => {
-                    scrollToSection(navLink.path);
-                  }}
-                >
-                  {navLink.title}
-                </a>
+                <Link href={navLink.path}>{navLink.title}</Link>
               </FooterItem>
             );
           })}

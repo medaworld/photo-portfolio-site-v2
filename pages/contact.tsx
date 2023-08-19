@@ -32,6 +32,8 @@ export const Form = styled.form`
 `;
 
 const Input = styled.input<{ invalid: boolean }>`
+  background-color: #fff;
+  color: #333;
   margin-bottom: 20px;
   padding: 10px;
   border-radius: 5px;
@@ -40,6 +42,8 @@ const Input = styled.input<{ invalid: boolean }>`
 `;
 
 const Textarea = styled.textarea<{ invalid: boolean }>`
+  background-color: #fff;
+  color: #333;
   margin-bottom: 20px;
   padding: 10px;
   border-radius: 5px;
@@ -189,7 +193,11 @@ export default function Contact() {
           onChange={messageChangeHandler}
           invalid={invalidMessage}
         ></Textarea>
-        <StyledButton variant="neutral" type="submit">
+        <StyledButton
+          variant="neutral"
+          type="submit"
+          style={{ padding: '10px' }}
+        >
           Send Message
         </StyledButton>
       </Form>

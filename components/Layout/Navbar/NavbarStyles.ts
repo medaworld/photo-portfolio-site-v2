@@ -1,6 +1,7 @@
 'use client';
 
 import styled, { css } from 'styled-components';
+import { size } from '../../../utils/breakpoints';
 
 export const NavbarContainer = styled.nav<{ isOpen: boolean }>`
   background-color: ${(props) => props.theme.tpBackground};
@@ -17,13 +18,13 @@ export const NavbarContainer = styled.nav<{ isOpen: boolean }>`
   padding: 1rem 1rem;
   z-index: 5;
   border-bottom: 1px solid ${(props) => props.theme.border};
-  max-height: ${({ isOpen }) => (isOpen ? '250px' : '70px')};
+  max-height: ${({ isOpen }) => (isOpen ? '200px' : '70px')};
 
   @media (max-width: 768px) {
     align-items: start;
     justify-content: space-between;
-    height: ${({ isOpen }) => (isOpen ? '215px' : 'none')};
-    max-height: ${({ isOpen }) => (isOpen ? '250px' : '70px')};
+    height: ${({ isOpen }) => (isOpen ? '175px' : 'none')};
+    max-height: ${({ isOpen }) => (isOpen ? '200px' : '70px')};
     overflow: hidden;
     transition: max-height 0.3s ease;
   }
@@ -76,6 +77,10 @@ export const NavLink = styled.li`
     &:hover {
       opacity: 0.7;
     }
+  }
+
+  @media (max-width: ${size.tablet}) {
+    font-size: 18px;
   }
 `;
 
