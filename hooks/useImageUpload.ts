@@ -113,7 +113,7 @@ export const useImageUpload = ({ inputRef }) => {
         setFiles((prevFiles) => prevFiles.filter((f) => f !== file));
       } catch (error) {
         console.error(`Failed to upload image ${i + 1}:`, error);
-        notificationCtx.showNotification({
+        return notificationCtx.showNotification({
           title: 'Error',
           message: error.text || 'Something went wrong',
           status: 'error',

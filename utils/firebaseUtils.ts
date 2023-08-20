@@ -21,7 +21,7 @@ import {
   deleteObject,
   uploadBytes,
 } from 'firebase/storage';
-import { firestore, storage } from '../lib/firebase';
+import { auth, firestore, storage } from '../lib/firebase';
 import { Album, Collection, FetchImagesOptions } from '../types/firebase';
 
 // FETCH COUNT
