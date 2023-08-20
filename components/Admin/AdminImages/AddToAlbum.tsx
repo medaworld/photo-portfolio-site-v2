@@ -15,6 +15,7 @@ import StyledInput from '../../common/StyledInput';
 import StyledTextArea from '../../common/StyledTextArea';
 import StyledButton from '../../common/StyledButton';
 import { addAlbum } from '../../../utils/firebaseUtils';
+import { titleToPath } from '../../../utils/stringUtils';
 
 const AddToAlbumContainer = styled.div`
   display: flex;
@@ -211,6 +212,7 @@ export default function AddToAlbum({ selectedImages, closeModal }) {
   async function createNewAlbum() {
     const newAlbum = {
       title: newAlbumName,
+      pathTitle: titleToPath(newAlbumName),
       description: newAlbumDescription,
       photos: selectedImages,
       cover: selectedImages[0] || null,
