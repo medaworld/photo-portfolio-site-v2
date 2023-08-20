@@ -1,2 +1,2 @@
 User-agent: *
-Disallow: /secure/admin91919
+Disallow: /secure/admin
