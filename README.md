@@ -2,7 +2,14 @@
 
 ## Introduction
 
-Welcome to the second iteration of my photo portfolio project! Dive into a sophisticated blend of aesthetics and technology, showcasing my passion for photography, ranging from concert photography to captivating travel shots. View the first edition of this project [here](https://github.com/medaworld/photo-portfolio-site-v1).
+Dive into the second iteration of the Photo Portfolio project, blending aesthetics and technology, portraying a passion for photography. This portfolio ranges from dynamic concert captures to mesmerizing travel shots. View the first edition of this project [here](https://github.com/medaworld/photo-portfolio-site-v1).
+
+## Table of Contents
+
+- [Features](#features)
+- [Demo](#demo)
+- [Technologies Used](#technologies-used)
+- [Getting Started](#getting-started)
 
 ## Features
 
@@ -19,17 +26,25 @@ Welcome to the second iteration of my photo portfolio project! Dive into a sophi
 - **Slick Carousel**: Featured images rendered with flair using the `react-slick` carousel.
 - **Theming**: Swap between a serene light theme or a classy dark theme with a navbar toggle, all realized with `styled-components`.
 
+## Demo
+
+[Live Demo](https://photo-portfolio-site-v2.vercel.app/)
+![Screenshot](/public/images/screenshot1.png)
+![Screenshot](/public/images/screenshot2.png)
+![Screenshot](/public/images/screenshot3.png)
+
 ## Technologies Used
 
-- [Next.js](https://nextjs.org/)
-- [Styled-components](https://styled-components.com/)
-- [Firebase](https://firebase.google.com/)
-- [React-beautiful-dnd](https://www.npmjs.com/package/react-beautiful-dnd)
-- [React-dropzone](https://react-dropzone.js.org/)
-- [Next-auth](https://next-auth.js.org/)
-- [EmailJS](https://www.emailjs.com/)
-- [React-modal](https://www.npmjs.com/package/react-modal)
-- [React-slick](https://react-slick.neostack.com/)
+- **Next.js**: Front-end web framework.
+- **Styled-components**: CSS-in-JS solution.
+- **Firebase**: Database and storage solution.
+- **React-beautiful-dnd**: Drag-and-drop functionality.
+- **React-dropzone**: Image upload dropzone utility.
+- **Next-auth**: Authentication library.
+- **EmailJS**: Email service integration.
+- **React-modal**: Modal component.
+- **React-slick**: Carousel component.
+- **Other Technologies**: HTML, CSS, JavaScript, TypeScript, React, etc.
 
 ## Getting Started
 

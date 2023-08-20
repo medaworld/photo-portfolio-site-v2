@@ -14,8 +14,8 @@ function MyApp({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <title>Artist | Photography</title>
-        <meta name="description" content="Official website for MEDA" />
+        <title>Demo | Photography</title>
+        <meta name="description" content="Official website for photos" />
         <link rel="icon" href="/favicon.ico" />
         <meta
           name="viewport"
