@@ -9,11 +9,10 @@ import { NotificationContext } from '../../../context/notification/NotificationC
 import {
   AdminLoginContainer,
   ErrorText,
-  LoginButton,
   LoginForm,
-  LoginInput,
 } from '../../../components/Admin/AdminLogin/AdminLoginStyles';
 import StyledInput from '../../../components/common/StyledInput';
+import StyledButton from '../../../components/common/StyledButton';
 
 export default function AdminLogin() {
   const [enteredEmail, setEnteredEmail] = useState('');
@@ -73,7 +72,9 @@ export default function AdminLogin() {
           onChange={(e) => setEnteredPassword(e.target.value)}
           placeholder="Password"
         />
-        <LoginButton type="submit">Login</LoginButton>
+        <StyledButton variant="primary" type="submit">
+          Login
+        </StyledButton>
         {error && <ErrorText>{error}</ErrorText>}
       </LoginForm>
     </AdminLoginContainer>
